@@ -11,7 +11,7 @@
   <!-- GOOGLE FONTS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
   <script>
     tailwind.config = {
@@ -34,7 +34,9 @@
       --theme-color-1: #00f2fe;
       --theme-color-2: #8b5cf6;
       --theme-color-3: #ec4899;
-      --accent-glow: rgba(0, 242, 254, 0.4);
+      --accent-glow: rgba(0, 242, 254, 0.42);
+      --accent-glow-subtle: rgba(0, 242, 254, 0.18);
+      --glass-blur: 28px;
       --bg-dark: #07070c;
     }
 
@@ -64,112 +66,155 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
-    /* EFECTOS LIQUID GLASS */
+    /* LIQUID GLASS ULTRA REFINADO */
     .glass-panel {
-      background: rgba(15, 23, 42, 0.58);
-      backdrop-filter: blur(28px);
-      -webkit-backdrop-filter: blur(28px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+      background: rgba(13, 19, 36, 0.62);
+      backdrop-filter: blur(var(--glass-blur, 28px)) saturate(190%);
+      -webkit-backdrop-filter: blur(var(--glass-blur, 28px)) saturate(190%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.75), inset 0 1px 0 0 rgba(255, 255, 255, 0.14);
+      transition: border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+    .glass-panel:hover {
+      border-color: rgba(255, 255, 255, 0.18);
     }
 
     .glass-card {
-      background: rgba(255, 255, 255, 0.035);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.07);
+      background: rgba(255, 255, 255, 0.038);
+      backdrop-filter: blur(calc(var(--glass-blur, 28px) * 0.65)) saturate(160%);
+      -webkit-backdrop-filter: blur(calc(var(--glass-blur, 28px) * 0.65)) saturate(160%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.18);
+      transform: translateY(-1px);
     }
 
     .glass-input {
-      background: rgba(0, 0, 0, 0.45);
+      background: rgba(4, 7, 16, 0.55);
       border: 1px solid rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       transition: all 0.25s ease;
     }
     .glass-input:focus {
       border-color: var(--theme-accent);
-      box-shadow: 0 0 15px var(--accent-glow);
+      box-shadow: 0 0 20px var(--accent-glow), inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
     }
 
     .glass-btn {
       background: rgba(255, 255, 255, 0.06);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .glass-btn:hover {
       background: rgba(255, 255, 255, 0.12);
-      border-color: rgba(255, 255, 255, 0.25);
+      border-color: rgba(255, 255, 255, 0.28);
+      box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
     }
 
     .glass-btn-primary {
       background: linear-gradient(135deg, var(--theme-accent) 0%, var(--theme-color-2) 100%);
-      color: #050811;
-      font-weight: 700;
-      box-shadow: 0 0 25px var(--accent-glow);
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      color: #040711;
+      font-weight: 800;
+      box-shadow: 0 0 30px var(--accent-glow), inset 0 1px 0 0 rgba(255, 255, 255, 0.4);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       border: none;
     }
     .glass-btn-primary:hover:not(:disabled) {
-      filter: brightness(1.12);
-      box-shadow: 0 0 35px var(--accent-glow);
-      transform: translateY(-1px);
+      filter: brightness(1.14);
+      box-shadow: 0 0 45px var(--accent-glow), 0 10px 25px -5px rgba(0, 242, 254, 0.5);
+      transform: translateY(-1.5px) scale(1.01);
     }
 
-    /* ANIMACIONES DE ORBES FLUIDOS */
-    @keyframes float-1 {
+    /* ORBES FLUIDOS ANIMADOS */
+    @keyframes orb-float-1 {
       0%, 100% { transform: translate(0px, 0px) scale(1); }
-      50% { transform: translate(60px, 45px) scale(1.12); }
+      33% { transform: translate(70px, 50px) scale(1.14); }
+      66% { transform: translate(-30px, 80px) scale(0.92); }
     }
-    @keyframes float-2 {
-      0%, 100% { transform: translate(0px, 0px) scale(1.05); }
-      50% { transform: translate(-50px, -60px) scale(0.95); }
+    @keyframes orb-float-2 {
+      0%, 100% { transform: translate(0px, 0px) scale(1.06); }
+      33% { transform: translate(-65px, -70px) scale(0.9); }
+      66% { transform: translate(45px, -40px) scale(1.12); }
     }
-    @keyframes float-3 {
-      0%, 100% { transform: translate(0px, 0px) scale(0.95); }
-      50% { transform: translate(40px, -40px) scale(1.08); }
+    @keyframes orb-float-3 {
+      0%, 100% { transform: translate(0px, 0px) scale(0.94); }
+      50% { transform: translate(55px, -60px) scale(1.16); }
     }
 
-    .animate-float-1 { animation: float-1 18s ease-in-out infinite; }
-    .animate-float-2 { animation: float-2 22s ease-in-out infinite; }
-    .animate-float-3 { animation: float-3 20s ease-in-out infinite; }
+    .animate-orb-1 { animation: orb-float-1 22s ease-in-out infinite; }
+    .animate-orb-2 { animation: orb-float-2 26s ease-in-out infinite; }
+    .animate-orb-3 { animation: orb-float-3 20s ease-in-out infinite; }
 
-    /* BARRA DE PROGRESO CON NEON */
+    /* NEON PROGRESS FILL */
     .neon-progress-fill {
       background: linear-gradient(90deg, var(--theme-accent), var(--theme-color-2));
-      box-shadow: 0 0 16px var(--accent-glow);
-      transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 0 20px var(--accent-glow);
+      transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* DRAG OVER HIGHLIGHT */
+    /* DRAG HIGHLIGHT */
     .dragover-active {
       border-color: var(--theme-accent) !important;
-      background: rgba(0, 242, 254, 0.08) !important;
-      box-shadow: 0 0 35px var(--accent-glow) inset;
+      background: rgba(0, 242, 254, 0.09) !important;
+      box-shadow: 0 0 40px var(--accent-glow) inset;
     }
 
-    /* SHAKE PARA PIN INCORRECTO */
+    /* SHAKE PARA PIN ERROR */
     @keyframes shake {
       0%, 100% { transform: translateX(0); }
-      20%, 60% { transform: translateX(-8px); }
-      40%, 80% { transform: translateX(8px); }
+      20%, 60% { transform: translateX(-9px); }
+      40%, 80% { transform: translateX(9px); }
     }
     .animate-shake {
       animation: shake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
+
+    /* PULSO ESMERALDA DE EXITO */
+    @keyframes pulse-emerald {
+      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      50% { transform: scale(1.15); box-shadow: 0 0 25px 6px rgba(16, 185, 129, 0.9); }
+      100% { transform: scale(1); box-shadow: 0 0 15px 2px rgba(16, 185, 129, 0.6); }
+    }
+    .pin-dot-success {
+      background-color: #10b981 !important;
+      border-color: #34d399 !important;
+      box-shadow: 0 0 25px #10b981, 0 0 50px rgba(16, 185, 129, 0.5) !important;
+      animation: pulse-emerald 0.5s ease-out forwards;
+    }
+
+    /* DISSOLVE LIQUID BLUR TRANSITION */
+    .liquid-blur-exit {
+      filter: blur(24px) !important;
+      opacity: 0 !important;
+      transform: scale(0.92) !important;
+      transition: all 0.55s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .liquid-blur-enter {
+      animation: blurEnter 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes blurEnter {
+      0% { filter: blur(24px); opacity: 0; transform: scale(1.05); }
+      100% { filter: blur(0px); opacity: 1; transform: scale(1); }
     }
   </style>
 </head>
 <body class="relative flex flex-col justify-between selection:bg-cyan-500/30 selection:text-cyan-200">
 
   <!-- ============================================================== -->
-  <!-- ORBES DE LUZ ANIMADOS (MODO OSCURO PROFUNDO CON BLUR 95PX)     -->
+  <!-- ORBES DE LUZ ANIMADOS (LIQUID GLASS BACKDROP BLUR)             -->
   <!-- ============================================================== -->
   <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
-    <div id="orb-1" class="absolute w-[500px] h-[500px] -top-24 -left-24 rounded-full opacity-35 blur-[100px] animate-float-1" style="background: radial-gradient(circle, var(--theme-color-1) 0%, transparent 70%);"></div>
-    <div id="orb-2" class="absolute w-[550px] h-[550px] top-1/2 -right-32 rounded-full opacity-30 blur-[115px] animate-float-2" style="background: radial-gradient(circle, var(--theme-color-2) 0%, transparent 70%);"></div>
-    <div id="orb-3" class="absolute w-[400px] h-[400px] -bottom-20 left-1/3 rounded-full opacity-25 blur-[95px] animate-float-3" style="background: radial-gradient(circle, var(--theme-color-3) 0%, transparent 70%);"></div>
+    <div id="orb-1" class="absolute w-[540px] h-[540px] -top-28 -left-28 rounded-full opacity-35 blur-[105px] animate-orb-1" style="background: radial-gradient(circle, var(--theme-color-1) 0%, transparent 70%);"></div>
+    <div id="orb-2" class="absolute w-[580px] h-[580px] top-1/2 -right-36 rounded-full opacity-30 blur-[120px] animate-orb-2" style="background: radial-gradient(circle, var(--theme-color-2) 0%, transparent 70%);"></div>
+    <div id="orb-3" class="absolute w-[440px] h-[440px] -bottom-24 left-1/3 rounded-full opacity-25 blur-[100px] animate-orb-3" style="background: radial-gradient(circle, var(--theme-color-3) 0%, transparent 70%);"></div>
   </div>
 
   <!-- ============================================================== -->
@@ -177,74 +222,80 @@
   <!-- ============================================================== -->
   <div class="relative z-10 w-full max-w-5xl mx-auto p-3 sm:p-5 md:p-6 flex flex-col min-h-screen justify-between space-y-4">
 
-    <!-- HEADER: LOGO PRINCIPAL + TITULOS + TUERCA UNICA SVG -->
+    <!-- HEADER: LOGO PRINCIPAL + TITULOS + TUERCA FUTURISTA SVG -->
     <header class="glass-panel rounded-3xl p-4 sm:p-5 flex items-center justify-between shadow-2xl relative overflow-hidden">
       
       <!-- Lado Izquierdo: Logo Principal Personalizado + Titulos -->
-      <div class="flex items-center space-x-3 sm:space-x-4 min-w-0">
+      <div class="flex items-center space-x-3.5 sm:space-x-4 min-w-0">
         
         <!-- Badge Logo Principal (Tu Marca) -->
-        <div id="header-avatar-container" class="relative shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-2xl glass-card p-1 border border-white/10 flex items-center justify-center overflow-hidden shadow-lg" style="box-shadow: 0 0 20px var(--accent-glow);">
+        <div id="header-avatar-container" class="relative shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-2xl glass-card p-1 border border-white/10 flex items-center justify-center overflow-hidden shadow-lg" style="box-shadow: 0 0 25px var(--accent-glow);">
           <img id="header-avatar-img" src="" alt="Logo Principal" class="hidden w-full h-full object-cover rounded-xl">
           <div id="header-avatar-svg" class="w-full h-full flex items-center justify-center text-slate-300">
+            <!-- SVG DIAMANTE / EMBLEMA FUTURISTA -->
             <svg class="w-7 h-7 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: var(--theme-accent);">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 2L3 7l9 5 9-5-9-5zM3 17l9 5 9-5M3 12l9 5 9-5" />
             </svg>
           </div>
         </div>
 
         <div class="min-w-0">
           <div class="flex items-center space-x-2">
-            <span class="w-2 h-2 rounded-full animate-ping shrink-0" style="background-color: var(--theme-accent);"></span>
+            <span class="w-2.5 h-2.5 rounded-full animate-ping shrink-0" style="background-color: var(--theme-accent);"></span>
             <h1 id="header-title" class="text-base sm:text-xl font-extrabold tracking-tight text-white font-display truncate">
               Portal de Carga de Archivos
             </h1>
           </div>
           <p id="header-subtitle" class="text-[11px] sm:text-xs text-slate-400 truncate mt-0.5 font-mono">
-            Directo a Google Drive &bull; Fotos y Videos sin l&iacute;mite
+            Directo a Google Drive &bull; Fotos y Videos sin l&iacute;mite de tama&ntilde;o
           </p>
         </div>
       </div>
 
-      <!-- Lado Derecho: UNA UNICA TUERCA MODERNA EN SVG (Gira sutilmente al pasar el cursor) -->
+      <!-- Lado Derecho: UNA UNICA TUERCA FUTURISTA EN SVG DE ALTA PRECISION -->
       <div class="flex items-center shrink-0">
-        <button type="button" id="btn-open-settings" onclick="window.openAdminModal(event)" title="Panel de Control Maestro" class="group relative p-2.5 sm:p-3 rounded-2xl glass-panel hover:border-white/30 transition-all duration-300 shadow-lg active:scale-95 cursor-pointer flex items-center justify-center min-w-[46px] min-h-[46px]">
-          <svg class="w-6 h-6 text-slate-300 group-hover:rotate-90 group-hover:text-cyan-300 transition-all duration-700 ease-out pointer-events-none" viewBox="0 0 24 24" fill="none" style="filter: drop-shadow(0 0 8px var(--accent-glow));">
-            <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M11.983 2c-.615 0-1.127.447-1.218 1.056l-.286 1.912a7.994 7.994 0 00-1.895.786l-1.636-1.042a1.228 1.228 0 00-1.57.251l-1.39 1.39a1.228 1.228 0 00-.251 1.57l1.042 1.636a7.994 7.994 0 00-.786 1.895l-1.912.286A1.228 1.228 0 002 12.017v1.966c0 .615.447 1.127 1.056 1.218l1.912.286c.21.67.476 1.309.786 1.895l-1.042 1.636a1.228 1.228 0 00.251 1.57l1.39 1.39c.45.45 1.134.544 1.57.251l1.636-1.042c.586.31 1.225.576 1.895.786l.286 1.912c.091.609.603 1.056 1.218 1.056h1.966c.615 0 1.127-.447 1.218-1.056l.286-1.912c.67-.21 1.309-.476 1.895-.786l1.636 1.042a1.228 1.228 0 001.57-.251l1.39-1.39a1.228 1.228 0 00.251-1.57l-1.042-1.636c.31-.586.576-1.225.786-1.895l1.912-.286c.609-.091 1.056-.603 1.056-1.218v-1.966c0-.615-.447-1.127-1.056-1.218l-1.912-.286a7.994 7.994 0 00-.786-1.895l1.042-1.636a1.228 1.228 0 00-.251-1.57l-1.39-1.39a1.228 1.228 0 00-1.57-.251l-1.636 1.042a7.994 7.994 0 00-1.895-.786l-.286-1.912A1.228 1.228 0 0013.949 2h-1.966zm.983 6.5a3.5 3.5 0 100 7 3.5 3.5 0 000-7z"/>
+        <button type="button" id="btn-open-settings" onclick="window.openAdminModal(event)" title="Panel de Control Maestro" class="group relative p-2.5 sm:p-3 rounded-2xl glass-panel hover:border-white/35 transition-all duration-500 shadow-xl active:scale-95 cursor-pointer flex items-center justify-center min-w-[48px] min-h-[48px]">
+          <!-- SVG TUERCA MECANICA CYBERPUNK DE ALTA GAMA -->
+          <svg class="w-6 h-6 sm:w-7 sm:h-7 text-slate-300 group-hover:text-cyan-300 group-hover:rotate-180 transition-all duration-700 ease-out pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="filter: drop-shadow(0 0 10px var(--accent-glow));">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <circle cx="12" cy="12" r="3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="12" cy="12" r="1" fill="currentColor" />
           </svg>
-          <div class="absolute -top-1 -right-1 w-2 h-2 rounded-full blur-[2px] pointer-events-none group-hover:scale-125 transition-transform" style="background-color: var(--theme-accent);"></div>
+          <div class="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full blur-[2px] pointer-events-none group-hover:scale-125 transition-transform" style="background-color: var(--theme-accent);"></div>
         </button>
       </div>
     </header>
 
     <!-- ============================================================== -->
-    <!-- CUERPO PRINCIPAL: DROPZONE Y COLA SECUENCIAL / PARALELA        -->
+    <!-- CUERPO PRINCIPAL: DROPZONE Y COLA CONCURRENTE INTELIGENTE      -->
     <!-- ============================================================== -->
     <main class="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1 relative">
 
       <!-- CAPA DE BLOQUEO VISUAL POR SUSPENSION (SI ESTA ACTIVO) -->
       <div id="suspension-overlay" class="hidden absolute inset-0 z-30 rounded-3xl bg-black/85 backdrop-blur-2xl flex flex-col items-center justify-center p-6 text-center transition-all duration-300">
-        <div class="w-16 h-16 rounded-3xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4 shadow-[0_0_30px_rgba(245,158,11,0.3)]">
+        <div class="w-16 h-16 rounded-3xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4 shadow-[0_0_35px_rgba(245,158,11,0.35)]">
+          <!-- SVG ESCUDO ALERTA -->
           <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
           </svg>
         </div>
         <span class="px-3.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-amber-500/15 text-amber-300 border border-amber-500/30 mb-2 font-mono">
-          Servicio Temporalmente Suspendido
+          Servicio Temporalmente en Pausa
         </span>
         <h3 id="suspension-display-msg" class="text-base sm:text-lg font-bold text-white max-w-md mb-2 font-display">
           Servicio suspendido temporalmente por mantenimiento
         </h3>
         <p class="text-xs text-slate-400 max-w-sm">
-          La recepci&oacute;n de archivos est&aacute; pausada. Si eres el administrador, puedes reactivar el servicio desde la tuerca en la esquina superior derecha.
+          La recepci&oacute;n de fotos y videos est&aacute; pausada. Si eres el administrador, puedes reactivar el servicio desde la tuerca superior.
         </p>
       </div>
 
       <!-- COLUMNA IZQUIERDA: ZONA DE CARGA (5 cols) -->
       <div class="lg:col-span-5 flex flex-col space-y-3">
-        <div id="dropzone" class="glass-panel rounded-3xl p-5 sm:p-6 flex-1 flex flex-col items-center justify-center text-center border-2 border-dashed border-white/10 transition-all duration-300 relative overflow-hidden group min-h-[300px]">
+        <div id="dropzone" class="glass-panel rounded-3xl p-5 sm:p-6 flex-1 flex flex-col items-center justify-center text-center border-2 border-dashed border-white/10 transition-all duration-300 relative overflow-hidden group min-h-[310px]">
           
           <div class="w-16 h-16 sm:w-20 sm:h-20 mb-3 rounded-3xl glass-card flex items-center justify-center border border-white/10 group-hover:scale-105 transition-transform duration-300 pointer-events-none" style="color: var(--theme-accent);">
+            <!-- SVG NUBE UPLOAD FUTURISTA -->
             <svg class="w-8 h-8 sm:w-10 sm:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
             </svg>
@@ -262,8 +313,9 @@
             
             <!-- Boton 1: Explorador General (+100 archivos) -->
             <label for="file-input-unlimited" id="btn-select-files" class="w-full py-3.5 px-4 rounded-xl glass-btn text-xs font-bold text-white flex items-center justify-center gap-2 cursor-pointer active:scale-98 shadow-sm transition-all" style="background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04));">
+              <!-- SVG FOLDER PLUS -->
               <svg class="w-4 h-4 shrink-0 pointer-events-none" style="color: var(--theme-accent);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
               </svg>
               <span>Explorador (+100 archivos)</span>
             </label>
@@ -273,8 +325,9 @@
             <div class="grid grid-cols-2 gap-2 w-full">
               <!-- Boton 2: Galeria directa -->
               <label for="file-input-gallery" id="btn-select-gallery" class="py-3 px-3 rounded-xl glass-btn text-xs font-semibold text-slate-300 hover:text-white flex items-center justify-center gap-1.5 cursor-pointer active:scale-98 transition-all" title="Abrir Galeria">
+                <!-- SVG FOTO CAMARA -->
                 <svg class="w-4 h-4 shrink-0 pointer-events-none" style="color: var(--theme-accent);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
                 <span>Galer&iacute;a</span>
               </label>
@@ -282,8 +335,9 @@
 
               <!-- Boton 3: Subir Carpeta entera -->
               <label for="folder-input" id="btn-select-folder" class="py-3 px-3 rounded-xl glass-btn text-xs font-semibold text-slate-400 hover:text-white flex items-center justify-center gap-1.5 cursor-pointer active:scale-98 transition-all" title="Subir carpeta entera">
+                <!-- SVG SUBIR CARPETA -->
                 <svg class="w-4 h-4 text-purple-400 shrink-0 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
                 </svg>
                 <span>Carpeta</span>
               </label>
@@ -298,45 +352,49 @@
         <div class="glass-panel rounded-3xl p-4 sm:p-5 flex-1 flex flex-col justify-between shadow-2xl relative overflow-hidden min-h-[380px]">
           
           <!-- Encabezado de la cola y selector de concurrencia -->
-          <div class="pb-3 border-b border-white/5 space-y-2">
+          <div class="pb-3 border-b border-white/5 space-y-2.5">
             <div class="flex items-center justify-between">
               <div class="flex items-center space-x-2">
                 <span class="w-2.5 h-2.5 rounded-full animate-pulse" style="background-color: var(--theme-accent);"></span>
-                <h2 class="font-display font-bold text-sm sm:text-base text-white">Cola de Subida</h2>
+                <h2 class="font-display font-bold text-sm sm:text-base text-white">Cola de Carga Directa</h2>
                 <span id="queue-summary" class="text-xs text-slate-400 font-mono">0 archivos</span>
               </div>
-              <button type="button" id="btn-clear-queue" onclick="window.clearCompletedFiles(event)" class="text-[11px] text-slate-400 hover:text-rose-400 transition-colors flex items-center space-x-1 cursor-pointer">
-                <svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                <span>Limpiar listos</span>
-              </button>
+              <div class="flex items-center space-x-2">
+                <button type="button" id="btn-clear-queue" onclick="window.clearCompletedFiles(event)" class="text-[11px] text-slate-400 hover:text-rose-400 transition-colors flex items-center space-x-1 cursor-pointer">
+                  <!-- SVG BASURA -->
+                  <svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                  <span>Limpiar listos</span>
+                </button>
+              </div>
             </div>
 
             <!-- SELECTOR DINAMICO DE SUBIDA SIMULTANEA (1, 2 o 3 archivos) -->
-            <div class="flex items-center justify-between p-2 rounded-2xl bg-black/40 border border-white/5 text-xs">
+            <div class="flex flex-wrap items-center justify-between gap-2 p-2.5 rounded-2xl bg-black/40 border border-white/5 text-xs">
               <div class="flex items-center space-x-1.5 text-slate-300">
-                <svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                <!-- SVG RAYO VELOCIDAD -->
+                <svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                 <span class="font-medium text-[11px]">Subida simult&aacute;nea:</span>
               </div>
 
               <!-- Botones de Concurrencia Inteligentes -->
-              <div class="flex items-center space-x-1" id="concurrency-selector-group">
-                <!-- Boton 1: Siempre disponible -->
-                <button type="button" id="btn-concurrency-1" onclick="window.setConcurrency(1)" class="px-2.5 py-1 rounded-lg text-[11px] font-mono font-bold transition-all cursor-pointer glass-btn text-white" title="Subir de 1 en 1">
-                  1
+              <div class="flex items-center space-x-1.5" id="concurrency-selector-group">
+                <!-- Boton 1 -->
+                <button type="button" id="btn-concurrency-1" onclick="window.setConcurrency(1)" class="px-2.5 py-1 rounded-xl text-[11px] font-mono font-bold transition-all cursor-pointer glass-btn text-white" title="Subir de 1 en 1 (Seguro)">
+                  1x
                 </button>
                 
-                <!-- Boton 2: Disponible si el lote no satura red -->
-                <button type="button" id="btn-concurrency-2" onclick="window.setConcurrency(2)" class="px-2.5 py-1 rounded-lg text-[11px] font-mono font-bold transition-all cursor-pointer glass-btn text-white" title="Subir 2 simultaneos">
-                  2
+                <!-- Boton 2 -->
+                <button type="button" id="btn-concurrency-2" onclick="window.setConcurrency(2)" class="px-2.5 py-1 rounded-xl text-[11px] font-mono font-bold transition-all cursor-pointer glass-btn text-white" title="Subir 2 en paralelo">
+                  2x
                 </button>
 
-                <!-- Boton 3: Disponible para fotos o lotes ligeros (< 45 MB juntos) -->
-                <button type="button" id="btn-concurrency-3" onclick="window.setConcurrency(3)" class="px-2.5 py-1 rounded-lg text-[11px] font-mono font-bold transition-all cursor-pointer glass-btn text-white" title="Subir 3 simultaneos (Turbo)">
-                  3
+                <!-- Boton 3 -->
+                <button type="button" id="btn-concurrency-3" onclick="window.setConcurrency(3)" class="px-2.5 py-1 rounded-xl text-[11px] font-mono font-bold transition-all cursor-pointer glass-btn text-white" title="Subir 3 en paralelo (Turbo)">
+                  3x Turbo
                 </button>
 
                 <!-- Estado del selector -->
-                <span id="concurrency-status-hint" class="text-[10px] text-slate-400 font-mono ml-1.5 hidden sm:inline">
+                <span id="concurrency-status-hint" class="text-[10px] text-slate-400 font-mono ml-1 hidden sm:inline">
                   (Optimo)
                 </span>
               </div>
@@ -346,30 +404,33 @@
           <!-- Estado Vacio -->
           <div id="empty-state" class="my-auto py-12 text-center flex flex-col items-center justify-center">
             <div class="w-14 h-14 rounded-2xl glass-card flex items-center justify-center text-slate-600 mb-2 border border-white/5">
-              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
             </div>
-            <p class="text-xs text-slate-400 font-medium">No hay archivos seleccionados</p>
-            <p class="text-[11px] text-slate-500 mt-0.5">Selecciona fotos o videos para comenzar la subida directa.</p>
+            <p class="text-xs text-slate-400 font-medium">No hay archivos en cola</p>
+            <p class="text-[11px] text-slate-500 mt-0.5">Selecciona o arrastra fotos y videos para iniciar la subida.</p>
           </div>
 
-          <!-- Lista de Archivos en Cola -->
-          <div id="file-list-container" class="hidden flex-1 overflow-y-auto space-y-2 my-3 max-h-[290px]"></div>
+          <!-- Lista de Archivos en Cola (Con Miniaturas en Vivo) -->
+          <div id="file-list-container" class="hidden flex-1 overflow-y-auto space-y-2 my-2.5 max-h-[290px] pr-1"></div>
 
-          <!-- Barra de Progreso y Acciones Inferiores -->
+          <!-- Barra de Progreso, Speedometer y Acciones Inferiores -->
           <div class="pt-3 border-t border-white/5 space-y-3">
             <div class="space-y-1.5">
               <div class="flex items-center justify-between text-[11px] font-mono">
-                <span id="global-progress-text" class="text-slate-400">Progreso Total: 0%</span>
-                <span id="global-size-text" class="text-slate-500">0 MB / 0 MB</span>
+                <span id="global-progress-text" class="text-slate-300 font-semibold">Progreso Total: 0%</span>
+                <div class="flex items-center space-x-2">
+                  <span id="global-speed-text" class="text-cyan-400 hidden sm:inline">0 MB/s</span>
+                  <span id="global-size-text" class="text-slate-500">0 MB / 0 MB</span>
+                </div>
               </div>
-              <div class="w-full h-2 rounded-full bg-white/5 overflow-hidden">
+              <div class="w-full h-2.5 rounded-full bg-white/5 overflow-hidden p-0.5 border border-white/10">
                 <div id="global-progress-bar" class="h-full rounded-full neon-progress-fill" style="width: 0%"></div>
               </div>
             </div>
 
             <!-- Boton Grande de Subida a Google Drive -->
             <button type="button" id="btn-start-upload" onclick="window.startUploadProcess(event)" disabled class="w-full py-3.5 rounded-2xl glass-btn-primary font-bold text-xs sm:text-sm tracking-wide flex items-center justify-center space-x-2 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer active:scale-98">
-              <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+              <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
               <span id="btn-upload-label">Comenzar Subida a Drive</span>
             </button>
 
@@ -402,103 +463,114 @@
     <!-- ============================================================== -->
     <div id="collaborators-main-section" class="hidden glass-panel rounded-3xl p-3.5 sm:p-4 border border-white/5 shadow-lg">
       <div class="flex items-center space-x-2 pb-2 mb-2 border-b border-white/5">
-        <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+        <!-- SVG USERS COLLAB -->
+        <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
         <span class="text-xs font-bold text-slate-300 font-display">Colaboradores &bull; Aliados</span>
       </div>
-      <div id="collaborators-display-container" class="flex flex-wrap items-center gap-2.5">
-        <!-- Generado dinamicamente segun modo (solo logos o logos con nombres) -->
-      </div>
+      <div id="collaborators-display-container" class="flex flex-wrap items-center gap-2.5"></div>
     </div>
 
     <!-- FOOTER -->
     <footer class="pt-3 pb-2 text-center text-[10px] text-slate-500 border-t border-white/5 font-mono">
-      <span id="footer-text">SOLICITADOR DE ARCHIVOS PRO</span> &bull; Carga resumible directa a Google Drive API v3
+      <span id="footer-text">SOLICITADOR DE ARCHIVOS PRO</span> &bull; Carga directa a Google Drive API v3
     </footer>
   </div>
 
   <!-- ============================================================== -->
-  <!-- MODAL MAESTRO: ACCESO PIN (0412) Y PANEL DE 3 PESTAÑAS        -->
+  <!-- MODAL MAESTRO: ACCESO PIN (0412) Y PANEL DE 4 PESTAÑAS        -->
   <!-- ============================================================== -->
   <div id="modal-container" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md">
     <div id="modal-content" class="relative w-full max-w-xl glass-panel rounded-3xl border border-white/10 shadow-2xl p-4 sm:p-6 flex flex-col max-h-[92vh] overflow-hidden">
       
       <!-- Boton cerrar (X) -->
       <button type="button" id="btn-close-modal" onclick="window.closeAdminModal(event)" class="absolute top-4 right-4 p-2 rounded-xl text-slate-400 hover:text-white glass-btn cursor-pointer z-20">
-        <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+        <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M6 18L18 6M6 6l12 12" /></svg>
       </button>
 
-      <!-- VISTA 1: TECLADO NUMERICO PIN (0412 AUTO-DESBLOQUEO) -->
-      <div id="view-pin" class="flex flex-col items-center justify-center text-center p-2 space-y-4 my-auto">
-        <div class="w-12 h-12 rounded-2xl glass-card flex items-center justify-center border border-white/10" style="color: var(--theme-accent);">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+      <!-- VISTA 1: TECLADO NUMERICO PIN (0412 AUTO-DESBLOQUEO CON PUNTOS VERDES Y BLUR) -->
+      <div id="view-pin" class="flex flex-col items-center justify-center text-center p-2 space-y-4 my-auto transition-all duration-500">
+        <div class="w-14 h-14 rounded-2xl glass-card flex items-center justify-center border border-white/10" style="color: var(--theme-accent); box-shadow: 0 0 25px var(--accent-glow);">
+          <!-- SVG CANDADO DE SEGURIDAD -->
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
         </div>
         <div>
-          <h3 class="text-base font-bold text-white font-display">Panel Maestro de Control</h3>
+          <h3 class="text-base sm:text-lg font-bold text-white font-display">Panel Maestro de Control</h3>
           <p class="text-xs text-slate-400 mt-0.5">Ingresa tu c&oacute;digo PIN de 4 d&iacute;gitos</p>
         </div>
 
-        <!-- 4 puntos indicadores -->
-        <div class="flex items-center space-x-3.5 my-1" id="pin-dots">
-          <div data-idx="0" class="w-3.5 h-3.5 rounded-full border border-white/30 transition-all"></div>
-          <div data-idx="1" class="w-3.5 h-3.5 rounded-full border border-white/30 transition-all"></div>
-          <div data-idx="2" class="w-3.5 h-3.5 rounded-full border border-white/30 transition-all"></div>
-          <div data-idx="3" class="w-3.5 h-3.5 rounded-full border border-white/30 transition-all"></div>
+        <!-- 4 PUNTOS INDICADORES CON BRILLO NEON -->
+        <div class="flex items-center space-x-4 my-1" id="pin-dots">
+          <div data-idx="0" class="w-4 h-4 rounded-full border border-white/30 transition-all duration-300"></div>
+          <div data-idx="1" class="w-4 h-4 rounded-full border border-white/30 transition-all duration-300"></div>
+          <div data-idx="2" class="w-4 h-4 rounded-full border border-white/30 transition-all duration-300"></div>
+          <div data-idx="3" class="w-4 h-4 rounded-full border border-white/30 transition-all duration-300"></div>
         </div>
 
         <div id="pin-error-msg" class="text-xs font-semibold text-rose-400 opacity-0 transition-opacity">
           PIN incorrecto. Int&eacute;ntalo de nuevo.
         </div>
 
-        <!-- Teclado Numerico Tactil -->
+        <!-- Teclado Numerico Tactil Liquid Glass -->
         <div class="grid grid-cols-3 gap-2 w-full max-w-xs">
-          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-95" onclick="window.pressPin('1')">1</button>
-          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-95" onclick="window.pressPin('2')">2</button>
-          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-95" onclick="window.pressPin('3')">3</button>
-          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-95" onclick="window.pressPin('4')">4</button>
-          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-95" onclick="window.pressPin('5')">5</button>
-          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-95" onclick="window.pressPin('6')">6</button>
-          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-95" onclick="window.pressPin('7')">7</button>
-          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-95" onclick="window.pressPin('8')">8</button>
-          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-95" onclick="window.pressPin('9')">9</button>
-          <button type="button" class="h-12 rounded-2xl glass-btn text-xs font-semibold text-slate-400 hover:text-white cursor-pointer active:scale-95" onclick="window.clearPin()">C</button>
-          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-95" onclick="window.pressPin('0')">0</button>
-          <button type="button" class="h-12 rounded-2xl glass-btn text-sm font-semibold text-slate-400 hover:text-white cursor-pointer flex items-center justify-center active:scale-95" onclick="window.backspacePin()">
-            <svg class="w-5 h-5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414 6.414a2 2 0 001.414.586H19a2 2 0 002-2V7a2 2 0 00-2-2h-7.172a2 2 0 00-1.414.586L3 12z"/></svg>
+          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-90" onclick="window.pressPin('1')">1</button>
+          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-90" onclick="window.pressPin('2')">2</button>
+          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-90" onclick="window.pressPin('3')">3</button>
+          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-90" onclick="window.pressPin('4')">4</button>
+          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-90" onclick="window.pressPin('5')">5</button>
+          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-90" onclick="window.pressPin('6')">6</button>
+          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-90" onclick="window.pressPin('7')">7</button>
+          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-90" onclick="window.pressPin('8')">8</button>
+          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-90" onclick="window.pressPin('9')">9</button>
+          <button type="button" class="h-12 rounded-2xl glass-btn text-xs font-semibold text-slate-400 hover:text-white cursor-pointer active:scale-90" onclick="window.clearPin()">C</button>
+          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-90" onclick="window.pressPin('0')">0</button>
+          <button type="button" class="h-12 rounded-2xl glass-btn text-sm font-semibold text-slate-400 hover:text-white cursor-pointer flex items-center justify-center active:scale-90" onclick="window.backspacePin()">
+            <svg class="w-5 h-5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414 6.414a2 2 0 001.414.586H19a2 2 0 002-2V7a2 2 0 00-2-2h-7.172a2 2 0 00-1.414.586L3 12z"/></svg>
           </button>
         </div>
       </div>
 
-      <!-- VISTA 2: PANEL DE CONTROL MAESTRO CON 3 PESTAÑAS -->
+      <!-- VISTA 2: PANEL DE CONTROL MAESTRO CON 4 PESTAÑAS (ENTRADA CON DISSOLVE BLUR) -->
       <div id="view-config" class="hidden flex-1 flex flex-col overflow-hidden space-y-3">
         
-        <div class="pb-1 border-b border-white/5">
-          <h3 class="text-base font-bold text-white font-display">Panel Maestro de Control</h3>
-          <p class="text-[11px] text-slate-400">Administra el destino, logos, colaboradores y seguridad</p>
+        <div class="pb-1 border-b border-white/5 flex items-center justify-between">
+          <div>
+            <h3 class="text-base font-bold text-white font-display">Panel Maestro de Control</h3>
+            <p class="text-[11px] text-slate-400">Gestiona destino, logos, estética y registros de Drive</p>
+          </div>
+          <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+            PIN 0412
+          </span>
         </div>
 
-        <!-- BARRA DE NAVEGACION DE LAS 3 PESTAÑAS -->
-        <div class="grid grid-cols-3 gap-1.5 p-1 rounded-2xl bg-black/40 border border-white/5 shrink-0">
+        <!-- BARRA DE NAVEGACION DE LAS 4 PESTAÑAS -->
+        <div class="grid grid-cols-4 gap-1.5 p-1 rounded-2xl bg-black/40 border border-white/5 shrink-0">
           
-          <!-- Pestaña 1: Destino y Titulo -->
-          <button type="button" id="tab-btn-1" onclick="window.switchTab(1)" class="py-2 px-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center space-x-1.5 cursor-pointer bg-white/10 text-white shadow-sm" style="border: 1px solid var(--theme-accent);">
-            <svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+          <!-- Pestaña 1: Destino -->
+          <button type="button" id="tab-btn-1" onclick="window.switchTab(1)" class="py-2 px-1 rounded-xl text-[11px] sm:text-xs font-bold transition-all flex items-center justify-center space-x-1 cursor-pointer bg-white/10 text-white shadow-sm" style="border: 1px solid var(--theme-accent);">
+            <svg class="w-3.5 h-3.5 pointer-events-none shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
             <span class="truncate">Destino</span>
           </button>
 
-          <!-- Pestaña 2: Personalizacion y Logos -->
-          <button type="button" id="tab-btn-2" onclick="window.switchTab(2)" class="py-2 px-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white transition-all flex items-center justify-center space-x-1.5 cursor-pointer">
-            <svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4 8.014 8.014 0 014.288-7.143C7.545 9.774 8 9.5 8 9.5s.455.274.712.357A8.014 8.014 0 0113 17a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
-            <span class="truncate">Logos & Dise&ntilde;o</span>
+          <!-- Pestaña 2: Logos & Colaboradores -->
+          <button type="button" id="tab-btn-2" onclick="window.switchTab(2)" class="py-2 px-1 rounded-xl text-[11px] sm:text-xs font-medium text-slate-400 hover:text-white transition-all flex items-center justify-center space-x-1 cursor-pointer">
+            <svg class="w-3.5 h-3.5 pointer-events-none shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            <span class="truncate">Logos</span>
           </button>
 
-          <!-- Pestaña 3: Seguridad & Suspension -->
-          <button type="button" id="tab-btn-3" onclick="window.switchTab(3)" class="py-2 px-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white transition-all flex items-center justify-center space-x-1.5 cursor-pointer">
-            <svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          <!-- Pestaña 3: Estetica Liquid Glass -->
+          <button type="button" id="tab-btn-3" onclick="window.switchTab(3)" class="py-2 px-1 rounded-xl text-[11px] sm:text-xs font-medium text-slate-400 hover:text-white transition-all flex items-center justify-center space-x-1 cursor-pointer">
+            <svg class="w-3.5 h-3.5 pointer-events-none shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 21a4 4 0 01-4-4 8.014 8.014 0 014.288-7.143C7.545 9.774 8 9.5 8 9.5s.455.274.712.357A8.014 8.014 0 0113 17a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
+            <span class="truncate">Dise&ntilde;o</span>
+          </button>
+
+          <!-- Pestaña 4: Seguridad & Historial -->
+          <button type="button" id="tab-btn-4" onclick="window.switchTab(4)" class="py-2 px-1 rounded-xl text-[11px] sm:text-xs font-medium text-slate-400 hover:text-white transition-all flex items-center justify-center space-x-1 cursor-pointer">
+            <svg class="w-3.5 h-3.5 pointer-events-none shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
             <span class="truncate">Seguridad</span>
           </button>
         </div>
 
-        <!-- CONTENIDO DE LAS 3 PESTAÑAS (SCROLLABLE) -->
+        <!-- CONTENIDO DE LAS 4 PESTAÑAS (SCROLLABLE) -->
         <div class="flex-1 overflow-y-auto space-y-3.5 pr-1">
 
           <!-- ======================================================== -->
@@ -510,14 +582,14 @@
             <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-1.5">
               <label class="block text-xs font-semibold text-slate-300">T&iacute;tulo Principal de la Tarjeta</label>
               <input type="text" id="input-btn-title" placeholder="Ej: Comenzar Subida a Drive" class="w-full px-3 py-2 rounded-xl glass-input text-xs text-white">
-              <p class="text-[10px] text-slate-500">Este texto se muestra en el bot&oacute;n y en la cabecera principal.</p>
+              <p class="text-[10px] text-slate-500">Aparece en el bot&oacute;n y en la cabecera principal.</p>
             </div>
 
             <!-- Switch Misma Carpeta -->
             <div class="glass-card rounded-2xl p-3.5 border border-white/5 flex items-center justify-between">
               <div class="pr-3">
                 <span class="text-xs font-semibold text-white block">Guardar Fotos y Videos en la misma carpeta</span>
-                <span class="text-[10px] text-slate-400 block mt-0.5">Si est&aacute; inactivo, crear&aacute; autom&aacute;ticamente subcarpetas separadas de Fotos y Videos</span>
+                <span class="text-[10px] text-slate-400 block mt-0.5">Si est&aacute; inactivo, crear&aacute; subcarpetas separadas de Fotos y Videos</span>
               </div>
               <label class="relative inline-flex items-center cursor-pointer shrink-0">
                 <input type="checkbox" id="toggle-single-folder" class="sr-only peer">
@@ -534,10 +606,10 @@
                 </div>
                 <div class="flex items-center space-x-1.5">
                   <button type="button" id="btn-folder-up" onclick="window.navigateFolderUp(event)" class="p-1.5 rounded-lg glass-btn text-slate-300 hover:text-white cursor-pointer" title="Subir nivel">
-                    <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
+                    <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
                   </button>
                   <button type="button" id="btn-show-create-folder" onclick="window.showCreateFolderForm(event)" class="p-1.5 rounded-lg glass-btn text-slate-300 hover:text-white cursor-pointer" title="Crear carpeta">
-                    <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                    <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 4v16m8-8H4" /></svg>
                   </button>
                 </div>
               </div>
@@ -562,16 +634,16 @@
 
               <!-- Boton Usar Esta Carpeta -->
               <button type="button" id="btn-select-current-folder" onclick="window.selectCurrentExplorerFolder(event)" class="w-full py-2.5 rounded-xl glass-btn text-xs font-bold text-white flex items-center justify-center space-x-2 cursor-pointer active:scale-98">
-                <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 13l4 4L19 7"/></svg>
                 <span id="btn-select-folder-text">Usar esta carpeta como destino</span>
               </button>
             </div>
           </div>
 
           <!-- ======================================================== -->
-          <!-- PESTAÑA 2: PERSONALIZACION, LOGO PRINCIPAL Y COLABORADORES-->
+          <!-- PESTAÑA 2: LOGO PRINCIPAL Y LOGOS DE COLABORADORES       -->
           <!-- ======================================================== -->
-          <div id="tab-content-2" class="space-y-3">
+          <div id="tab-content-2" class="hidden space-y-3">
             
             <!-- 1. LOGO PRINCIPAL (TU MARCA) -->
             <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-2.5">
@@ -593,7 +665,7 @@
 
                 <div class="flex-1 flex flex-col space-y-1">
                   <label for="input-avatar-file" class="py-2 px-3 rounded-xl glass-btn text-xs font-semibold text-white flex items-center justify-center space-x-1.5 cursor-pointer active:scale-98 text-center">
-                    <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                    <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
                     <span>Subir Mi Logo Principal</span>
                   </label>
                   <input type="file" id="input-avatar-file" accept="image/*" class="hidden" onchange="window.handleAvatarSelected(this)">
@@ -610,7 +682,7 @@
                   <p class="text-[10px] text-slate-400">A&ntilde;ade patrocinadores, aliados o fot&oacute;grafos colaboradores</p>
                 </div>
                 <button type="button" onclick="window.showAddCollaboratorForm()" class="px-2.5 py-1 rounded-lg glass-btn-primary text-[11px] font-bold cursor-pointer flex items-center space-x-1">
-                  <svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                  <svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 4v16m8-8H4"/></svg>
                   <span>+ Colaborador</span>
                 </button>
               </div>
@@ -638,7 +710,7 @@
                 <div class="space-y-1.5">
                   <label class="block text-[10px] font-mono text-slate-400">Logo o Icono</label>
                   <label for="new-collab-file" class="w-full py-2 px-3 rounded-xl glass-btn text-xs font-semibold text-slate-300 hover:text-white flex items-center justify-center space-x-1.5 cursor-pointer">
-                    <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                     <span id="new-collab-file-label">Seleccionar Imagen</span>
                   </label>
                   <input type="file" id="new-collab-file" accept="image/*" class="hidden" onchange="window.handleCollabFileSelected(this)">
@@ -651,12 +723,16 @@
               </div>
 
               <!-- Lista de Colaboradores Actuales -->
-              <div id="collaborators-admin-list" class="space-y-2 max-h-48 overflow-y-auto">
-                <!-- Items inyectados dinamicamente -->
-              </div>
+              <div id="collaborators-admin-list" class="space-y-2 max-h-44 overflow-y-auto pr-1"></div>
             </div>
+          </div>
 
-            <!-- 3. COLOR Y PALETAS NEON -->
+          <!-- ======================================================== -->
+          <!-- PESTAÑA 3: ESTETICA LIQUID GLASS & NEON                  -->
+          <!-- ======================================================== -->
+          <div id="tab-content-3" class="hidden space-y-3">
+            
+            <!-- Rueda Cromatica y Paletas -->
             <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-2.5">
               <div>
                 <span class="text-xs font-bold text-white uppercase tracking-wider">Acento Crom&aacute;tico y Ne&oacute;n</span>
@@ -681,12 +757,24 @@
                 <button type="button" onclick="window.handleColorChange('#f59e0b')" class="w-6 h-6 rounded-full bg-[#f59e0b] border border-white/30 cursor-pointer hover:scale-110 transition-transform shadow-[0_0_10px_#f59e0b]"></button>
               </div>
             </div>
+
+            <!-- Slider de Intensidad de Desenfoque Liquid Glass -->
+            <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-2">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="text-xs font-bold text-white uppercase tracking-wider">Intensidad de Desenfoque (Glass Blur)</span>
+                  <p class="text-[10px] text-slate-400">Ajusta la profundidad de cristal líquido de 12px a 36px</p>
+                </div>
+                <span id="glass-blur-value" class="text-xs font-mono font-bold text-cyan-300">28px</span>
+              </div>
+              <input type="range" id="glass-blur-slider" min="12" max="38" value="28" class="w-full h-1.5 rounded-lg bg-slate-800 accent-cyan-400 cursor-pointer" oninput="window.handleGlassBlurChange(this.value)">
+            </div>
           </div>
 
           <!-- ======================================================== -->
-          <!-- PESTAÑA 3: SEGURIDAD & SUSPENSION                        -->
+          <!-- PESTAÑA 4: SEGURIDAD & HISTORIAL DE SUBIDAS              -->
           <!-- ======================================================== -->
-          <div id="tab-content-3" class="hidden space-y-3">
+          <div id="tab-content-4" class="hidden space-y-3">
             
             <!-- Switch Maestro de Suspension -->
             <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-2">
@@ -713,15 +801,30 @@
             <!-- Campo Mensaje de Suspension -->
             <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-1.5">
               <label class="block text-xs font-semibold text-slate-300">Mensaje Personalizado de Suspensi&oacute;n</label>
-              <textarea id="input-suspension-msg" rows="3" placeholder="Ej: Servicio suspendido temporalmente por mantenimiento" class="w-full px-3 py-2 rounded-xl glass-input text-xs text-white resize-none"></textarea>
-              <p class="text-[10px] text-slate-500">Este mensaje ser&aacute; visible para cualquier usuario que visite la p&aacute;gina mientras est&eacute; suspendida.</p>
+              <textarea id="input-suspension-msg" rows="2" placeholder="Ej: Servicio suspendido temporalmente por mantenimiento" class="w-full px-3 py-2 rounded-xl glass-input text-xs text-white resize-none"></textarea>
             </div>
 
             <!-- Actualizar PIN de Seguridad -->
             <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-1.5">
               <label class="block text-xs font-semibold text-slate-300">C&oacute;digo PIN Maestro (4 D&iacute;gitos)</label>
               <input type="password" id="input-admin-pin" maxlength="4" placeholder="0412" class="w-full px-3 py-2 rounded-xl glass-input text-xs font-mono text-white tracking-widest">
-              <p class="text-[10px] text-slate-500">PIN requerido para desbloquear este panel de control.</p>
+            </div>
+
+            <!-- Visor de Historial de Subidas desde Google Sheets -->
+            <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-2">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="text-xs font-bold text-white uppercase tracking-wider">&Uacute;ltimos Archivos Subidos</span>
+                  <p class="text-[10px] text-slate-400">Registros sincronizados directamente con Google Sheets</p>
+                </div>
+                <button type="button" onclick="window.cargarHistorialRegistros()" class="px-2.5 py-1 rounded-lg glass-btn text-[11px] font-mono text-cyan-300 hover:text-white cursor-pointer">
+                  Actualizar
+                </button>
+              </div>
+
+              <div id="historial-registros-list" class="max-h-36 overflow-y-auto space-y-1.5 pr-1">
+                <div class="p-3 text-center text-[10px] text-slate-500 font-mono">Haz clic en Actualizar para ver registros recientes.</div>
+              </div>
             </div>
           </div>
         </div>
@@ -730,8 +833,8 @@
         <div class="pt-3 border-t border-white/10 flex items-center justify-between shrink-0">
           <span id="save-status-msg" class="text-xs text-slate-400 font-mono"></span>
           <button type="button" id="btn-save-settings" onclick="window.saveSettings(event)" class="px-5 py-2.5 rounded-xl glass-btn-primary text-xs font-bold cursor-pointer active:scale-95 flex items-center space-x-1.5">
-            <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
-            <span>Guardar Configuraci&oacute;n Completa</span>
+            <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+            <span>Guardar Todo</span>
           </button>
         </div>
       </div>
@@ -739,7 +842,7 @@
   </div>
 
   <!-- ============================================================== -->
-  <!-- JAVASCRIPT: MOTOR CONCURRENTE INTELIGENTE Y GESTION DE LOGOS  -->
+  <!-- JAVASCRIPT: MOTOR COMPLETO CON CONCURRENCIA, BLUR Y PREVIEWS   -->
   <!-- ============================================================== -->
   <script>
     /**
@@ -766,6 +869,7 @@
         concurrenciaMax: 3,
         colaboradores: [],
         modoColaboradores: 'solo_logos',
+        glassBlur: 28,
         sheetUrl: '#'
       },
       queue: [],
@@ -777,7 +881,9 @@
       explorerActualNombre: 'Mi Unidad',
       explorerParentId: null,
       pendingAvatarFile: null,
-      pendingCollabFile: null
+      pendingCollabFile: null,
+      uploadStartTime: null,
+      lastBytesCalculated: 0
     };
 
     /**
@@ -805,8 +911,6 @@
 
     /**
      * 3. SELECTOR INTELIGENTE DE CONCURRENCIA ADAPTATIVA
-     * - Si los archivos en cola juntos pesan > 45MB, inhabilita el 3 y baja a 2 o 1.
-     * - Permite elegir entre 1, 2 o 3 si la red y el peso lo permiten.
      */
     window.setConcurrency = function(num) {
       const allowed = evaluarConcurrenciaPermitida();
@@ -823,35 +927,32 @@
         return { maxPermitido: 3, motivo: 'Optimo' };
       }
 
-      // Calculamos pesos individuales y sumatorias
       const MB = 1024 * 1024;
       const tieneArchivoMuyPesado = pendingFiles.some(f => f.size > 45 * MB);
 
-      // Suma de los primeros 3 archivos en cola
       const primeros3 = pendingFiles.slice(0, 3);
       const peso3JuntosMB = primeros3.reduce((acc, f) => acc + f.size, 0) / MB;
 
-      // Suma de los primeros 2 archivos en cola
       const primeros2 = pendingFiles.slice(0, 2);
       const peso2JuntosMB = primeros2.reduce((acc, f) => acc + f.size, 0) / MB;
 
       if (tieneArchivoMuyPesado || peso2JuntosMB > 45) {
         return {
           maxPermitido: 1,
-          motivo: 'Archivos > 45 MB: Subida segura de 1 en 1'
+          motivo: 'Lote > 45 MB: Subida segura 1x'
         };
       }
 
       if (peso3JuntosMB > 45) {
         return {
           maxPermitido: 2,
-          motivo: 'Lote > 45 MB: Limitado a 2 simultaneos'
+          motivo: 'Lote > 45 MB: Limitado a 2x'
         };
       }
 
       return {
         maxPermitido: 3,
-        motivo: 'Turbo (3 simultaneos)'
+        motivo: 'Turbo (3x simultaneo)'
       };
     }
 
@@ -859,7 +960,6 @@
       const evalInfo = evaluarConcurrenciaPermitida();
       const maxPermitido = evalInfo.maxPermitido;
 
-      // Si la concurrencia actual supera la permitida, la reducimos automaticamente
       if (AppState.activeConcurrency > maxPermitido) {
         AppState.activeConcurrency = maxPermitido;
       }
@@ -869,15 +969,12 @@
       const btn3 = document.getElementById('btn-concurrency-3');
       const hint = document.getElementById('concurrency-status-hint');
 
-      // Boton 1
       aplicarEstiloBotonConcurrencia(btn1, AppState.activeConcurrency === 1, true);
 
-      // Boton 2
       const puede2 = maxPermitido >= 2;
       btn2.style.display = puede2 ? 'inline-block' : 'none';
       aplicarEstiloBotonConcurrencia(btn2, AppState.activeConcurrency === 2, puede2);
 
-      // Boton 3
       const puede3 = maxPermitido >= 3;
       btn3.style.display = puede3 ? 'inline-block' : 'none';
       aplicarEstiloBotonConcurrencia(btn3, AppState.activeConcurrency === 3, puede3);
@@ -890,14 +987,14 @@
     function aplicarEstiloBotonConcurrencia(btn, isActive, isAvailable) {
       if (!isAvailable) {
         btn.disabled = true;
-        btn.className = "px-2.5 py-1 rounded-lg text-[11px] font-mono font-bold opacity-30 cursor-not-allowed glass-btn text-slate-500";
+        btn.className = "px-2.5 py-1 rounded-xl text-[11px] font-mono font-bold opacity-30 cursor-not-allowed glass-btn text-slate-500";
         return;
       }
       btn.disabled = false;
       if (isActive) {
-        btn.className = "px-2.5 py-1 rounded-lg text-[11px] font-mono font-bold transition-all cursor-pointer glass-btn-primary shadow-sm";
+        btn.className = "px-2.5 py-1 rounded-xl text-[11px] font-mono font-bold transition-all cursor-pointer glass-btn-primary shadow-sm";
       } else {
-        btn.className = "px-2.5 py-1 rounded-lg text-[11px] font-mono font-bold transition-all cursor-pointer glass-btn text-slate-300 hover:text-white";
+        btn.className = "px-2.5 py-1 rounded-xl text-[11px] font-mono font-bold transition-all cursor-pointer glass-btn text-slate-300 hover:text-white";
       }
     }
 
@@ -905,15 +1002,17 @@
      * 4. CONTROL DE PESTAÑAS DEL PANEL MAESTRO
      */
     window.switchTab = function(tabNumber) {
-      for (let i = 1; i <= 3; i++) {
+      for (let i = 1; i <= 4; i++) {
         const btn = document.getElementById(`tab-btn-${i}`);
         const content = document.getElementById(`tab-content-${i}`);
+        if (!btn || !content) continue;
+
         if (i === tabNumber) {
-          btn.className = "py-2 px-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center space-x-1.5 cursor-pointer bg-white/10 text-white shadow-sm";
+          btn.className = "py-2 px-1 rounded-xl text-[11px] sm:text-xs font-bold transition-all flex items-center justify-center space-x-1 cursor-pointer bg-white/10 text-white shadow-sm";
           btn.style.border = "1px solid var(--theme-accent)";
           content.classList.remove('hidden');
         } else {
-          btn.className = "py-2 px-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white transition-all flex items-center justify-center space-x-1.5 cursor-pointer";
+          btn.className = "py-2 px-1 rounded-xl text-[11px] sm:text-xs font-medium text-slate-400 hover:text-white transition-all flex items-center justify-center space-x-1 cursor-pointer";
           btn.style.border = "1px solid transparent";
           content.classList.add('hidden');
         }
@@ -921,15 +1020,18 @@
     };
 
     /**
-     * 5. MODAL Y TECLADO NUMERICO PIN (0412 AUTO-DESBLOQUEO)
+     * 5. MODAL Y TECLADO NUMERICO PIN (0412 AUTO-DESBLOQUEO CON PUNTOS VERDES Y LIQUID BLUR)
      */
     window.openAdminModal = function(e) {
       if (e) { e.preventDefault(); e.stopPropagation(); }
       const modal = document.getElementById('modal-container');
       const vPin = document.getElementById('view-pin');
       const vConfig = document.getElementById('view-config');
-      if (vPin) vPin.classList.remove('hidden');
-      if (vConfig) vConfig.classList.add('hidden');
+
+      vPin.classList.remove('hidden', 'liquid-blur-exit');
+      vConfig.classList.add('hidden');
+      vConfig.classList.remove('liquid-blur-enter');
+
       window.clearPin();
       if (modal) modal.style.display = 'flex';
     };
@@ -949,7 +1051,7 @@
       if (AppState.pinEntered.length === 4) {
         const validPin = AppState.cachedPin || '0412';
         if (AppState.pinEntered === '0412' || AppState.pinEntered === validPin) {
-          unlockSettings();
+          triggerPinSuccessAndTransition();
         } else {
           showPinError();
         }
@@ -973,20 +1075,40 @@
     function updatePinDisplay() {
       const dots = document.querySelectorAll('#pin-dots [data-idx]');
       dots.forEach((dot, idx) => {
+        dot.classList.remove('pin-dot-success');
         if (idx < AppState.pinEntered.length) {
-          dot.className = "w-3.5 h-3.5 rounded-full border border-cyan-400 bg-cyan-400 shadow-[0_0_12px_rgba(0,242,254,0.7)] transition-all";
+          dot.className = "w-4 h-4 rounded-full border border-cyan-400 bg-cyan-400 shadow-[0_0_15px_rgba(0,242,254,0.85)] transition-all duration-300";
         } else {
-          dot.className = "w-3.5 h-3.5 rounded-full border border-white/30 transition-all";
+          dot.className = "w-4 h-4 rounded-full border border-white/30 transition-all duration-300";
         }
       });
     }
 
-    function unlockSettings() {
-      document.getElementById('view-pin').classList.add('hidden');
-      document.getElementById('view-config').classList.remove('hidden');
-      window.switchTab(1);
-      loadDriveFolders(AppState.config.folderId || 'root');
-      renderCollaboratorsAdminList();
+    /**
+     * TRANSICION LIQUID BLUR CON PUNTOS VERDES ESMERALDA
+     */
+    function triggerPinSuccessAndTransition() {
+      const dots = document.querySelectorAll('#pin-dots [data-idx]');
+      dots.forEach(dot => {
+        dot.className = "w-4 h-4 rounded-full pin-dot-success";
+      });
+
+      const vPin = document.getElementById('view-pin');
+      const vConfig = document.getElementById('view-config');
+
+      // Esperamos 350ms para que se aprecie el brillo verde y luego ejecutamos el dissolve blur
+      setTimeout(() => {
+        vPin.classList.add('liquid-blur-exit');
+
+        setTimeout(() => {
+          vPin.classList.add('hidden');
+          vConfig.classList.remove('hidden');
+          vConfig.classList.add('liquid-blur-enter');
+          window.switchTab(1);
+          loadDriveFolders(AppState.config.folderId || 'root');
+          renderCollaboratorsAdminList();
+        }, 320);
+      }, 350);
     }
 
     function showPinError() {
@@ -995,11 +1117,33 @@
       if (errEl) errEl.classList.remove('opacity-0');
       if (pinContainer) pinContainer.classList.add('animate-shake');
 
+      const dots = document.querySelectorAll('#pin-dots [data-idx]');
+      dots.forEach(dot => {
+        dot.className = "w-4 h-4 rounded-full border border-rose-500 bg-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.9)] transition-all";
+      });
+
       setTimeout(() => {
         if (pinContainer) pinContainer.classList.remove('animate-shake');
         window.clearPin();
       }, 650);
     }
+
+    // Soporte para teclado fisico
+    window.addEventListener('keydown', (e) => {
+      const modal = document.getElementById('modal-container');
+      if (!modal || modal.style.display === 'none') return;
+
+      const vPin = document.getElementById('view-pin');
+      if (vPin && !vPin.classList.contains('hidden')) {
+        if (/^[0-9]$/.test(e.key)) {
+          window.pressPin(e.key);
+        } else if (e.key === 'Backspace') {
+          window.backspacePin();
+        } else if (e.key === 'Escape') {
+          window.closeAdminModal();
+        }
+      }
+    });
 
     /**
      * 6. SUSPENSION DE SERVICIO
@@ -1043,7 +1187,6 @@
     /**
      * 7. GESTION DE LOGO PRINCIPAL Y COLABORADORES
      */
-    // Logo Principal
     window.handleAvatarSelected = function(input) {
       if (!input || !input.files || input.files.length === 0) return;
       const file = input.files[0];
@@ -1081,7 +1224,7 @@
       }
     }
 
-    // Gestion de Colaboradores
+    // Colaboradores
     window.showAddCollaboratorForm = function() {
       document.getElementById('add-collaborator-form').classList.remove('hidden');
       document.getElementById('new-collab-name').focus();
@@ -1174,7 +1317,7 @@
           <img src="${c.logoUrl}" alt="${c.nombre}" class="w-8 h-8 rounded-lg object-cover shrink-0 border border-white/10">
           <input type="text" value="${c.nombre}" onchange="window.updateCollaboratorName('${c.id}', this.value)" class="flex-1 px-2.5 py-1 rounded-lg glass-input text-xs text-white">
           <button type="button" onclick="window.deleteCollaborator('${c.id}')" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 cursor-pointer" title="Eliminar colaborador">
-            <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
           </button>
         </div>
       `).join('');
@@ -1212,7 +1355,7 @@
     }
 
     /**
-     * 8. CONTROL DE COLOR Y NEON EN TIEMPO REAL
+     * 8. CONTROL DE COLOR Y GLASS BLUR EN TIEMPO REAL
      */
     window.handleColorChange = function(hex) {
       if (!hex || !hex.startsWith('#') || hex.length < 7) return;
@@ -1231,6 +1374,14 @@
       }
     };
 
+    window.handleGlassBlurChange = function(val) {
+      const num = parseInt(val, 10) || 28;
+      document.getElementById('glass-blur-value').textContent = num + 'px';
+      document.documentElement.style.setProperty('--glass-blur', num + 'px');
+      AppState.config.glassBlur = num;
+      saveLocalConfig();
+    };
+
     function applyDynamicColor(hex) {
       const root = document.documentElement;
       root.style.setProperty('--theme-accent', hex);
@@ -1239,6 +1390,7 @@
       const rgb = hexToRgb(hex);
       if (rgb) {
         root.style.setProperty('--accent-glow', `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.45)`);
+        root.style.setProperty('--accent-glow-subtle', `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.18)`);
         
         const shiftedColor2 = rgbToHex(
           Math.min(255, Math.max(0, Math.round(rgb.r * 0.6 + 60))),
@@ -1270,7 +1422,7 @@
     }
 
     /**
-     * 9. SELECTOR Y GESTION DE ARCHIVOS (COLA Y PROGRESO)
+     * 9. SELECTOR Y GESTION DE ARCHIVOS (CON MINIATURAS EN VIVO)
      */
     window.handleFilesFromInput = function(input) {
       if (AppState.config.suspendido) {
@@ -1286,13 +1438,22 @@
       Array.from(fileList).forEach(file => {
         const exists = AppState.queue.some(i => i.name === file.name && i.size === file.size && i.lastModified === file.lastModified);
         if (!exists) {
+          const isVid = isVideoFile(file);
+          let previewUrl = null;
+          if (!isVid && file.type.startsWith('image/')) {
+            try {
+              previewUrl = URL.createObjectURL(file);
+            } catch (e) {}
+          }
+
           AppState.queue.push({
             id: 'file_' + Math.random().toString(36).substr(2, 9),
             file: file,
             name: file.name,
             size: file.size,
             lastModified: file.lastModified,
-            esVideo: isVideoFile(file),
+            esVideo: isVid,
+            previewUrl: previewUrl,
             status: 'pending',
             statusText: 'En espera',
             progress: 0,
@@ -1322,6 +1483,9 @@
     window.removeFileFromQueue = function(id) {
       const idx = AppState.queue.findIndex(i => i.id === id);
       if (idx !== -1) {
+        if (AppState.queue[idx].previewUrl) {
+          try { URL.revokeObjectURL(AppState.queue[idx].previewUrl); } catch (e) {}
+        }
         AppState.queue.splice(idx, 1);
         updateQueueUI();
         actualizarBotonesConcurrencia();
@@ -1330,6 +1494,11 @@
 
     window.clearCompletedFiles = function(e) {
       if (e) { e.preventDefault(); e.stopPropagation(); }
+      AppState.queue.forEach(i => {
+        if (i.status === 'completed' && i.previewUrl) {
+          try { URL.revokeObjectURL(i.previewUrl); } catch (err) {}
+        }
+      });
       AppState.queue = AppState.queue.filter(i => i.status !== 'completed');
       updateQueueUI();
       actualizarBotonesConcurrencia();
@@ -1361,7 +1530,6 @@
         btnUpload.disabled = true;
       }
 
-      // Progreso global
       const totalBytes = AppState.queue.reduce((acc, i) => acc + i.size, 0);
       const uploadedBytes = AppState.queue.reduce((acc, i) => acc + (i.status === 'completed' ? i.size : (i.uploadedBytes || 0)), 0);
       const percent = totalBytes > 0 ? Math.min(100, Math.round((uploadedBytes / totalBytes) * 100)) : 0;
@@ -1376,27 +1544,38 @@
     function renderFileList(container) {
       container.innerHTML = AppState.queue.map(item => `
         <div class="p-2.5 rounded-2xl glass-card flex flex-col space-y-1.5 border border-white/5">
-          <div class="flex items-center justify-between space-x-2">
-            <div class="flex items-center space-x-2 truncate">
-              ${item.esVideo ? `
-                <svg class="w-4 h-4 text-purple-400 shrink-0 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-              ` : `
-                <svg class="w-4 h-4 text-cyan-400 shrink-0 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-              `}
-              <span class="text-xs font-semibold text-slate-200 truncate">${item.name}</span>
-              <span class="text-[10px] text-slate-500 font-mono">(${formatBytes(item.size)})</span>
+          <div class="flex items-center justify-between space-x-2.5">
+            <div class="flex items-center space-x-2.5 truncate">
+              
+              <!-- MINIATURA O BADGE MULTIMEDIA -->
+              <div class="w-9 h-9 rounded-xl glass-card border border-white/10 shrink-0 overflow-hidden flex items-center justify-center">
+                ${item.previewUrl ? `
+                  <img src="${item.previewUrl}" alt="Thumb" class="w-full h-full object-cover">
+                ` : item.esVideo ? `
+                  <svg class="w-4 h-4 text-purple-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                ` : `
+                  <svg class="w-4 h-4 text-cyan-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                `}
+              </div>
+
+              <div class="truncate">
+                <span class="text-xs font-semibold text-slate-200 truncate block">${item.name}</span>
+                <span class="text-[10px] text-slate-500 font-mono block">${formatBytes(item.size)}</span>
+              </div>
             </div>
+
             <div class="flex items-center space-x-1.5 shrink-0">
-              <span class="px-2 py-0.5 rounded-full text-[10px] font-mono ${getStatusBadgeClass(item.status)}">
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono ${getStatusBadgeClass(item.status)}">
                 ${item.statusText || item.status}
               </span>
               ${item.status === 'pending' && !AppState.isUploading ? `
                 <button type="button" onclick="window.removeFileFromQueue('${item.id}')" class="p-1 text-slate-400 hover:text-rose-400 cursor-pointer">
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
               ` : ''}
             </div>
           </div>
+
           <div class="w-full h-1.5 rounded-full bg-white/5 overflow-hidden">
             <div class="h-full rounded-full neon-progress-fill" style="width: ${item.progress}%"></div>
           </div>
@@ -1415,7 +1594,7 @@
     }
 
     /**
-     * 10. MOTOR DE SUBIDA CONCURRENTE INTELIGENTE (1, 2 o 3 simultaneos)
+     * 10. MOTOR DE SUBIDA CONCURRENTE CON SPEEDOMETER EN TIEMPO REAL
      */
     window.startUploadProcess = async function(e) {
       if (e) { e.preventDefault(); e.stopPropagation(); }
@@ -1425,10 +1604,12 @@
       if (pending.length === 0) return;
 
       AppState.isUploading = true;
+      AppState.uploadStartTime = Date.now();
+      AppState.lastBytesCalculated = 0;
+
       const btn = document.getElementById('btn-start-upload');
       btn.disabled = true;
 
-      // Determinamos concurrencia efectiva segun peso
       const evalInfo = evaluarConcurrenciaPermitida();
       const concurrency = Math.min(AppState.activeConcurrency, evalInfo.maxPermitido);
 
@@ -1440,7 +1621,7 @@
         <span>Subiendo (${concurrency} en simult&aacute;neo)...</span>
       `;
 
-      // Worker Pool paralelo
+      // Worker pool concurrente
       let currentIndex = 0;
       async function uploadWorker() {
         while (currentIndex < AppState.queue.length && AppState.isUploading) {
@@ -1451,7 +1632,6 @@
         }
       }
 
-      // Lanzamos workers paralelos segun concurrencia
       const workers = [];
       for (let w = 0; w < concurrency; w++) {
         workers.push(uploadWorker());
@@ -1461,12 +1641,14 @@
 
       AppState.isUploading = false;
       btn.disabled = false;
+      document.getElementById('global-speed-text').textContent = 'Finalizado';
+
       const listos = AppState.queue.filter(i => i.status === 'completed').length;
       btn.innerHTML = `<span>${listos} Archivos Subidos con &Eacute;xito</span>`;
 
       setTimeout(() => {
         btn.innerHTML = `
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
           <span id="btn-upload-label">${AppState.config.tituloBoton || 'Comenzar Subida a Drive'}</span>
         `;
         updateQueueUI();
@@ -1481,7 +1663,7 @@
       updateQueueUI();
 
       try {
-        // PASO A: Solicitar credenciales y carpeta al backend
+        // PASO A: Solicitar credenciales
         const prepRes = await llamarBackend({
           accion: "prepararSubida",
           esVideo: item.esVideo
@@ -1495,7 +1677,7 @@
         item.statusText = 'Creando sesion Drive...';
         updateQueueUI();
 
-        // PASO B: Iniciar sesion resumible en Drive API v3
+        // PASO B: Iniciar sesion resumible en Google Drive API v3
         let uploadUrl = null;
         try {
           const sessionRes = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable", {
@@ -1526,11 +1708,11 @@
           throw new Error("No se recibio Location de subida de Google Drive.");
         }
 
-        // PASO C: Subir archivo con PUT y progreso fluido
+        // PASO C: Subir archivo con PUT y calculo de velocidad
         item.statusText = 'Transfiriendo...';
         const fileId = await transferirArchivoPUT(item, uploadUrl);
 
-        // PASO D: Registrar archivo subido en Google Sheets
+        // PASO D: Registrar en Google Sheets
         item.statusText = 'Registrando...';
         await llamarBackend({
           accion: "registrarArchivo",
@@ -1590,11 +1772,29 @@
         xhr.open("PUT", uploadUrl, true);
         xhr.setRequestHeader("Content-Type", item.file.type || "application/octet-stream");
 
+        let lastLoaded = 0;
+        let lastTime = Date.now();
+
         xhr.upload.onprogress = function(e) {
           if (e.lengthComputable) {
             item.uploadedBytes = e.loaded;
             item.progress = Math.min(99, Math.round((e.loaded / item.size) * 100));
             item.statusText = `${item.progress}% (${formatBytes(e.loaded)})`;
+
+            // Calculo de velocidad
+            const now = Date.now();
+            const timeDiff = (now - lastTime) / 1000;
+            if (timeDiff > 0.5) {
+              const bytesDiff = e.loaded - lastLoaded;
+              const speedBytesPerSec = bytesDiff / timeDiff;
+              const speedEl = document.getElementById('global-speed-text');
+              if (speedEl && speedBytesPerSec > 0) {
+                speedEl.textContent = `${formatBytes(speedBytesPerSec)}/s`;
+              }
+              lastLoaded = e.loaded;
+              lastTime = now;
+            }
+
             updateQueueUI();
           }
         };
@@ -1650,7 +1850,7 @@
           }
 
           if (!data.carpetas || data.carpetas.length === 0) {
-            listEl.innerHTML = `<div class="p-3 text-center text-xs text-slate-500">No hay subcarpetas aqu&iacute;.</div>`;
+            listEl.innerHTML = `<div class="p-3 text-center text-xs text-slate-500 font-mono">No hay subcarpetas aqu&iacute;.</div>`;
             return;
           }
 
@@ -1661,11 +1861,11 @@
             </div>
           `).join('');
         } else {
-          listEl.innerHTML = `<div class="p-3 text-center text-xs text-rose-400">Error al cargar carpetas.</div>`;
+          listEl.innerHTML = `<div class="p-3 text-center text-xs text-rose-400 font-mono">Error al cargar carpetas.</div>`;
         }
       } catch (err) {
         if (loading) loading.classList.add('hidden');
-        listEl.innerHTML = `<div class="p-3 text-center text-xs text-rose-400">${err.message}</div>`;
+        listEl.innerHTML = `<div class="p-3 text-center text-xs text-rose-400 font-mono">${err.message}</div>`;
       }
     }
 
@@ -1738,7 +1938,38 @@
     };
 
     /**
-     * 12. GUARDAR CONFIGURACION COMPLETA
+     * 12. HISTORIAL DE SUBIDAS DESDE GOOGLE SHEETS
+     */
+    window.cargarHistorialRegistros = async function() {
+      const container = document.getElementById('historial-registros-list');
+      container.innerHTML = `<div class="p-3 text-center text-xs text-slate-400 font-mono">Cargando registros desde Google Sheets...</div>`;
+
+      try {
+        const res = await llamarBackend({ accion: "obtenerRegistros" });
+        if (res && res.exito && res.registros && res.registros.length > 0) {
+          container.innerHTML = res.registros.map(r => `
+            <div class="p-2 rounded-xl bg-black/40 border border-white/5 flex items-center justify-between text-[11px] font-mono">
+              <div class="truncate pr-2">
+                <span class="text-white font-semibold block truncate">${r.nombre}</span>
+                <span class="text-slate-500 text-[10px] block">${r.fechaHora} &bull; ${r.tamanoMB} &bull; ${r.tipo}</span>
+              </div>
+              ${r.enlaceDrive ? `
+                <a href="${r.enlaceDrive}" target="_blank" rel="noopener noreferrer" class="px-2 py-1 rounded-lg glass-btn text-cyan-300 hover:text-white shrink-0 text-[10px]">
+                  Ver en Drive
+                </a>
+              ` : ''}
+            </div>
+          `).join('');
+        } else {
+          container.innerHTML = `<div class="p-3 text-center text-xs text-slate-500 font-mono">No hay archivos registrados a&uacute;n.</div>`;
+        }
+      } catch (e) {
+        container.innerHTML = `<div class="p-3 text-center text-xs text-rose-400 font-mono">Error al consultar: ${e.message}</div>`;
+      }
+    };
+
+    /**
+     * 13. GUARDAR CONFIGURACION COMPLETA
      */
     window.saveSettings = async function(e) {
       if (e) { e.preventDefault(); e.stopPropagation(); }
@@ -1752,7 +1983,7 @@
       let avatarFinalUrl = AppState.config.avatarUrl || '';
       if (AppState.pendingAvatarFile) {
         try {
-          if (statusEl) statusEl.textContent = 'Subiendo logo principal a Drive...';
+          if (statusEl) statusEl.textContent = 'Subiendo logo a Drive...';
           const file = AppState.pendingAvatarFile;
           const prepRes = await llamarBackend({
             accion: "prepararSubida",
@@ -1772,7 +2003,7 @@
             }
           }
         } catch (eAvatar) {
-          console.warn("Aviso en subida de logo principal:", eAvatar.message);
+          console.warn("Aviso en logo:", eAvatar.message);
         }
       }
 
@@ -1781,6 +2012,7 @@
       const isSuspended = document.getElementById('toggle-suspension').checked;
       const suspMsg = document.getElementById('input-suspension-msg').value.trim() || 'Servicio suspendido temporalmente por mantenimiento';
       const newPin = document.getElementById('input-admin-pin').value.trim() || AppState.cachedPin || '0412';
+      const glassBlurVal = parseInt(document.getElementById('glass-blur-slider').value, 10) || 28;
 
       const payload = {
         accion: "guardarConfigCompleta",
@@ -1797,17 +2029,18 @@
         carpetaAvataresNombre: AppState.config.carpetaAvataresNombre || 'Mi Unidad',
         concurrenciaMax: AppState.activeConcurrency || 3,
         colaboradores: AppState.config.colaboradores || [],
-        modoColaboradores: AppState.config.modoColaboradores || 'solo_logos'
+        modoColaboradores: AppState.config.modoColaboradores || 'solo_logos',
+        glassBlur: glassBlurVal
       };
 
       try {
         const res = await llamarBackend(payload);
         btn.disabled = false;
-        btn.textContent = 'Guardar Configuraci\u00F3n Completa';
+        btn.textContent = 'Guardar Todo';
 
         if (res && res.exito) {
           if (statusEl) {
-            statusEl.textContent = 'Guardado con \u00E9xito';
+            statusEl.textContent = 'Guardado con exito';
             setTimeout(() => { statusEl.textContent = ''; }, 2500);
           }
           AppState.config = Object.assign(AppState.config, payload);
@@ -1821,8 +2054,8 @@
         }
       } catch (err) {
         btn.disabled = false;
-        btn.textContent = 'Guardar Configuraci\u00F3n Completa';
-        if (statusEl) statusEl.textContent = 'Guardado localmente (Offline)';
+        btn.textContent = 'Guardar Todo';
+        if (statusEl) statusEl.textContent = 'Guardado en cache local';
         AppState.config = Object.assign(AppState.config, payload);
         saveLocalConfig();
         applyConfigToUI();
@@ -1831,13 +2064,13 @@
 
     function saveLocalConfig() {
       try {
-        localStorage.setItem('solicitador_pro_config_v2', JSON.stringify(AppState.config));
+        localStorage.setItem('solicitador_pro_v3_config', JSON.stringify(AppState.config));
       } catch (e) {}
     }
 
     function loadLocalConfig() {
       try {
-        const saved = localStorage.getItem('solicitador_pro_config_v2');
+        const saved = localStorage.getItem('solicitador_pro_v3_config');
         if (saved) {
           const parsed = JSON.parse(saved);
           AppState.config = Object.assign(AppState.config, parsed);
@@ -1867,11 +2100,16 @@
         document.getElementById('theme-color-hex').value = cfg.themeColor;
       }
 
+      if (cfg.glassBlur) {
+        document.getElementById('glass-blur-slider').value = cfg.glassBlur;
+        document.getElementById('glass-blur-value').textContent = cfg.glassBlur + 'px';
+        document.documentElement.style.setProperty('--glass-blur', cfg.glassBlur + 'px');
+      }
+
       if (cfg.avatarUrl) {
         setAvatarVisuals(cfg.avatarUrl);
       }
 
-      // Modo colaboradores
       const collabLabel = document.getElementById('collab-mode-label');
       const collabBtn = document.getElementById('btn-toggle-collab-mode');
       if (collabLabel && collabBtn) {
@@ -1891,13 +2129,13 @@
     }
 
     /**
-     * 13. INICIALIZACION
+     * 14. INICIALIZACION
      */
     async function init() {
       loadLocalConfig();
       applyConfigToUI();
 
-      // Drag and Drop
+      // Drag and drop fluido
       const dropzone = document.getElementById('dropzone');
       ['dragenter', 'dragover'].forEach(n => {
         dropzone.addEventListener(n, (e) => {
@@ -1930,7 +2168,7 @@
           applyConfigToUI();
         }
       } catch (err) {
-        console.warn("Aviso al sincronizar con Apps Script:", err.message);
+        console.warn("Aviso de sincronizacion:", err.message);
       }
     }
 

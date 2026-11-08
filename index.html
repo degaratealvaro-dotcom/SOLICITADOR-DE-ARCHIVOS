@@ -2,16 +2,16 @@
 <html lang="es" class="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-  <title id="page-title">SOLICITADOR DE ARCHIVOS PRO</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Portal de Carga de Archivos Pro</title>
+  <meta name="description" content="Solicitador y portal de carga directa de fotos y videos a Google Drive sin limites de tamano">
 
-  <!-- TAILWIND CSS CDN -->
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- GOOGLE FONTS -->
+  <!-- Google Fonts: Inter & Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
 
   <script>
     tailwind.config = {
@@ -19,34 +19,32 @@
       theme: {
         extend: {
           fontFamily: {
-            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-            display: ['"Space Grotesk"', 'sans-serif'],
-            mono: ['"JetBrains Mono"', 'monospace']
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            display: ['Outfit', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
           }
         }
       }
-    }
+    };
   </script>
 
   <style>
     :root {
-      --theme-accent: #00f2fe;
-      --theme-color-1: #00f2fe;
-      --theme-color-2: #8b5cf6;
-      --theme-color-3: #ec4899;
-      --accent-glow: rgba(0, 242, 254, 0.42);
-      --accent-glow-subtle: rgba(0, 242, 254, 0.18);
-      --glass-blur: 28px;
       --bg-dark: #07070c;
+      --theme-accent: #00f2fe;
+      --theme-color-2: #4facfe;
+      --theme-color-1: #00f2fe;
+      --theme-color-3: #a855f7;
+      --accent-glow: rgba(0, 242, 254, 0.45);
+      --glass-blur: 28px;
+      --glass-bg-opacity: 0.60;
     }
 
     * {
-      -webkit-tap-highlight-color: transparent;
       box-sizing: border-box;
-      outline: none !important;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    /* CERO BARRAS DE SCROLL VISIBLES */
     html, body, div, p, span, main, section, header, footer, ul, li {
       scrollbar-width: none !important;
       -ms-overflow-style: none !important;
@@ -66,9 +64,15 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
+    /* CONTENEDOR 3D PARALLAX TILT */
+    #main-app-container {
+      transform-style: preserve-3d;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
     /* LIQUID GLASS ULTRA REFINADO */
     .glass-panel {
-      background: rgba(13, 19, 36, 0.62);
+      background: rgba(13, 19, 36, var(--glass-bg-opacity, 0.60));
       backdrop-filter: blur(var(--glass-blur, 28px)) saturate(190%);
       -webkit-backdrop-filter: blur(var(--glass-blur, 28px)) saturate(190%);
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -133,7 +137,7 @@
       transform: translateY(-1.5px) scale(1.01);
     }
 
-    /* ORBES FLUIDOS ANIMADOS */
+    /* ORBES FLUIDOS ANIMADOS MULTI-CAPA */
     @keyframes orb-float-1 {
       0%, 100% { transform: translate(0px, 0px) scale(1); }
       33% { transform: translate(70px, 50px) scale(1.14); }
@@ -153,11 +157,27 @@
     .animate-orb-2 { animation: orb-float-2 26s ease-in-out infinite; }
     .animate-orb-3 { animation: orb-float-3 20s ease-in-out infinite; }
 
-    /* NEON PROGRESS FILL */
+    /* MOLTEN FLOW EN BARRA DE PROGRESO */
+    @keyframes molten-flow {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
     .neon-progress-fill {
-      background: linear-gradient(90deg, var(--theme-accent), var(--theme-color-2));
+      background: linear-gradient(90deg, var(--theme-accent) 0%, var(--theme-color-2) 50%, var(--theme-accent) 100%);
+      background-size: 200% 100%;
+      animation: molten-flow 2.5s linear infinite;
       box-shadow: 0 0 20px var(--accent-glow);
       transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* ENTRADA CON EFECTO RESORTE PARA ARCHIVOS DE LA COLA */
+    @keyframes item-spring-in {
+      0% { opacity: 0; transform: translateY(16px) scale(0.96); }
+      60% { opacity: 1; transform: translateY(-2px) scale(1.01); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .queue-item-anim {
+      animation: item-spring-in 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) both;
     }
 
     /* DRAG HIGHLIGHT */
@@ -180,7 +200,7 @@
     /* PULSO ESMERALDA DE EXITO */
     @keyframes pulse-emerald {
       0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-      50% { transform: scale(1.15); box-shadow: 0 0 25px 6px rgba(16, 185, 129, 0.9); }
+      50% { transform: scale(1.18); box-shadow: 0 0 25px 6px rgba(16, 185, 129, 0.9); }
       100% { transform: scale(1); box-shadow: 0 0 15px 2px rgba(16, 185, 129, 0.6); }
     }
     .pin-dot-success {
@@ -204,6 +224,11 @@
       0% { filter: blur(24px); opacity: 0; transform: scale(1.05); }
       100% { filter: blur(0px); opacity: 1; transform: scale(1); }
     }
+
+    /* TAMAÑOS DINAMICOS PARA LOGO PRINCIPAL */
+    .logo-size-normal { width: 44px; height: 44px; }
+    .logo-size-destacado { width: 58px; height: 58px; }
+    .logo-size-gigante { width: 72px; height: 72px; }
   </style>
 </head>
 <body class="relative flex flex-col justify-between selection:bg-cyan-500/30 selection:text-cyan-200">
@@ -212,15 +237,15 @@
   <!-- ORBES DE LUZ ANIMADOS (LIQUID GLASS BACKDROP BLUR)             -->
   <!-- ============================================================== -->
   <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
-    <div id="orb-1" class="absolute w-[540px] h-[540px] -top-28 -left-28 rounded-full opacity-35 blur-[105px] animate-orb-1" style="background: radial-gradient(circle, var(--theme-color-1) 0%, transparent 70%);"></div>
-    <div id="orb-2" class="absolute w-[580px] h-[580px] top-1/2 -right-36 rounded-full opacity-30 blur-[120px] animate-orb-2" style="background: radial-gradient(circle, var(--theme-color-2) 0%, transparent 70%);"></div>
-    <div id="orb-3" class="absolute w-[440px] h-[440px] -bottom-24 left-1/3 rounded-full opacity-25 blur-[100px] animate-orb-3" style="background: radial-gradient(circle, var(--theme-color-3) 0%, transparent 70%);"></div>
+    <div id="orb-1" class="absolute w-[560px] h-[560px] -top-28 -left-28 rounded-full opacity-35 blur-[110px] animate-orb-1" style="background: radial-gradient(circle, var(--theme-color-1) 0%, transparent 70%);"></div>
+    <div id="orb-2" class="absolute w-[600px] h-[600px] top-1/2 -right-36 rounded-full opacity-30 blur-[125px] animate-orb-2" style="background: radial-gradient(circle, var(--theme-color-2) 0%, transparent 70%);"></div>
+    <div id="orb-3" class="absolute w-[460px] h-[460px] -bottom-24 left-1/3 rounded-full opacity-25 blur-[105px] animate-orb-3" style="background: radial-gradient(circle, var(--theme-color-3) 0%, transparent 70%);"></div>
   </div>
 
   <!-- ============================================================== -->
-  <!-- CONTENEDOR PRINCIPAL FLUIDO                                    -->
+  <!-- CONTENEDOR PRINCIPAL FLUIDO CON INCLINACION 3D INTERACTIVA     -->
   <!-- ============================================================== -->
-  <div class="relative z-10 w-full max-w-5xl mx-auto p-3 sm:p-5 md:p-6 flex flex-col min-h-screen justify-between space-y-4">
+  <div id="main-app-container" class="relative z-10 w-full max-w-5xl mx-auto p-3 sm:p-5 md:p-6 flex flex-col min-h-screen justify-between space-y-4">
 
     <!-- HEADER: LOGO PRINCIPAL + TITULOS + TUERCA FUTURISTA SVG -->
     <header class="glass-panel rounded-3xl p-4 sm:p-5 flex items-center justify-between shadow-2xl relative overflow-hidden">
@@ -229,7 +254,7 @@
       <div class="flex items-center space-x-3.5 sm:space-x-4 min-w-0">
         
         <!-- Badge Logo Principal (Tu Marca) -->
-        <div id="header-avatar-container" class="relative shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-2xl glass-card p-1 border border-white/10 flex items-center justify-center overflow-hidden shadow-lg" style="box-shadow: 0 0 25px var(--accent-glow);">
+        <div id="header-avatar-container" class="relative shrink-0 logo-size-destacado rounded-2xl glass-card p-1 border border-white/10 flex items-center justify-center overflow-hidden shadow-lg transition-all duration-300" style="box-shadow: 0 0 25px var(--accent-glow);">
           <img id="header-avatar-img" src="" alt="Logo Principal" class="hidden w-full h-full object-cover rounded-xl">
           <div id="header-avatar-svg" class="w-full h-full flex items-center justify-center text-slate-300">
             <!-- SVG DIAMANTE / EMBLEMA FUTURISTA -->
@@ -267,7 +292,7 @@
     </header>
 
     <!-- ============================================================== -->
-    <!-- CUERPO PRINCIPAL: DROPZONE Y COLA CONCURRENTE INTELIGENTE      -->
+    <!-- CUERPO PRINCIPAL: DROPZONE Y COLA CONCURRENTE HASTA 6X         -->
     <!-- ============================================================== -->
     <main class="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1 relative">
 
@@ -347,7 +372,7 @@
         </div>
       </div>
 
-      <!-- COLUMNA DERECHA: COLA DE SUBIDA Y SELECTOR DE CONCURRENCIA (7 cols) -->
+      <!-- COLUMNA DERECHA: COLA DE SUBIDA Y SELECTOR DE CONCURRENCIA HASTA 6X (7 cols) -->
       <div class="lg:col-span-7 flex flex-col space-y-3">
         <div class="glass-panel rounded-3xl p-4 sm:p-5 flex-1 flex flex-col justify-between shadow-2xl relative overflow-hidden min-h-[380px]">
           
@@ -368,7 +393,7 @@
               </div>
             </div>
 
-            <!-- SELECTOR DINAMICO DE SUBIDA SIMULTANEA (1, 2 o 3 archivos) -->
+            <!-- SELECTOR DINAMICO DE SUBIDA SIMULTANEA (1x a 6x Hipervelocidad) -->
             <div class="flex flex-wrap items-center justify-between gap-2 p-2.5 rounded-2xl bg-black/40 border border-white/5 text-xs">
               <div class="flex items-center space-x-1.5 text-slate-300">
                 <!-- SVG RAYO VELOCIDAD -->
@@ -376,27 +401,15 @@
                 <span class="font-medium text-[11px]">Subida simult&aacute;nea:</span>
               </div>
 
-              <!-- Botones de Concurrencia Inteligentes -->
-              <div class="flex items-center space-x-1.5" id="concurrency-selector-group">
-                <!-- Boton 1 -->
-                <button type="button" id="btn-concurrency-1" onclick="window.setConcurrency(1)" class="px-2.5 py-1 rounded-xl text-[11px] font-mono font-bold transition-all cursor-pointer glass-btn text-white" title="Subir de 1 en 1 (Seguro)">
-                  1x
-                </button>
-                
-                <!-- Boton 2 -->
-                <button type="button" id="btn-concurrency-2" onclick="window.setConcurrency(2)" class="px-2.5 py-1 rounded-xl text-[11px] font-mono font-bold transition-all cursor-pointer glass-btn text-white" title="Subir 2 en paralelo">
-                  2x
-                </button>
-
-                <!-- Boton 3 -->
-                <button type="button" id="btn-concurrency-3" onclick="window.setConcurrency(3)" class="px-2.5 py-1 rounded-xl text-[11px] font-mono font-bold transition-all cursor-pointer glass-btn text-white" title="Subir 3 en paralelo (Turbo)">
-                  3x Turbo
-                </button>
-
-                <!-- Estado del selector -->
-                <span id="concurrency-status-hint" class="text-[10px] text-slate-400 font-mono ml-1 hidden sm:inline">
-                  (Optimo)
-                </span>
+              <!-- Botones de Concurrencia Inteligentes (1 a 6) -->
+              <div class="flex flex-wrap items-center gap-1 sm:gap-1.5" id="concurrency-selector-group">
+                <button type="button" id="btn-concurrency-1" onclick="window.setConcurrency(1)" class="px-2 py-1 rounded-xl text-[10px] sm:text-[11px] font-mono font-bold transition-all cursor-pointer glass-btn text-white" title="Subir de 1 en 1 (Estable / Archivos muy pesados)">1x</button>
+                <button type="button" id="btn-concurrency-2" onclick="window.setConcurrency(2)" class="px-2 py-1 rounded-xl text-[10px] sm:text-[11px] font-mono font-bold transition-all cursor-pointer glass-btn text-white" title="Subir 2 en paralelo (R&aacute;pido)">2x</button>
+                <button type="button" id="btn-concurrency-3" onclick="window.setConcurrency(3)" class="px-2 py-1 rounded-xl text-[10px] sm:text-[11px] font-mono font-bold transition-all cursor-pointer glass-btn text-white" title="Subir 3 en paralelo (Turbo)">3x</button>
+                <button type="button" id="btn-concurrency-4" onclick="window.setConcurrency(4)" class="px-2 py-1 rounded-xl text-[10px] sm:text-[11px] font-mono font-bold transition-all cursor-pointer glass-btn text-white" title="Subir 4 en paralelo (Ultra)">4x</button>
+                <button type="button" id="btn-concurrency-5" onclick="window.setConcurrency(5)" class="px-2 py-1 rounded-xl text-[10px] sm:text-[11px] font-mono font-bold transition-all cursor-pointer glass-btn text-white" title="Subir 5 en paralelo (Fuerza Bruta)">5x</button>
+                <button type="button" id="btn-concurrency-6" onclick="window.setConcurrency(6)" class="px-2.5 py-1 rounded-xl text-[10px] sm:text-[11px] font-mono font-bold transition-all cursor-pointer glass-btn text-white" title="Subir 6 en paralelo (Hipervelocidad)">6x Hyper</button>
+                <span id="concurrency-status-hint" class="text-[10px] text-slate-400 font-mono ml-1 hidden sm:inline">(Optimo)</span>
               </div>
             </div>
           </div>
@@ -410,7 +423,7 @@
             <p class="text-[11px] text-slate-500 mt-0.5">Selecciona o arrastra fotos y videos para iniciar la subida.</p>
           </div>
 
-          <!-- Lista de Archivos en Cola (Con Miniaturas en Vivo) -->
+          <!-- Lista de Archivos en Cola (Con Miniaturas en Vivo y Efecto Resorte) -->
           <div id="file-list-container" class="hidden flex-1 overflow-y-auto space-y-2 my-2.5 max-h-[290px] pr-1"></div>
 
           <!-- Barra de Progreso, Speedometer y Acciones Inferiores -->
@@ -418,41 +431,19 @@
             <div class="space-y-1.5">
               <div class="flex items-center justify-between text-[11px] font-mono">
                 <span id="global-progress-text" class="text-slate-300 font-semibold">Progreso Total: 0%</span>
-                <div class="flex items-center space-x-2">
-                  <span id="global-speed-text" class="text-cyan-400 hidden sm:inline">0 MB/s</span>
-                  <span id="global-size-text" class="text-slate-500">0 MB / 0 MB</span>
-                </div>
+                <span id="global-speed-text" class="text-cyan-400 font-bold">0.0 MB/s</span>
               </div>
-              <div class="w-full h-2.5 rounded-full bg-white/5 overflow-hidden p-0.5 border border-white/10">
-                <div id="global-progress-bar" class="h-full rounded-full neon-progress-fill" style="width: 0%"></div>
+              <div class="w-full h-2 rounded-full bg-slate-900/90 overflow-hidden border border-white/10 relative">
+                <div id="global-progress-bar" class="h-full rounded-full neon-progress-fill" style="width: 0%;"></div>
               </div>
             </div>
 
-            <!-- Boton Grande de Subida a Google Drive -->
-            <button type="button" id="btn-start-upload" onclick="window.startUploadProcess(event)" disabled class="w-full py-3.5 rounded-2xl glass-btn-primary font-bold text-xs sm:text-sm tracking-wide flex items-center justify-center space-x-2 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer active:scale-98">
+            <!-- Boton Principal de Subida -->
+            <button type="button" id="btn-start-upload" onclick="window.startSequentialUpload(event)" class="w-full py-3.5 px-6 rounded-2xl glass-btn-primary text-sm font-extrabold flex items-center justify-center space-x-2 cursor-pointer shadow-lg active:scale-98">
+              <!-- SVG UPLOAD CLOUD -->
               <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
               <span id="btn-upload-label">Comenzar Subida a Drive</span>
             </button>
-
-            <!-- Estadisticas en badges -->
-            <div class="grid grid-cols-4 gap-1.5 text-center font-mono text-[10px]">
-              <div class="glass-card rounded-xl p-1.5 border border-white/5">
-                <span class="text-slate-500 block uppercase">Total</span>
-                <span id="stat-total" class="font-bold text-slate-200">0</span>
-              </div>
-              <div class="glass-card rounded-xl p-1.5 border border-white/5">
-                <span class="text-slate-500 block uppercase">En espera</span>
-                <span id="stat-pending" class="font-bold text-amber-400">0</span>
-              </div>
-              <div class="glass-card rounded-xl p-1.5 border border-white/5">
-                <span class="text-slate-500 block uppercase">Subiendo</span>
-                <span id="stat-uploading" class="font-bold text-cyan-400">0</span>
-              </div>
-              <div class="glass-card rounded-xl p-1.5 border border-white/5">
-                <span class="text-slate-500 block uppercase">Listos</span>
-                <span id="stat-completed" class="font-bold text-emerald-400">0</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -498,75 +489,77 @@
           <p class="text-xs text-slate-400 mt-0.5">Ingresa tu c&oacute;digo PIN de 4 d&iacute;gitos</p>
         </div>
 
-        <!-- 4 PUNTOS INDICADORES CON BRILLO NEON -->
-        <div class="flex items-center space-x-4 my-1" id="pin-dots">
-          <div data-idx="0" class="w-4 h-4 rounded-full border border-white/30 transition-all duration-300"></div>
-          <div data-idx="1" class="w-4 h-4 rounded-full border border-white/30 transition-all duration-300"></div>
-          <div data-idx="2" class="w-4 h-4 rounded-full border border-white/30 transition-all duration-300"></div>
-          <div data-idx="3" class="w-4 h-4 rounded-full border border-white/30 transition-all duration-300"></div>
+        <!-- 4 PUNTOS INDICADORES DE PIN -->
+        <div id="pin-dots-container" class="flex items-center space-x-3.5 my-2">
+          <div id="pin-dot-0" class="w-4 h-4 rounded-full border-2 border-slate-600 bg-black/40 transition-all duration-300"></div>
+          <div id="pin-dot-1" class="w-4 h-4 rounded-full border-2 border-slate-600 bg-black/40 transition-all duration-300"></div>
+          <div id="pin-dot-2" class="w-4 h-4 rounded-full border-2 border-slate-600 bg-black/40 transition-all duration-300"></div>
+          <div id="pin-dot-3" class="w-4 h-4 rounded-full border-2 border-slate-600 bg-black/40 transition-all duration-300"></div>
         </div>
 
-        <div id="pin-error-msg" class="text-xs font-semibold text-rose-400 opacity-0 transition-opacity">
-          PIN incorrecto. Int&eacute;ntalo de nuevo.
-        </div>
-
-        <!-- Teclado Numerico Tactil Liquid Glass -->
-        <div class="grid grid-cols-3 gap-2 w-full max-w-xs">
-          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-90" onclick="window.pressPin('1')">1</button>
-          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-90" onclick="window.pressPin('2')">2</button>
-          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-90" onclick="window.pressPin('3')">3</button>
-          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-90" onclick="window.pressPin('4')">4</button>
-          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-90" onclick="window.pressPin('5')">5</button>
-          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-90" onclick="window.pressPin('6')">6</button>
-          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-90" onclick="window.pressPin('7')">7</button>
-          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-90" onclick="window.pressPin('8')">8</button>
-          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-90" onclick="window.pressPin('9')">9</button>
-          <button type="button" class="h-12 rounded-2xl glass-btn text-xs font-semibold text-slate-400 hover:text-white cursor-pointer active:scale-90" onclick="window.clearPin()">C</button>
-          <button type="button" class="h-12 rounded-2xl glass-btn text-lg font-bold font-mono text-white cursor-pointer active:scale-90" onclick="window.pressPin('0')">0</button>
-          <button type="button" class="h-12 rounded-2xl glass-btn text-sm font-semibold text-slate-400 hover:text-white cursor-pointer flex items-center justify-center active:scale-90" onclick="window.backspacePin()">
-            <svg class="w-5 h-5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414 6.414a2 2 0 001.414.586H19a2 2 0 002-2V7a2 2 0 00-2-2h-7.172a2 2 0 00-1.414.586L3 12z"/></svg>
+        <!-- TECLADO NUMERICO EN PANTALLA -->
+        <div class="grid grid-cols-3 gap-2.5 w-60 max-w-full">
+          <button type="button" onclick="window.enterPinDigit('1')" class="h-12 rounded-2xl glass-btn font-mono text-base font-bold text-white active:scale-90 transition-transform cursor-pointer">1</button>
+          <button type="button" onclick="window.enterPinDigit('2')" class="h-12 rounded-2xl glass-btn font-mono text-base font-bold text-white active:scale-90 transition-transform cursor-pointer">2</button>
+          <button type="button" onclick="window.enterPinDigit('3')" class="h-12 rounded-2xl glass-btn font-mono text-base font-bold text-white active:scale-90 transition-transform cursor-pointer">3</button>
+          <button type="button" onclick="window.enterPinDigit('4')" class="h-12 rounded-2xl glass-btn font-mono text-base font-bold text-white active:scale-90 transition-transform cursor-pointer">4</button>
+          <button type="button" onclick="window.enterPinDigit('5')" class="h-12 rounded-2xl glass-btn font-mono text-base font-bold text-white active:scale-90 transition-transform cursor-pointer">5</button>
+          <button type="button" onclick="window.enterPinDigit('6')" class="h-12 rounded-2xl glass-btn font-mono text-base font-bold text-white active:scale-90 transition-transform cursor-pointer">6</button>
+          <button type="button" onclick="window.enterPinDigit('7')" class="h-12 rounded-2xl glass-btn font-mono text-base font-bold text-white active:scale-90 transition-transform cursor-pointer">7</button>
+          <button type="button" onclick="window.enterPinDigit('8')" class="h-12 rounded-2xl glass-btn font-mono text-base font-bold text-white active:scale-90 transition-transform cursor-pointer">8</button>
+          <button type="button" onclick="window.enterPinDigit('9')" class="h-12 rounded-2xl glass-btn font-mono text-base font-bold text-white active:scale-90 transition-transform cursor-pointer">9</button>
+          <button type="button" onclick="window.clearPinDigits()" class="h-12 rounded-2xl glass-btn font-mono text-xs font-semibold text-slate-400 hover:text-rose-400 active:scale-90 transition-transform cursor-pointer">C</button>
+          <button type="button" onclick="window.enterPinDigit('0')" class="h-12 rounded-2xl glass-btn font-mono text-base font-bold text-white active:scale-90 transition-transform cursor-pointer">0</button>
+          <button type="button" onclick="window.deletePinDigit()" class="h-12 rounded-2xl glass-btn text-slate-400 hover:text-white flex items-center justify-center active:scale-90 transition-transform cursor-pointer">
+            <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-7.172a2 2 0 01-1.414-.586L3 12z"/></svg>
           </button>
         </div>
+
+        <p id="pin-feedback" class="text-[11px] font-mono text-slate-400 h-4">Introduce 0412</p>
       </div>
 
-      <!-- VISTA 2: PANEL DE CONTROL MAESTRO CON 4 PESTAÑAS (ENTRADA CON DISSOLVE BLUR) -->
-      <div id="view-config" class="hidden flex-1 flex flex-col overflow-hidden space-y-3">
+      <!-- VISTA 2: PANEL DE CONTROL COMPLETO CON 4 PESTAÑAS Y PILDORA FLOTANTE -->
+      <div id="view-admin" class="hidden flex-1 flex flex-col min-h-0 space-y-4">
         
-        <div class="pb-1 border-b border-white/5 flex items-center justify-between">
-          <div>
-            <h3 class="text-base font-bold text-white font-display">Panel Maestro de Control</h3>
-            <p class="text-[11px] text-slate-400">Gestiona destino, logos, estética y registros de Drive</p>
+        <!-- HEADER DEL PANEL ADMIN -->
+        <div class="flex items-center space-x-2.5 pb-2 border-b border-white/10 shrink-0">
+          <div class="w-8 h-8 rounded-xl glass-card flex items-center justify-center text-cyan-400 border border-white/10">
+            <!-- SVG ENGRANAJE MAESTRO -->
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/></svg>
           </div>
-          <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
-            PIN 0412
-          </span>
+          <div>
+            <h3 class="text-sm font-bold text-white font-display">Administraci&oacute;n del Portal</h3>
+            <span class="text-[10px] text-slate-400 font-mono">Configuraci&oacute;n directa en Google Sheets</span>
+          </div>
         </div>
 
-        <!-- BARRA DE NAVEGACION DE LAS 4 PESTAÑAS -->
-        <div class="grid grid-cols-4 gap-1.5 p-1 rounded-2xl bg-black/40 border border-white/5 shrink-0">
-          
+        <!-- BARRA DE NAVEGACION DE LAS 4 PESTAÑAS CON PILDORA LIQUIDA DESLIZANTE -->
+        <div class="relative grid grid-cols-4 gap-1 p-1 rounded-2xl bg-black/40 border border-white/5 shrink-0" id="admin-tabs-nav">
+          <!-- Pildora indicadora deslizante -->
+          <div id="tab-slider-pill" class="absolute top-1 bottom-1 w-[calc(25%-2px)] rounded-xl glass-btn-primary transition-all duration-300 ease-out pointer-events-none" style="left: 4px;"></div>
+
           <!-- Pestaña 1: Destino -->
-          <button type="button" id="tab-btn-1" onclick="window.switchTab(1)" class="py-2 px-1 rounded-xl text-[11px] sm:text-xs font-bold transition-all flex items-center justify-center space-x-1 cursor-pointer bg-white/10 text-white shadow-sm" style="border: 1px solid var(--theme-accent);">
+          <button type="button" id="tab-btn-1" onclick="window.switchTab(1)" class="relative z-10 py-2 px-1 rounded-xl text-[11px] sm:text-xs font-bold text-slate-900 transition-all flex items-center justify-center space-x-1 cursor-pointer">
             <svg class="w-3.5 h-3.5 pointer-events-none shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
             <span class="truncate">Destino</span>
           </button>
 
           <!-- Pestaña 2: Logos & Colaboradores -->
-          <button type="button" id="tab-btn-2" onclick="window.switchTab(2)" class="py-2 px-1 rounded-xl text-[11px] sm:text-xs font-medium text-slate-400 hover:text-white transition-all flex items-center justify-center space-x-1 cursor-pointer">
+          <button type="button" id="tab-btn-2" onclick="window.switchTab(2)" class="relative z-10 py-2 px-1 rounded-xl text-[11px] sm:text-xs font-medium text-slate-400 hover:text-white transition-all flex items-center justify-center space-x-1 cursor-pointer">
             <svg class="w-3.5 h-3.5 pointer-events-none shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
             <span class="truncate">Logos</span>
           </button>
 
           <!-- Pestaña 3: Estetica Liquid Glass -->
-          <button type="button" id="tab-btn-3" onclick="window.switchTab(3)" class="py-2 px-1 rounded-xl text-[11px] sm:text-xs font-medium text-slate-400 hover:text-white transition-all flex items-center justify-center space-x-1 cursor-pointer">
+          <button type="button" id="tab-btn-3" onclick="window.switchTab(3)" class="relative z-10 py-2 px-1 rounded-xl text-[11px] sm:text-xs font-medium text-slate-400 hover:text-white transition-all flex items-center justify-center space-x-1 cursor-pointer">
             <svg class="w-3.5 h-3.5 pointer-events-none shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 21a4 4 0 01-4-4 8.014 8.014 0 014.288-7.143C7.545 9.774 8 9.5 8 9.5s.455.274.712.357A8.014 8.014 0 0113 17a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
             <span class="truncate">Dise&ntilde;o</span>
           </button>
 
-          <!-- Pestaña 4: Seguridad & Historial -->
-          <button type="button" id="tab-btn-4" onclick="window.switchTab(4)" class="py-2 px-1 rounded-xl text-[11px] sm:text-xs font-medium text-slate-400 hover:text-white transition-all flex items-center justify-center space-x-1 cursor-pointer">
+          <!-- Pestaña 4: Rendimiento & Seguridad -->
+          <button type="button" id="tab-btn-4" onclick="window.switchTab(4)" class="relative z-10 py-2 px-1 rounded-xl text-[11px] sm:text-xs font-medium text-slate-400 hover:text-white transition-all flex items-center justify-center space-x-1 cursor-pointer">
             <svg class="w-3.5 h-3.5 pointer-events-none shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-            <span class="truncate">Seguridad</span>
+            <span class="truncate">Control</span>
           </button>
         </div>
 
@@ -574,15 +567,27 @@
         <div class="flex-1 overflow-y-auto space-y-3.5 pr-1">
 
           <!-- ======================================================== -->
-          <!-- PESTAÑA 1: DESTINO Y TITULO                              -->
+          <!-- PESTAÑA 1: DESTINO Y TITULOS                             -->
           <!-- ======================================================== -->
           <div id="tab-content-1" class="space-y-3">
             
             <!-- Campo Titulo Principal -->
             <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-1.5">
               <label class="block text-xs font-semibold text-slate-300">T&iacute;tulo Principal de la Tarjeta</label>
-              <input type="text" id="input-btn-title" placeholder="Ej: Comenzar Subida a Drive" class="w-full px-3 py-2 rounded-xl glass-input text-xs text-white">
-              <p class="text-[10px] text-slate-500">Aparece en el bot&oacute;n y en la cabecera principal.</p>
+              <input type="text" id="input-btn-title" placeholder="Ej: Portal de Carga de Archivos" class="w-full px-3 py-2 rounded-xl glass-input text-xs text-white">
+              <p class="text-[10px] text-slate-500">Aparece en la cabecera superior y como nombre del portal.</p>
+            </div>
+
+            <!-- Campo Subtitulo -->
+            <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-1.5">
+              <label class="block text-xs font-semibold text-slate-300">Subt&iacute;tulo o Mensaje de Bienvenida</label>
+              <input type="text" id="input-subtitle" placeholder="Ej: Directo a Google Drive &bull; Fotos y Videos sin limite de tamano" class="w-full px-3 py-2 rounded-xl glass-input text-xs text-white">
+            </div>
+
+            <!-- Campo Texto del Boton Principal -->
+            <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-1.5">
+              <label class="block text-xs font-semibold text-slate-300">Texto del Bot&oacute;n de Carga</label>
+              <input type="text" id="input-btn-upload-text" placeholder="Ej: Comenzar Subida a Drive" class="w-full px-3 py-2 rounded-xl glass-input text-xs text-white">
             </div>
 
             <!-- Switch Misma Carpeta -->
@@ -656,10 +661,10 @@
               </div>
 
               <div class="flex items-center space-x-3.5 p-2 rounded-xl bg-black/30 border border-white/5">
-                <div class="w-12 h-12 rounded-xl glass-card overflow-hidden border border-white/10 shrink-0 flex items-center justify-center">
+                <div class="w-14 h-14 rounded-xl glass-card overflow-hidden border border-white/10 shrink-0 flex items-center justify-center">
                   <img id="admin-avatar-preview" src="" alt="Preview Logo" class="hidden w-full h-full object-cover">
                   <div id="admin-avatar-svg-placeholder" class="text-slate-400">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                   </div>
                 </div>
 
@@ -672,6 +677,16 @@
                   <span id="avatar-file-name" class="text-[10px] text-slate-500 font-mono truncate">Logo actual o predeterminado</span>
                 </div>
               </div>
+
+              <!-- Selector de Tamaño del Logo Principal -->
+              <div class="flex items-center justify-between p-2 rounded-xl bg-black/25 border border-white/5">
+                <span class="text-[11px] font-medium text-slate-300">Tama&ntilde;o del Logo:</span>
+                <div class="flex items-center space-x-1" id="logo-size-group">
+                  <button type="button" onclick="window.setLogoSize('normal')" id="btn-size-normal" class="px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold glass-btn text-slate-400">Normal</button>
+                  <button type="button" onclick="window.setLogoSize('destacado')" id="btn-size-destacado" class="px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold glass-btn-primary">Destacado</button>
+                  <button type="button" onclick="window.setLogoSize('gigante')" id="btn-size-gigante" class="px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold glass-btn text-slate-400">Gigante</button>
+                </div>
+              </div>
             </div>
 
             <!-- 2. GESTION DE LOGOS DE COLABORADORES / ALIADOS -->
@@ -679,7 +694,7 @@
               <div class="flex items-center justify-between">
                 <div>
                   <span class="text-xs font-bold text-white uppercase tracking-wider">Logos de Colaboradores</span>
-                  <p class="text-[10px] text-slate-400">A&ntilde;ade patrocinadores, aliados o fot&oacute;grafos colaboradores</p>
+                  <p class="text-[10px] text-slate-400">A&ntilde;ade patrocinadores, fot&oacute;grafos o empresas aliadas</p>
                 </div>
                 <button type="button" onclick="window.showAddCollaboratorForm()" class="px-2.5 py-1 rounded-lg glass-btn-primary text-[11px] font-bold cursor-pointer flex items-center space-x-1">
                   <svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 4v16m8-8H4"/></svg>
@@ -687,7 +702,7 @@
                 </button>
               </div>
 
-              <!-- Switch Modo de Visualizacion de Colaboradores -->
+              <!-- Selector de Modo de Visualizacion -->
               <div class="flex items-center justify-between p-2.5 rounded-xl bg-black/40 border border-white/5">
                 <div>
                   <span class="text-xs font-semibold text-white block">Modo de visualizaci&oacute;n</span>
@@ -702,12 +717,18 @@
               <div id="add-collaborator-form" class="hidden p-3 rounded-2xl bg-white/5 border border-white/10 space-y-2">
                 <span class="text-xs font-bold text-slate-200 block">Nuevo Colaborador</span>
                 
-                <div class="space-y-1.5">
-                  <label class="block text-[10px] font-mono text-slate-400">Nombre del Colaborador</label>
-                  <input type="text" id="new-collab-name" placeholder="Ej: Estudio Fotogr&aacute;fico Aliado" class="w-full px-3 py-1.5 rounded-xl glass-input text-xs text-white">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div class="space-y-1">
+                    <label class="block text-[10px] font-mono text-slate-400">Nombre / Empresa</label>
+                    <input type="text" id="new-collab-name" placeholder="Ej: Estudio Fotogr&aacute;fico Aliado" class="w-full px-3 py-1.5 rounded-xl glass-input text-xs text-white">
+                  </div>
+                  <div class="space-y-1">
+                    <label class="block text-[10px] font-mono text-slate-400">Rol o Especialidad</label>
+                    <input type="text" id="new-collab-role" placeholder="Ej: Fot&oacute;grafo / Vide&oacute;grafo" class="w-full px-3 py-1.5 rounded-xl glass-input text-xs text-white">
+                  </div>
                 </div>
 
-                <div class="space-y-1.5">
+                <div class="space-y-1">
                   <label class="block text-[10px] font-mono text-slate-400">Logo o Icono</label>
                   <label for="new-collab-file" class="w-full py-2 px-3 rounded-xl glass-btn text-xs font-semibold text-slate-300 hover:text-white flex items-center justify-center space-x-1.5 cursor-pointer">
                     <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
@@ -728,54 +749,152 @@
           </div>
 
           <!-- ======================================================== -->
-          <!-- PESTAÑA 3: ESTETICA LIQUID GLASS & NEON                  -->
+          <!-- PESTAÑA 3: ESTETICA LIQUID GLASS & TEMA                  -->
           <!-- ======================================================== -->
           <div id="tab-content-3" class="hidden space-y-3">
             
-            <!-- Rueda Cromatica y Paletas -->
-            <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-2.5">
+            <!-- Motor de Degradado Dual (Color Primario + Secundario) -->
+            <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-3">
               <div>
-                <span class="text-xs font-bold text-white uppercase tracking-wider">Acento Crom&aacute;tico y Ne&oacute;n</span>
-                <p class="text-[10px] text-slate-400">Modifica en tiempo real los orbes del fondo, botones y barras de progreso</p>
+                <span class="text-xs font-bold text-white uppercase tracking-wider">Degradado Dual Líquido</span>
+                <p class="text-[10px] text-slate-400">Define los 2 colores arm&oacute;nicos para orbes, botones y barras de progreso</p>
               </div>
 
-              <div class="flex items-center space-x-3">
-                <div class="relative w-10 h-10 rounded-xl overflow-hidden glass-card border border-white/20 shrink-0 cursor-pointer shadow-md">
-                  <input type="color" id="theme-color-picker" value="#00f2fe" class="absolute -inset-2 w-14 h-14 cursor-pointer border-none bg-transparent" onchange="window.handleColorChange(this.value)" oninput="window.handleColorChange(this.value)">
+              <div class="grid grid-cols-2 gap-3">
+                <!-- Color Primario -->
+                <div class="space-y-1.5">
+                  <label class="block text-[10px] font-mono text-slate-300">Color Primario (Acento)</label>
+                  <div class="flex items-center space-x-2">
+                    <div class="relative w-9 h-9 rounded-xl overflow-hidden glass-card border border-white/20 shrink-0 cursor-pointer shadow-md">
+                      <input type="color" id="theme-color-picker" value="#00f2fe" class="absolute -inset-2 w-14 h-14 cursor-pointer border-none bg-transparent" oninput="window.handleColorChange(this.value, 'primary')">
+                    </div>
+                    <input type="text" id="theme-color-hex" value="#00f2fe" maxlength="7" class="w-full px-2 py-1.5 rounded-xl glass-input text-xs font-mono text-white" onchange="window.handleHexInput(this.value, 'primary')">
+                  </div>
                 </div>
-                <div class="flex-1">
-                  <input type="text" id="theme-color-hex" value="#00f2fe" maxlength="7" class="w-full px-3 py-1.5 rounded-xl glass-input text-xs font-mono text-white" onchange="window.handleHexInput(this.value)">
+
+                <!-- Color Secundario -->
+                <div class="space-y-1.5">
+                  <label class="block text-[10px] font-mono text-slate-300">Color Secundario (Degradado)</label>
+                  <div class="flex items-center space-x-2">
+                    <div class="relative w-9 h-9 rounded-xl overflow-hidden glass-card border border-white/20 shrink-0 cursor-pointer shadow-md">
+                      <input type="color" id="theme-color-picker-2" value="#4facfe" class="absolute -inset-2 w-14 h-14 cursor-pointer border-none bg-transparent" oninput="window.handleColorChange(this.value, 'secondary')">
+                    </div>
+                    <input type="text" id="theme-color-hex-2" value="#4facfe" maxlength="7" class="w-full px-2 py-1.5 rounded-xl glass-input text-xs font-mono text-white" onchange="window.handleHexInput(this.value, 'secondary')">
+                  </div>
                 </div>
               </div>
 
-              <div class="flex items-center space-x-2 pt-1">
-                <span class="text-[10px] text-slate-500 font-mono">Paletas:</span>
-                <button type="button" onclick="window.handleColorChange('#00f2fe')" class="w-6 h-6 rounded-full bg-[#00f2fe] border border-white/30 cursor-pointer hover:scale-110 transition-transform shadow-[0_0_10px_#00f2fe]"></button>
-                <button type="button" onclick="window.handleColorChange('#8b5cf6')" class="w-6 h-6 rounded-full bg-[#8b5cf6] border border-white/30 cursor-pointer hover:scale-110 transition-transform shadow-[0_0_10px_#8b5cf6]"></button>
-                <button type="button" onclick="window.handleColorChange('#ec4899')" class="w-6 h-6 rounded-full bg-[#ec4899] border border-white/30 cursor-pointer hover:scale-110 transition-transform shadow-[0_0_10px_#ec4899]"></button>
-                <button type="button" onclick="window.handleColorChange('#10b981')" class="w-6 h-6 rounded-full bg-[#10b981] border border-white/30 cursor-pointer hover:scale-110 transition-transform shadow-[0_0_10px_#10b981]"></button>
-                <button type="button" onclick="window.handleColorChange('#f59e0b')" class="w-6 h-6 rounded-full bg-[#f59e0b] border border-white/30 cursor-pointer hover:scale-110 transition-transform shadow-[0_0_10px_#f59e0b]"></button>
+              <!-- 6 Presets de Lujo (1 Clic) -->
+              <div class="space-y-1.5 pt-1">
+                <span class="text-[10px] text-slate-400 font-mono block">Paletas Predefinidas de Alta Gama:</span>
+                <div class="grid grid-cols-3 sm:grid-cols-6 gap-1.5">
+                  <button type="button" onclick="window.applyColorPreset('#00f2fe', '#4facfe')" class="py-1.5 px-2 rounded-xl glass-btn text-[10px] font-mono text-white flex items-center justify-center space-x-1 cursor-pointer hover:border-cyan-400" title="Cian Cibernetico">
+                    <span class="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-[#00f2fe] to-[#4facfe]"></span>
+                    <span>Cian</span>
+                  </button>
+                  <button type="button" onclick="window.applyColorPreset('#10b981', '#059669')" class="py-1.5 px-2 rounded-xl glass-btn text-[10px] font-mono text-white flex items-center justify-center space-x-1 cursor-pointer hover:border-emerald-400" title="Esmeralda Neon">
+                    <span class="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-[#10b981] to-[#059669]"></span>
+                    <span>Verde</span>
+                  </button>
+                  <button type="button" onclick="window.applyColorPreset('#a855f7', '#ec4899')" class="py-1.5 px-2 rounded-xl glass-btn text-[10px] font-mono text-white flex items-center justify-center space-x-1 cursor-pointer hover:border-purple-400" title="Amatista Cosmico">
+                    <span class="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-[#a855f7] to-[#ec4899]"></span>
+                    <span>P&uacute;rpura</span>
+                  </button>
+                  <button type="button" onclick="window.applyColorPreset('#f59e0b', '#ef4444')" class="py-1.5 px-2 rounded-xl glass-btn text-[10px] font-mono text-white flex items-center justify-center space-x-1 cursor-pointer hover:border-amber-400" title="Oro Ambar y Fuego">
+                    <span class="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-[#f59e0b] to-[#ef4444]"></span>
+                    <span>&Aacute;mbar</span>
+                  </button>
+                  <button type="button" onclick="window.applyColorPreset('#f43f5e', '#8b5cf6')" class="py-1.5 px-2 rounded-xl glass-btn text-[10px] font-mono text-white flex items-center justify-center space-x-1 cursor-pointer hover:border-rose-400" title="Synthwave Neon">
+                    <span class="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-[#f43f5e] to-[#8b5cf6]"></span>
+                    <span>Rosa</span>
+                  </button>
+                  <button type="button" onclick="window.applyColorPreset('#38bdf8', '#1d4ed8')" class="py-1.5 px-2 rounded-xl glass-btn text-[10px] font-mono text-white flex items-center justify-center space-x-1 cursor-pointer hover:border-blue-400" title="Oceano Profundo">
+                    <span class="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-[#38bdf8] to-[#1d4ed8]"></span>
+                    <span>Azul</span>
+                  </button>
+                </div>
               </div>
             </div>
 
-            <!-- Slider de Intensidad de Desenfoque Liquid Glass -->
-            <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-2">
+            <!-- Sliders de Vidrio: Blur y Opacidad -->
+            <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-3">
+              <!-- Slider Blur -->
+              <div class="space-y-1">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="text-xs font-bold text-white block">Intensidad de Desenfoque (Glass Blur)</span>
+                    <span class="text-[10px] text-slate-400 block">Profundidad del vidrio de 10px a 40px</span>
+                  </div>
+                  <span id="glass-blur-value" class="text-xs font-mono font-bold text-cyan-300">28px</span>
+                </div>
+                <input type="range" id="glass-blur-slider" min="10" max="40" value="28" class="w-full h-1.5 rounded-lg bg-slate-800 accent-cyan-400 cursor-pointer" oninput="window.handleGlassBlurChange(this.value)">
+              </div>
+
+              <!-- Slider Opacidad -->
+              <div class="space-y-1 pt-1">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="text-xs font-bold text-white block">Opacidad del Fondo de Cristal</span>
+                    <span class="text-[10px] text-slate-400 block">De ultratransl&uacute;cido a obsidiana oscura (20% a 90%)</span>
+                  </div>
+                  <span id="glass-opacity-value" class="text-xs font-mono font-bold text-cyan-300">60%</span>
+                </div>
+                <input type="range" id="glass-opacity-slider" min="20" max="90" value="60" class="w-full h-1.5 rounded-lg bg-slate-800 accent-cyan-400 cursor-pointer" oninput="window.handleGlassOpacityChange(this.value)">
+              </div>
+            </div>
+
+            <!-- Switches Interactivos: Efecto 3D y Sonidos Hapticos -->
+            <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-2.5">
+              <!-- Switch Efecto 3D Parallax -->
               <div class="flex items-center justify-between">
                 <div>
-                  <span class="text-xs font-bold text-white uppercase tracking-wider">Intensidad de Desenfoque (Glass Blur)</span>
-                  <p class="text-[10px] text-slate-400">Ajusta la profundidad de cristal líquido de 12px a 36px</p>
+                  <span class="text-xs font-bold text-white block">Inclinaci&oacute;n 3D Reactiva (Parallax)</span>
+                  <span class="text-[10px] text-slate-400 block">La tarjeta se inclina sutilmente siguiendo el cursor del rat&oacute;n</span>
                 </div>
-                <span id="glass-blur-value" class="text-xs font-mono font-bold text-cyan-300">28px</span>
+                <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                  <input type="checkbox" id="toggle-3d-tilt" class="sr-only peer" checked onchange="window.toggle3DTilt(this.checked)">
+                  <div class="w-11 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-cyan-500"></div>
+                </label>
               </div>
-              <input type="range" id="glass-blur-slider" min="12" max="38" value="28" class="w-full h-1.5 rounded-lg bg-slate-800 accent-cyan-400 cursor-pointer" oninput="window.handleGlassBlurChange(this.value)">
+
+              <!-- Switch Sonidos Hapticos Web Audio -->
+              <div class="flex items-center justify-between pt-1 border-t border-white/5">
+                <div>
+                  <span class="text-xs font-bold text-white block">Efectos de Sonido H&aacute;pticos</span>
+                  <span class="text-[10px] text-slate-400 block">Micro-tonos suaves al pulsar teclas del PIN y al completar cargas</span>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                  <input type="checkbox" id="toggle-sound-fx" class="sr-only peer" onchange="window.toggleSoundFX(this.checked)">
+                  <div class="w-11 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-cyan-500"></div>
+                </label>
+              </div>
             </div>
           </div>
 
           <!-- ======================================================== -->
-          <!-- PESTAÑA 4: SEGURIDAD & HISTORIAL DE SUBIDAS              -->
+          <!-- PESTAÑA 4: RENDIMIENTO & SEGURIDAD                       -->
           <!-- ======================================================== -->
           <div id="tab-content-4" class="hidden space-y-3">
             
+            <!-- Selector de Concurrencia Maxima Permitida -->
+            <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-2">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="text-xs font-bold text-white uppercase tracking-wider">L&iacute;mite M&aacute;ximo de Concurrencia</span>
+                  <p class="text-[10px] text-slate-400">Cu&aacute;ntas subidas simult&aacute;neas como m&aacute;ximo permites a los usuarios</p>
+                </div>
+                <span id="max-concurrency-badge" class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">Hasta 6x</span>
+              </div>
+              <div class="grid grid-cols-6 gap-1 pt-1" id="admin-concurrency-limit-group">
+                <button type="button" onclick="window.setAdminConcurrencyLimit(1)" id="btn-admin-conc-1" class="py-1.5 rounded-xl text-xs font-mono font-bold glass-btn text-slate-300">1x</button>
+                <button type="button" onclick="window.setAdminConcurrencyLimit(2)" id="btn-admin-conc-2" class="py-1.5 rounded-xl text-xs font-mono font-bold glass-btn text-slate-300">2x</button>
+                <button type="button" onclick="window.setAdminConcurrencyLimit(3)" id="btn-admin-conc-3" class="py-1.5 rounded-xl text-xs font-mono font-bold glass-btn text-slate-300">3x</button>
+                <button type="button" onclick="window.setAdminConcurrencyLimit(4)" id="btn-admin-conc-4" class="py-1.5 rounded-xl text-xs font-mono font-bold glass-btn text-slate-300">4x</button>
+                <button type="button" onclick="window.setAdminConcurrencyLimit(5)" id="btn-admin-conc-5" class="py-1.5 rounded-xl text-xs font-mono font-bold glass-btn text-slate-300">5x</button>
+                <button type="button" onclick="window.setAdminConcurrencyLimit(6)" id="btn-admin-conc-6" class="py-1.5 rounded-xl text-xs font-mono font-bold glass-btn-primary">6x</button>
+              </div>
+            </div>
+
             <!-- Switch Maestro de Suspension -->
             <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-2">
               <div class="flex items-center justify-between">
@@ -842,117 +961,185 @@
   </div>
 
   <!-- ============================================================== -->
-  <!-- JAVASCRIPT: MOTOR COMPLETO CON CONCURRENCIA, BLUR Y PREVIEWS   -->
+  <!-- JAVASCRIPT: MOTOR COMPLETO CON CONCURRENCIA HASTA 6X, BLUR Y FX-->
   <!-- ============================================================== -->
   <script>
     /**
-     * URL DEL BACKEND GOOGLE APPS SCRIPT
+     * SOLICITADOR DE ARCHIVOS PRO - MOTOR FRONTEND AUTONOMO
+     * Conectado a Google Apps Script API via doPost y Google Drive API v3 (Resumable)
      */
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxAQbba5tS-n2VffA28R30TrWjFCyE3IEirbB_hbyEVRjbce-oRwDzWIiV833zANiLS/exec";
 
-    /**
-     * 1. ESTADO GLOBAL DE LA APLICACION
-     */
+    // ESTADO GLOBAL DE LA APLICACION
     const AppState = {
+      queue: [],
+      isUploading: false,
+      activeConcurrency: 3,
+      adminConcurrencyLimit: 6,
+      enteredPin: '',
+      cachedPin: '0412',
       config: {
         folderId: 'root',
         folderName: 'Mi Unidad',
         tituloBoton: 'Comenzar Subida a Drive',
+        subtitulo: 'Directo a Google Drive &bull; Fotos y Videos sin limite de tamano',
+        btnUploadText: 'Comenzar Subida a Drive',
         mismaCarpeta: false,
         adminPin: '0412',
         themeColor: '#00f2fe',
+        themeColor2: '#4facfe',
         avatarUrl: '',
+        tamanoLogo: 'destacado',
         suspendido: false,
         mensajeSuspension: 'Servicio suspendido temporalmente por mantenimiento',
         carpetaAvataresId: 'root',
         carpetaAvataresNombre: 'Mi Unidad',
-        concurrenciaMax: 3,
+        concurrenciaMax: 6,
         colaboradores: [],
         modoColaboradores: 'solo_logos',
         glassBlur: 28,
-        sheetUrl: '#'
+        glassOpacity: 60,
+        efecto3D: true,
+        sonidoActivo: false
       },
-      queue: [],
-      isUploading: false,
-      activeConcurrency: 3,
-      pinEntered: '',
-      cachedPin: '0412',
+      currentTab: 1,
       explorerActualId: 'root',
-      explorerActualNombre: 'Mi Unidad',
       explorerParentId: null,
-      pendingAvatarFile: null,
-      pendingCollabFile: null,
-      uploadStartTime: null,
+      tempAvatarBase64: null,
+      tempCollabBase64: null,
+      uploadStartTime: 0,
       lastBytesCalculated: 0
     };
 
     /**
-     * 2. COMUNICACION CON BACKEND APPS SCRIPT
+     * MOTOR DE SONIDOS HAPTICOS (WEB AUDIO API SINTETIZADOR)
      */
-    async function llamarBackend(payload) {
-      if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === "PEGA_AQUI_TU_URL_DE_APPS_SCRIPT") {
-        throw new Error("Debes configurar la constante APPS_SCRIPT_URL con la URL de tu Web App de Apps Script.");
+    const SoundEngine = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (AudioContextClass) this.ctx = new AudioContextClass();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      },
+      click() {
+        if (!AppState.config.sonidoActivo) return;
+        try {
+          this.init();
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(560, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(780, this.ctx.currentTime + 0.035);
+          gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.035);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.036);
+        } catch (e) {}
+      },
+      success() {
+        if (!AppState.config.sonidoActivo) return;
+        try {
+          this.init();
+          [587.33, 880].forEach((freq, i) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            const startTime = this.ctx.currentTime + i * 0.07;
+            osc.frequency.setValueAtTime(freq, startTime);
+            gain.gain.setValueAtTime(0.12, startTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.22);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(startTime);
+            osc.stop(startTime + 0.23);
+          });
+        } catch (e) {}
+      },
+      complete() {
+        if (!AppState.config.sonidoActivo) return;
+        try {
+          this.init();
+          [523.25, 659.25, 783.99, 1046.5].forEach((freq, i) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'triangle';
+            const startTime = this.ctx.currentTime + i * 0.08;
+            osc.frequency.setValueAtTime(freq, startTime);
+            gain.gain.setValueAtTime(0.14, startTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.32);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(startTime);
+            osc.stop(startTime + 0.33);
+          });
+        } catch (e) {}
       }
+    };
 
-      const response = await fetch(APPS_SCRIPT_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8"
-        },
-        body: JSON.stringify(payload)
+    /**
+     * EFECTO 3D PARALLAX REACTIVO AL RATON
+     */
+    function initParallaxTilt() {
+      const container = document.getElementById('main-app-container');
+      if (!container) return;
+
+      window.addEventListener('mousemove', (e) => {
+        if (!AppState.config.efecto3D || window.innerWidth < 1024) return;
+        const cx = window.innerWidth / 2;
+        const cy = window.innerHeight / 2;
+        const dx = (e.clientX - cx) / cx;
+        const dy = (e.clientY - cy) / cy;
+
+        const rotX = -dy * 1.8;
+        const rotY = dx * 2.2;
+        container.style.transform = `perspective(1400px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg)`;
       });
 
-      if (!response.ok) {
-        throw new Error("HTTP " + response.status + ": Error al conectar con Apps Script.");
-      }
-
-      return await response.json();
+      window.addEventListener('mouseleave', () => {
+        if (container) {
+          container.style.transform = 'perspective(1400px) rotateX(0deg) rotateY(0deg)';
+        }
+      });
     }
 
     /**
-     * 3. SELECTOR INTELIGENTE DE CONCURRENCIA ADAPTATIVA
+     * SELECTOR INTELIGENTE DE CONCURRENCIA ADAPTATIVA (1x a 6x)
      */
     window.setConcurrency = function(num) {
-      const allowed = evaluarConcurrenciaPermitida();
-      if (num > allowed.maxPermitido) {
-        num = allowed.maxPermitido;
-      }
+      SoundEngine.click();
+      const maxAllowed = Math.min(AppState.adminConcurrencyLimit, AppState.config.concurrenciaMax || 6);
+      if (num > maxAllowed) num = maxAllowed;
       AppState.activeConcurrency = num;
       actualizarBotonesConcurrencia();
     };
 
     function evaluarConcurrenciaPermitida() {
       const pendingFiles = AppState.queue.filter(i => i.status === 'pending');
+      const maxAllowed = Math.min(AppState.adminConcurrencyLimit, AppState.config.concurrenciaMax || 6);
+
       if (pendingFiles.length === 0) {
-        return { maxPermitido: 3, motivo: 'Optimo' };
+        return { maxPermitido: maxAllowed, motivo: 'Optimo' };
       }
 
       const MB = 1024 * 1024;
-      const tieneArchivoMuyPesado = pendingFiles.some(f => f.size > 45 * MB);
+      const pesoTotalMB = pendingFiles.reduce((acc, f) => acc + f.size, 0) / MB;
 
-      const primeros3 = pendingFiles.slice(0, 3);
-      const peso3JuntosMB = primeros3.reduce((acc, f) => acc + f.size, 0) / MB;
-
-      const primeros2 = pendingFiles.slice(0, 2);
-      const peso2JuntosMB = primeros2.reduce((acc, f) => acc + f.size, 0) / MB;
-
-      if (tieneArchivoMuyPesado || peso2JuntosMB > 45) {
+      if (pesoTotalMB > 45) {
         return {
-          maxPermitido: 1,
-          motivo: 'Lote > 45 MB: Subida segura 1x'
-        };
-      }
-
-      if (peso3JuntosMB > 45) {
-        return {
-          maxPermitido: 2,
-          motivo: 'Lote > 45 MB: Limitado a 2x'
+          maxPermitido: maxAllowed,
+          motivo: 'Lote pesado: se sugiere 1x o 2x'
         };
       }
 
       return {
-        maxPermitido: 3,
-        motivo: 'Turbo (3x simultaneo)'
+        maxPermitido: maxAllowed,
+        motivo: 'Velocidad Turbo'
       };
     }
 
@@ -964,21 +1151,19 @@
         AppState.activeConcurrency = maxPermitido;
       }
 
-      const btn1 = document.getElementById('btn-concurrency-1');
-      const btn2 = document.getElementById('btn-concurrency-2');
-      const btn3 = document.getElementById('btn-concurrency-3');
+      for (let i = 1; i <= 6; i++) {
+        const btn = document.getElementById(`btn-concurrency-${i}`);
+        if (!btn) continue;
+
+        if (i <= maxPermitido) {
+          btn.style.display = 'inline-block';
+          aplicarEstiloBotonConcurrencia(btn, AppState.activeConcurrency === i, true);
+        } else {
+          btn.style.display = 'none';
+        }
+      }
+
       const hint = document.getElementById('concurrency-status-hint');
-
-      aplicarEstiloBotonConcurrencia(btn1, AppState.activeConcurrency === 1, true);
-
-      const puede2 = maxPermitido >= 2;
-      btn2.style.display = puede2 ? 'inline-block' : 'none';
-      aplicarEstiloBotonConcurrencia(btn2, AppState.activeConcurrency === 2, puede2);
-
-      const puede3 = maxPermitido >= 3;
-      btn3.style.display = puede3 ? 'inline-block' : 'none';
-      aplicarEstiloBotonConcurrencia(btn3, AppState.activeConcurrency === 3, puede3);
-
       if (hint) {
         hint.textContent = `(${evalInfo.motivo})`;
       }
@@ -987,480 +1172,365 @@
     function aplicarEstiloBotonConcurrencia(btn, isActive, isAvailable) {
       if (!isAvailable) {
         btn.disabled = true;
-        btn.className = "px-2.5 py-1 rounded-xl text-[11px] font-mono font-bold opacity-30 cursor-not-allowed glass-btn text-slate-500";
+        btn.className = "px-2 py-1 rounded-xl text-[10px] sm:text-[11px] font-mono font-bold opacity-30 cursor-not-allowed glass-btn text-slate-500";
         return;
       }
       btn.disabled = false;
       if (isActive) {
-        btn.className = "px-2.5 py-1 rounded-xl text-[11px] font-mono font-bold transition-all cursor-pointer glass-btn-primary shadow-sm";
+        btn.className = "px-2.5 py-1 rounded-xl text-[10px] sm:text-[11px] font-mono font-bold transition-all cursor-pointer glass-btn-primary shadow-sm scale-105";
       } else {
-        btn.className = "px-2.5 py-1 rounded-xl text-[11px] font-mono font-bold transition-all cursor-pointer glass-btn text-slate-300 hover:text-white";
+        btn.className = "px-2 py-1 rounded-xl text-[10px] sm:text-[11px] font-mono font-bold transition-all cursor-pointer glass-btn text-slate-300 hover:text-white";
       }
     }
 
     /**
-     * 4. CONTROL DE PESTAÑAS DEL PANEL MAESTRO
-     */
-    window.switchTab = function(tabNumber) {
-      for (let i = 1; i <= 4; i++) {
-        const btn = document.getElementById(`tab-btn-${i}`);
-        const content = document.getElementById(`tab-content-${i}`);
-        if (!btn || !content) continue;
-
-        if (i === tabNumber) {
-          btn.className = "py-2 px-1 rounded-xl text-[11px] sm:text-xs font-bold transition-all flex items-center justify-center space-x-1 cursor-pointer bg-white/10 text-white shadow-sm";
-          btn.style.border = "1px solid var(--theme-accent)";
-          content.classList.remove('hidden');
-        } else {
-          btn.className = "py-2 px-1 rounded-xl text-[11px] sm:text-xs font-medium text-slate-400 hover:text-white transition-all flex items-center justify-center space-x-1 cursor-pointer";
-          btn.style.border = "1px solid transparent";
-          content.classList.add('hidden');
-        }
-      }
-    };
-
-    /**
-     * 5. MODAL Y TECLADO NUMERICO PIN (0412 AUTO-DESBLOQUEO CON PUNTOS VERDES Y LIQUID BLUR)
+     * TECLADO PIN Y AUTO-DESBLOQUEO CON PUNTOS VERDES Y LIQUID BLUR
      */
     window.openAdminModal = function(e) {
       if (e) { e.preventDefault(); e.stopPropagation(); }
+      SoundEngine.click();
       const modal = document.getElementById('modal-container');
-      const vPin = document.getElementById('view-pin');
-      const vConfig = document.getElementById('view-config');
+      const viewPin = document.getElementById('view-pin');
+      const viewAdmin = document.getElementById('view-admin');
 
-      vPin.classList.remove('hidden', 'liquid-blur-exit');
-      vConfig.classList.add('hidden');
-      vConfig.classList.remove('liquid-blur-enter');
+      viewPin.classList.remove('hidden', 'liquid-blur-exit');
+      viewAdmin.classList.add('hidden');
+      viewAdmin.classList.remove('liquid-blur-enter');
 
-      window.clearPin();
-      if (modal) modal.style.display = 'flex';
+      AppState.enteredPin = '';
+      updatePinDotsUI();
+      modal.style.display = 'flex';
     };
 
     window.closeAdminModal = function(e) {
       if (e) { e.preventDefault(); e.stopPropagation(); }
+      SoundEngine.click();
       const modal = document.getElementById('modal-container');
-      if (modal) modal.style.display = 'none';
+      modal.style.display = 'none';
+      AppState.enteredPin = '';
+      updatePinDotsUI();
     };
 
-    window.pressPin = function(digit) {
-      if (AppState.pinEntered.length >= 4) return;
-      AppState.pinEntered += String(digit);
-      updatePinDisplay();
+    window.enterPinDigit = function(digit) {
+      if (AppState.enteredPin.length >= 4) return;
+      SoundEngine.click();
+      AppState.enteredPin += digit;
+      updatePinDotsUI();
 
-      // AUTO-DESBLOQUEO INMEDIATO AL MARCAR EL CUARTO DIGITO
-      if (AppState.pinEntered.length === 4) {
-        const validPin = AppState.cachedPin || '0412';
-        if (AppState.pinEntered === '0412' || AppState.pinEntered === validPin) {
-          triggerPinSuccessAndTransition();
-        } else {
-          showPinError();
-        }
+      if (AppState.enteredPin.length === 4) {
+        verifyPinEntered();
       }
     };
 
-    window.clearPin = function() {
-      AppState.pinEntered = '';
-      updatePinDisplay();
-      const errEl = document.getElementById('pin-error-msg');
-      if (errEl) errEl.classList.add('opacity-0');
-    };
-
-    window.backspacePin = function() {
-      if (AppState.pinEntered.length > 0) {
-        AppState.pinEntered = AppState.pinEntered.slice(0, -1);
-        updatePinDisplay();
+    window.deletePinDigit = function() {
+      if (AppState.enteredPin.length > 0) {
+        SoundEngine.click();
+        AppState.enteredPin = AppState.enteredPin.slice(0, -1);
+        updatePinDotsUI();
       }
     };
 
-    function updatePinDisplay() {
-      const dots = document.querySelectorAll('#pin-dots [data-idx]');
-      dots.forEach((dot, idx) => {
-        dot.classList.remove('pin-dot-success');
-        if (idx < AppState.pinEntered.length) {
-          dot.className = "w-4 h-4 rounded-full border border-cyan-400 bg-cyan-400 shadow-[0_0_15px_rgba(0,242,254,0.85)] transition-all duration-300";
+    window.clearPinDigits = function() {
+      SoundEngine.click();
+      AppState.enteredPin = '';
+      updatePinDotsUI();
+    };
+
+    function updatePinDotsUI() {
+      for (let i = 0; i < 4; i++) {
+        const dot = document.getElementById(`pin-dot-${i}`);
+        if (!dot) continue;
+        dot.className = "w-4 h-4 rounded-full border-2 transition-all duration-300";
+        if (i < AppState.enteredPin.length) {
+          dot.style.borderColor = 'var(--theme-accent)';
+          dot.style.backgroundColor = 'var(--theme-accent)';
+          dot.style.boxShadow = '0 0 12px var(--accent-glow)';
+          dot.style.transform = 'scale(1.15)';
         } else {
-          dot.className = "w-4 h-4 rounded-full border border-white/30 transition-all duration-300";
+          dot.style.borderColor = '#475569';
+          dot.style.backgroundColor = 'rgba(0, 0, 0, 0.4)';
+          dot.style.boxShadow = 'none';
+          dot.style.transform = 'scale(1)';
         }
-      });
+      }
     }
 
-    /**
-     * TRANSICION LIQUID BLUR CON PUNTOS VERDES ESMERALDA
-     */
-    function triggerPinSuccessAndTransition() {
-      const dots = document.querySelectorAll('#pin-dots [data-idx]');
-      dots.forEach(dot => {
-        dot.className = "w-4 h-4 rounded-full pin-dot-success";
-      });
+    function verifyPinEntered() {
+      const expected = AppState.cachedPin || AppState.config.adminPin || '0412';
+      const feedback = document.getElementById('pin-feedback');
 
-      const vPin = document.getElementById('view-pin');
-      const vConfig = document.getElementById('view-config');
+      if (AppState.enteredPin === expected) {
+        // Exito: Puntos verde esmeralda neón
+        SoundEngine.success();
+        for (let i = 0; i < 4; i++) {
+          const dot = document.getElementById(`pin-dot-${i}`);
+          if (dot) dot.className = "w-4 h-4 rounded-full border-2 pin-dot-success";
+        }
 
-      // Esperamos 350ms para que se aprecie el brillo verde y luego ejecutamos el dissolve blur
-      setTimeout(() => {
-        vPin.classList.add('liquid-blur-exit');
+        if (feedback) {
+          feedback.textContent = 'Acceso concedido';
+          feedback.className = 'text-[11px] font-mono text-emerald-400 font-bold h-4';
+        }
 
+        // Transicion Liquida Blur
         setTimeout(() => {
-          vPin.classList.add('hidden');
-          vConfig.classList.remove('hidden');
-          vConfig.classList.add('liquid-blur-enter');
-          window.switchTab(1);
-          loadDriveFolders(AppState.config.folderId || 'root');
-          renderCollaboratorsAdminList();
-        }, 320);
-      }, 350);
-    }
+          const viewPin = document.getElementById('view-pin');
+          const viewAdmin = document.getElementById('view-admin');
 
-    function showPinError() {
-      const pinContainer = document.getElementById('view-pin');
-      const errEl = document.getElementById('pin-error-msg');
-      if (errEl) errEl.classList.remove('opacity-0');
-      if (pinContainer) pinContainer.classList.add('animate-shake');
+          viewPin.classList.add('liquid-blur-exit');
 
-      const dots = document.querySelectorAll('#pin-dots [data-idx]');
-      dots.forEach(dot => {
-        dot.className = "w-4 h-4 rounded-full border border-rose-500 bg-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.9)] transition-all";
-      });
+          setTimeout(() => {
+            viewPin.classList.add('hidden');
+            viewAdmin.classList.remove('hidden');
+            viewAdmin.classList.add('liquid-blur-enter');
 
-      setTimeout(() => {
-        if (pinContainer) pinContainer.classList.remove('animate-shake');
-        window.clearPin();
-      }, 650);
-    }
+            populateAdminFields();
+            loadDriveFolders(AppState.config.folderId || 'root');
+            window.switchTab(1);
+          }, 350);
+        }, 450);
+      } else {
+        // Fallo: Shake y feedback rojo
+        if (feedback) {
+          feedback.textContent = 'PIN Incorrecto';
+          feedback.className = 'text-[11px] font-mono text-rose-400 font-bold h-4';
+        }
 
-    // Soporte para teclado fisico
-    window.addEventListener('keydown', (e) => {
-      const modal = document.getElementById('modal-container');
-      if (!modal || modal.style.display === 'none') return;
-
-      const vPin = document.getElementById('view-pin');
-      if (vPin && !vPin.classList.contains('hidden')) {
-        if (/^[0-9]$/.test(e.key)) {
-          window.pressPin(e.key);
-        } else if (e.key === 'Backspace') {
-          window.backspacePin();
-        } else if (e.key === 'Escape') {
-          window.closeAdminModal();
+        const container = document.getElementById('pin-dots-container');
+        if (container) {
+          container.classList.add('animate-shake');
+          setTimeout(() => {
+            container.classList.remove('animate-shake');
+            AppState.enteredPin = '';
+            updatePinDotsUI();
+          }, 500);
         }
       }
-    });
-
-    /**
-     * 6. SUSPENSION DE SERVICIO
-     */
-    window.previewSuspensionToggle = function(isSuspended) {
-      updateSuspensionBadge(isSuspended);
-    };
-
-    function updateSuspensionBadge(isSuspended) {
-      const badge = document.getElementById('badge-suspension-status');
-      if (isSuspended) {
-        badge.className = "inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30";
-        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span><span>Servicio Suspendido &bull; Acceso Pausado</span>`;
-      } else {
-        badge.className = "inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30";
-        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span><span>Servicio Activo &bull; Recepci&oacute;n Normal</span>`;
-      }
-    }
-
-    function applySuspensionToUI() {
-      const isSuspended = !!AppState.config.suspendido;
-      const overlay = document.getElementById('suspension-overlay');
-      const msgEl = document.getElementById('suspension-display-msg');
-      const dropzone = document.getElementById('dropzone');
-      const btnUpload = document.getElementById('btn-start-upload');
-
-      const customMsg = AppState.config.mensajeSuspension || 'Servicio suspendido temporalmente por mantenimiento';
-      if (msgEl) msgEl.textContent = customMsg;
-
-      if (isSuspended) {
-        overlay.classList.remove('hidden');
-        dropzone.classList.add('opacity-40', 'pointer-events-none');
-        btnUpload.disabled = true;
-      } else {
-        overlay.classList.add('hidden');
-        dropzone.classList.remove('opacity-40', 'pointer-events-none');
-        btnUpload.disabled = (AppState.isUploading || AppState.queue.length === 0);
-      }
     }
 
     /**
-     * 7. GESTION DE LOGO PRINCIPAL Y COLABORADORES
+     * NAVEGACION DE PESTAÑAS ADMIN CON PILDORA DESLIZANTE
      */
-    window.handleAvatarSelected = function(input) {
-      if (!input || !input.files || input.files.length === 0) return;
-      const file = input.files[0];
-      AppState.pendingAvatarFile = file;
+    window.switchTab = function(tabIndex) {
+      SoundEngine.click();
+      AppState.currentTab = tabIndex;
 
-      document.getElementById('avatar-file-name').textContent = file.name;
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        setAvatarVisuals(e.target.result);
-      };
-      reader.readAsDataURL(file);
-    };
-
-    function setAvatarVisuals(imgUrl) {
-      const headerImg = document.getElementById('header-avatar-img');
-      const headerSvg = document.getElementById('header-avatar-svg');
-      const adminImg = document.getElementById('admin-avatar-preview');
-      const adminSvg = document.getElementById('admin-avatar-svg-placeholder');
-
-      if (imgUrl) {
-        headerImg.src = imgUrl;
-        headerImg.classList.remove('hidden');
-        headerSvg.classList.add('hidden');
-
-        adminImg.src = imgUrl;
-        adminImg.classList.remove('hidden');
-        adminSvg.classList.add('hidden');
-      } else {
-        headerImg.classList.add('hidden');
-        headerSvg.classList.remove('hidden');
-
-        adminImg.classList.add('hidden');
-        adminSvg.classList.remove('hidden');
-      }
-    }
-
-    // Colaboradores
-    window.showAddCollaboratorForm = function() {
-      document.getElementById('add-collaborator-form').classList.remove('hidden');
-      document.getElementById('new-collab-name').focus();
-    };
-
-    window.hideAddCollaboratorForm = function() {
-      document.getElementById('add-collaborator-form').classList.add('hidden');
-      document.getElementById('new-collab-name').value = '';
-      document.getElementById('new-collab-file-label').textContent = 'Seleccionar Imagen';
-      AppState.pendingCollabFile = null;
-    };
-
-    window.handleCollabFileSelected = function(input) {
-      if (!input || !input.files || input.files.length === 0) return;
-      AppState.pendingCollabFile = input.files[0];
-      document.getElementById('new-collab-file-label').textContent = input.files[0].name;
-    };
-
-    window.confirmAddCollaborator = async function() {
-      const name = document.getElementById('new-collab-name').value.trim() || 'Colaborador';
-      if (!AppState.pendingCollabFile) {
-        alert("Por favor selecciona una imagen para el logo del colaborador.");
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const base64Data = e.target.result;
-        AppState.config.colaboradores.push({
-          id: 'colab_' + Date.now(),
-          nombre: name,
-          logoUrl: base64Data
-        });
-
-        window.hideAddCollaboratorForm();
-        renderCollaboratorsAdminList();
-        renderCollaboratorsMainUI();
-        saveLocalConfig();
-      };
-      reader.readAsDataURL(AppState.pendingCollabFile);
-    };
-
-    window.deleteCollaborator = function(id) {
-      AppState.config.colaboradores = AppState.config.colaboradores.filter(c => c.id !== id);
-      renderCollaboratorsAdminList();
-      renderCollaboratorsMainUI();
-      saveLocalConfig();
-    };
-
-    window.updateCollaboratorName = function(id, newName) {
-      const colab = AppState.config.colaboradores.find(c => c.id === id);
-      if (colab) {
-        colab.nombre = newName.trim();
-        renderCollaboratorsMainUI();
-        saveLocalConfig();
-      }
-    };
-
-    window.toggleCollaboratorMode = function() {
-      const current = AppState.config.modoColaboradores;
-      const next = (current === 'solo_logos') ? 'logos_y_nombres' : 'solo_logos';
-      AppState.config.modoColaboradores = next;
-
-      const label = document.getElementById('collab-mode-label');
-      const btn = document.getElementById('btn-toggle-collab-mode');
-      if (next === 'solo_logos') {
-        label.textContent = 'Solo Logos (Sin nombres)';
-        btn.textContent = 'Solo Logos';
-      } else {
-        label.textContent = 'Logos con Nombre';
-        btn.textContent = 'Con Nombres';
-      }
-
-      renderCollaboratorsMainUI();
-      saveLocalConfig();
-    };
-
-    function renderCollaboratorsAdminList() {
-      const listEl = document.getElementById('collaborators-admin-list');
-      if (!listEl) return;
-
-      const list = AppState.config.colaboradores || [];
-      if (list.length === 0) {
-        listEl.innerHTML = `<div class="p-2 text-center text-[10px] text-slate-500 font-mono">No hay colaboradores agregados a&uacute;n.</div>`;
-        return;
-      }
-
-      listEl.innerHTML = list.map(c => `
-        <div class="flex items-center space-x-2.5 p-2 rounded-xl bg-black/30 border border-white/5">
-          <img src="${c.logoUrl}" alt="${c.nombre}" class="w-8 h-8 rounded-lg object-cover shrink-0 border border-white/10">
-          <input type="text" value="${c.nombre}" onchange="window.updateCollaboratorName('${c.id}', this.value)" class="flex-1 px-2.5 py-1 rounded-lg glass-input text-xs text-white">
-          <button type="button" onclick="window.deleteCollaborator('${c.id}')" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 cursor-pointer" title="Eliminar colaborador">
-            <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-          </button>
-        </div>
-      `).join('');
-    }
-
-    function renderCollaboratorsMainUI() {
-      const section = document.getElementById('collaborators-main-section');
-      const container = document.getElementById('collaborators-display-container');
-      const list = AppState.config.colaboradores || [];
-
-      if (list.length === 0) {
-        section.classList.add('hidden');
-        return;
-      }
-
-      section.classList.remove('hidden');
-      const soloLogos = (AppState.config.modoColaboradores === 'solo_logos');
-
-      container.innerHTML = list.map(c => {
-        if (soloLogos) {
-          return `
-            <div class="relative group p-1 rounded-xl glass-card border border-white/10 hover:border-white/30 transition-all cursor-pointer shadow-sm" title="${c.nombre}">
-              <img src="${c.logoUrl}" alt="${c.nombre}" class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg object-cover">
-            </div>
-          `;
-        } else {
-          return `
-            <div class="flex items-center space-x-2 py-1 px-2.5 rounded-xl glass-card border border-white/10 hover:border-white/30 transition-all cursor-pointer shadow-sm">
-              <img src="${c.logoUrl}" alt="${c.nombre}" class="w-7 h-7 rounded-lg object-cover shrink-0">
-              <span class="text-xs font-semibold text-slate-200 truncate max-w-[120px]">${c.nombre}</span>
-            </div>
-          `;
+      for (let i = 1; i <= 4; i++) {
+        const content = document.getElementById(`tab-content-${i}`);
+        const btn = document.getElementById(`tab-btn-${i}`);
+        if (content) {
+          if (i === tabIndex) {
+            content.classList.remove('hidden');
+          } else {
+            content.classList.add('hidden');
+          }
         }
-      }).join('');
-    }
+        if (btn) {
+          if (i === tabIndex) {
+            btn.className = "relative z-10 py-2 px-1 rounded-xl text-[11px] sm:text-xs font-bold text-slate-900 transition-all flex items-center justify-center space-x-1 cursor-pointer";
+          } else {
+            btn.className = "relative z-10 py-2 px-1 rounded-xl text-[11px] sm:text-xs font-medium text-slate-400 hover:text-white transition-all flex items-center justify-center space-x-1 cursor-pointer";
+          }
+        }
+      }
 
-    /**
-     * 8. CONTROL DE COLOR Y GLASS BLUR EN TIEMPO REAL
-     */
-    window.handleColorChange = function(hex) {
-      if (!hex || !hex.startsWith('#') || hex.length < 7) return;
-      document.getElementById('theme-color-picker').value = hex;
-      document.getElementById('theme-color-hex').value = hex;
-      applyDynamicColor(hex);
-      AppState.config.themeColor = hex;
-      saveLocalConfig();
-    };
-
-    window.handleHexInput = function(val) {
-      val = val.trim();
-      if (!val.startsWith('#')) val = '#' + val;
-      if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
-        window.handleColorChange(val);
+      // Deslizar pildora animada
+      const pill = document.getElementById('tab-slider-pill');
+      if (pill) {
+        const offsetPercent = (tabIndex - 1) * 25;
+        pill.style.left = `calc(${offsetPercent}% + 4px)`;
       }
     };
+
+    /**
+     * PERSONALIZACION: TEMAS, BLUR, OPACIDAD Y 3D
+     */
+    window.handleColorChange = function(hex, mode) {
+      if (mode === 'secondary') {
+        AppState.config.themeColor2 = hex;
+        document.getElementById('theme-color-hex-2').value = hex;
+        document.getElementById('theme-color-picker-2').value = hex;
+      } else {
+        AppState.config.themeColor = hex;
+        document.getElementById('theme-color-hex').value = hex;
+        document.getElementById('theme-color-picker').value = hex;
+      }
+      applyThemeColors();
+    };
+
+    window.handleHexInput = function(hex, mode) {
+      if (/^#[0-9A-Fa-f]{6}$/.test(hex)) {
+        window.handleColorChange(hex, mode);
+      }
+    };
+
+    window.applyColorPreset = function(color1, color2) {
+      SoundEngine.click();
+      AppState.config.themeColor = color1;
+      AppState.config.themeColor2 = color2;
+      document.getElementById('theme-color-picker').value = color1;
+      document.getElementById('theme-color-hex').value = color1;
+      document.getElementById('theme-color-picker-2').value = color2;
+      document.getElementById('theme-color-hex-2').value = color2;
+      applyThemeColors();
+    };
+
+    function applyThemeColors() {
+      const c1 = AppState.config.themeColor || '#00f2fe';
+      const c2 = AppState.config.themeColor2 || '#4facfe';
+
+      document.documentElement.style.setProperty('--theme-accent', c1);
+      document.documentElement.style.setProperty('--theme-color-1', c1);
+      document.documentElement.style.setProperty('--theme-color-2', c2);
+      document.documentElement.style.setProperty('--accent-glow', hexToRgba(c1, 0.45));
+
+      const orb1 = document.getElementById('orb-1');
+      const orb2 = document.getElementById('orb-2');
+      if (orb1) orb1.style.background = `radial-gradient(circle, ${c1} 0%, transparent 70%)`;
+      if (orb2) orb2.style.background = `radial-gradient(circle, ${c2} 0%, transparent 70%)`;
+    }
+
+    function hexToRgba(hex, alpha) {
+      const c = hex.replace('#', '');
+      const num = parseInt(c, 16);
+      return `rgba(${(num >> 16) & 255}, ${(num >> 8) & 255}, ${num & 255}, ${alpha})`;
+    }
 
     window.handleGlassBlurChange = function(val) {
-      const num = parseInt(val, 10) || 28;
-      document.getElementById('glass-blur-value').textContent = num + 'px';
-      document.documentElement.style.setProperty('--glass-blur', num + 'px');
-      AppState.config.glassBlur = num;
-      saveLocalConfig();
+      AppState.config.glassBlur = Number(val);
+      document.getElementById('glass-blur-value').textContent = `${val}px`;
+      document.documentElement.style.setProperty('--glass-blur', `${val}px`);
     };
 
-    function applyDynamicColor(hex) {
-      const root = document.documentElement;
-      root.style.setProperty('--theme-accent', hex);
-      root.style.setProperty('--theme-color-1', hex);
+    window.handleGlassOpacityChange = function(val) {
+      AppState.config.glassOpacity = Number(val);
+      document.getElementById('glass-opacity-value').textContent = `${val}%`;
+      const decimal = (Number(val) / 100).toFixed(2);
+      document.documentElement.style.setProperty('--glass-bg-opacity', decimal);
+    };
 
-      const rgb = hexToRgb(hex);
-      if (rgb) {
-        root.style.setProperty('--accent-glow', `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.45)`);
-        root.style.setProperty('--accent-glow-subtle', `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.18)`);
-        
-        const shiftedColor2 = rgbToHex(
-          Math.min(255, Math.max(0, Math.round(rgb.r * 0.6 + 60))),
-          Math.min(255, Math.max(0, Math.round(rgb.g * 0.4 + 40))),
-          Math.min(255, Math.max(0, Math.round(rgb.b * 0.9 + 70)))
-        );
-        root.style.setProperty('--theme-color-2', shiftedColor2);
-
-        const shiftedColor3 = rgbToHex(
-          Math.min(255, Math.max(0, Math.round(rgb.r * 0.9 + 50))),
-          Math.min(255, Math.max(0, Math.round(rgb.g * 0.3 + 20))),
-          Math.min(255, Math.max(0, Math.round(rgb.b * 0.6 + 80)))
-        );
-        root.style.setProperty('--theme-color-3', shiftedColor3);
+    window.toggle3DTilt = function(active) {
+      SoundEngine.click();
+      AppState.config.efecto3D = Boolean(active);
+      const container = document.getElementById('main-app-container');
+      if (!active && container) {
+        container.style.transform = 'perspective(1400px) rotateX(0deg) rotateY(0deg)';
       }
+    };
+
+    window.toggleSoundFX = function(active) {
+      AppState.config.sonidoActivo = Boolean(active);
+      if (active) SoundEngine.click();
+    };
+
+    window.setLogoSize = function(size) {
+      SoundEngine.click();
+      AppState.config.tamanoLogo = size;
+      ['normal', 'destacado', 'gigante'].forEach(s => {
+        const btn = document.getElementById(`btn-size-${s}`);
+        if (btn) {
+          if (s === size) {
+            btn.className = "px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold glass-btn-primary";
+          } else {
+            btn.className = "px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold glass-btn text-slate-400";
+          }
+        }
+      });
+      applyLogoSizeToUI();
+    };
+
+    function applyLogoSizeToUI() {
+      const container = document.getElementById('header-avatar-container');
+      if (!container) return;
+      container.classList.remove('logo-size-normal', 'logo-size-destacado', 'logo-size-gigante');
+      container.classList.add(`logo-size-${AppState.config.tamanoLogo || 'destacado'}`);
     }
 
-    function hexToRgb(hex) {
-      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-      return result ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16)
-      } : null;
-    }
+    window.setAdminConcurrencyLimit = function(limit) {
+      SoundEngine.click();
+      AppState.adminConcurrencyLimit = limit;
+      AppState.config.concurrenciaMax = limit;
 
-    function rgbToHex(r, g, b) {
-      return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-    }
+      for (let i = 1; i <= 6; i++) {
+        const btn = document.getElementById(`btn-admin-conc-${i}`);
+        if (btn) {
+          if (i === limit) {
+            btn.className = "py-1.5 rounded-xl text-xs font-mono font-bold glass-btn-primary";
+          } else {
+            btn.className = "py-1.5 rounded-xl text-xs font-mono font-bold glass-btn text-slate-300";
+          }
+        }
+      }
+
+      const badge = document.getElementById('max-concurrency-badge');
+      if (badge) badge.textContent = `Hasta ${limit}x`;
+      actualizarBotonesConcurrencia();
+    };
 
     /**
-     * 9. SELECTOR Y GESTION DE ARCHIVOS (CON MINIATURAS EN VIVO)
+     * GESTOR DE ARCHIVOS Y COLA CON PREVIEWS EN TIEMPO REAL
      */
     window.handleFilesFromInput = function(input) {
-      if (AppState.config.suspendido) {
-        alert("El servicio se encuentra actualmente suspendido.");
-        return;
+      if (input.files && input.files.length > 0) {
+        addFilesToQueue(Array.from(input.files));
+        input.value = '';
       }
-      if (!input || !input.files || input.files.length === 0) return;
-      handleFilesAdded(input.files);
-      input.value = '';
     };
 
-    function handleFilesAdded(fileList) {
-      Array.from(fileList).forEach(file => {
-        const exists = AppState.queue.some(i => i.name === file.name && i.size === file.size && i.lastModified === file.lastModified);
-        if (!exists) {
-          const isVid = isVideoFile(file);
-          let previewUrl = null;
-          if (!isVid && file.type.startsWith('image/')) {
-            try {
-              previewUrl = URL.createObjectURL(file);
-            } catch (e) {}
-          }
+    function initDragAndDrop() {
+      const dropzone = document.getElementById('dropzone');
+      if (!dropzone) return;
 
-          AppState.queue.push({
-            id: 'file_' + Math.random().toString(36).substr(2, 9),
-            file: file,
-            name: file.name,
-            size: file.size,
-            lastModified: file.lastModified,
-            esVideo: isVid,
-            previewUrl: previewUrl,
-            status: 'pending',
-            statusText: 'En espera',
-            progress: 0,
-            uploadedBytes: 0,
-            xhr: null
-          });
+      ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropzone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }, false);
+      });
+
+      ['dragenter', 'dragover'].forEach(eventName => {
+        dropzone.addEventListener(eventName, () => {
+          dropzone.classList.add('dragover-active');
+        }, false);
+      });
+
+      ['dragleave', 'drop'].forEach(eventName => {
+        dropzone.addEventListener(eventName, () => {
+          dropzone.classList.remove('dragover-active');
+        }, false);
+      });
+
+      dropzone.addEventListener('drop', (e) => {
+        const dt = e.dataTransfer;
+        if (dt && dt.files && dt.files.length > 0) {
+          addFilesToQueue(Array.from(dt.files));
         }
+      });
+    }
+
+    function addFilesToQueue(files) {
+      SoundEngine.click();
+      files.forEach(file => {
+        const isVid = isVideoFile(file);
+        let previewUrl = null;
+        if (!isVid && file.type.startsWith('image/')) {
+          try {
+            previewUrl = URL.createObjectURL(file);
+          } catch (e) {}
+        }
+
+        AppState.queue.push({
+          id: 'f_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+          file: file,
+          name: file.name,
+          size: file.size,
+          esVideo: isVid,
+          previewUrl: previewUrl,
+          status: 'pending',
+          progress: 0,
+          uploadedBytes: 0,
+          statusText: 'En espera'
+        });
       });
       updateQueueUI();
       actualizarBotonesConcurrencia();
@@ -1468,23 +1538,17 @@
 
     function isVideoFile(file) {
       if (file.type && file.type.startsWith('video/')) return true;
-      const ext = file.name.split('.').pop().toLowerCase();
-      return ['mp4', 'mov', 'mkv', 'avi', 'webm', '3gp', 'm4v', 'wmv'].includes(ext);
+      const ext = (file.name.split('.').pop() || '').toLowerCase();
+      return ['mp4', 'mov', 'avi', 'mkv', 'webm', 'wmv', 'm4v', 'flv'].includes(ext);
     }
 
-    function formatBytes(bytes) {
-      if (!bytes || bytes === 0) return '0 Bytes';
-      const k = 1024;
-      const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-      const i = Math.floor(Math.log(bytes) / Math.log(k));
-      return (bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i];
-    }
-
-    window.removeFileFromQueue = function(id) {
+    window.removeQueueItem = function(id, e) {
+      if (e) { e.preventDefault(); e.stopPropagation(); }
+      SoundEngine.click();
       const idx = AppState.queue.findIndex(i => i.id === id);
       if (idx !== -1) {
         if (AppState.queue[idx].previewUrl) {
-          try { URL.revokeObjectURL(AppState.queue[idx].previewUrl); } catch (e) {}
+          URL.revokeObjectURL(AppState.queue[idx].previewUrl);
         }
         AppState.queue.splice(idx, 1);
         updateQueueUI();
@@ -1494,9 +1558,10 @@
 
     window.clearCompletedFiles = function(e) {
       if (e) { e.preventDefault(); e.stopPropagation(); }
-      AppState.queue.forEach(i => {
-        if (i.status === 'completed' && i.previewUrl) {
-          try { URL.revokeObjectURL(i.previewUrl); } catch (err) {}
+      SoundEngine.click();
+      AppState.queue.forEach(item => {
+        if (item.status === 'completed' && item.previewUrl) {
+          URL.revokeObjectURL(item.previewUrl);
         }
       });
       AppState.queue = AppState.queue.filter(i => i.status !== 'completed');
@@ -1505,98 +1570,105 @@
     };
 
     function updateQueueUI() {
-      const total = AppState.queue.length;
-      const pending = AppState.queue.filter(i => i.status === 'pending').length;
-      const uploading = AppState.queue.filter(i => i.status === 'uploading').length;
-      const completed = AppState.queue.filter(i => i.status === 'completed').length;
+      const emptyState = document.getElementById('empty-state');
+      const listContainer = document.getElementById('file-list-container');
+      const queueSummary = document.getElementById('queue-summary');
 
-      document.getElementById('stat-total').textContent = total;
-      document.getElementById('stat-pending').textContent = pending;
-      document.getElementById('stat-uploading').textContent = uploading;
-      document.getElementById('stat-completed').textContent = completed;
-      document.getElementById('queue-summary').textContent = `${total} archivo${total === 1 ? '' : 's'}`;
-
-      const emptyEl = document.getElementById('empty-state');
-      const listEl = document.getElementById('file-list-container');
-      const btnUpload = document.getElementById('btn-start-upload');
-
-      if (total > 0) {
-        emptyEl.classList.add('hidden');
-        listEl.classList.remove('hidden');
-        btnUpload.disabled = (AppState.isUploading || pending === 0 || AppState.config.suspendido);
-      } else {
-        emptyEl.classList.remove('hidden');
-        listEl.classList.add('hidden');
-        btnUpload.disabled = true;
+      if (AppState.queue.length === 0) {
+        if (emptyState) emptyState.classList.remove('hidden');
+        if (listContainer) listContainer.classList.add('hidden');
+        if (queueSummary) queueSummary.textContent = '0 archivos';
+        updateGlobalProgress(0);
+        return;
       }
+
+      if (emptyState) emptyState.classList.add('hidden');
+      if (listContainer) listContainer.classList.remove('hidden');
 
       const totalBytes = AppState.queue.reduce((acc, i) => acc + i.size, 0);
-      const uploadedBytes = AppState.queue.reduce((acc, i) => acc + (i.status === 'completed' ? i.size : (i.uploadedBytes || 0)), 0);
-      const percent = totalBytes > 0 ? Math.min(100, Math.round((uploadedBytes / totalBytes) * 100)) : 0;
-
-      document.getElementById('global-progress-bar').style.width = percent + '%';
-      document.getElementById('global-progress-text').textContent = `Progreso Total: ${percent}%`;
-      document.getElementById('global-size-text').textContent = `${formatBytes(uploadedBytes)} / ${formatBytes(totalBytes)}`;
-
-      renderFileList(listEl);
-    }
-
-    function renderFileList(container) {
-      container.innerHTML = AppState.queue.map(item => `
-        <div class="p-2.5 rounded-2xl glass-card flex flex-col space-y-1.5 border border-white/5">
-          <div class="flex items-center justify-between space-x-2.5">
-            <div class="flex items-center space-x-2.5 truncate">
-              
-              <!-- MINIATURA O BADGE MULTIMEDIA -->
-              <div class="w-9 h-9 rounded-xl glass-card border border-white/10 shrink-0 overflow-hidden flex items-center justify-center">
-                ${item.previewUrl ? `
-                  <img src="${item.previewUrl}" alt="Thumb" class="w-full h-full object-cover">
-                ` : item.esVideo ? `
-                  <svg class="w-4 h-4 text-purple-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                ` : `
-                  <svg class="w-4 h-4 text-cyan-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                `}
-              </div>
-
-              <div class="truncate">
-                <span class="text-xs font-semibold text-slate-200 truncate block">${item.name}</span>
-                <span class="text-[10px] text-slate-500 font-mono block">${formatBytes(item.size)}</span>
-              </div>
-            </div>
-
-            <div class="flex items-center space-x-1.5 shrink-0">
-              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono ${getStatusBadgeClass(item.status)}">
-                ${item.statusText || item.status}
-              </span>
-              ${item.status === 'pending' && !AppState.isUploading ? `
-                <button type="button" onclick="window.removeFileFromQueue('${item.id}')" class="p-1 text-slate-400 hover:text-rose-400 cursor-pointer">
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M6 18L18 6M6 6l12 12"/></svg>
-                </button>
-              ` : ''}
-            </div>
-          </div>
-
-          <div class="w-full h-1.5 rounded-full bg-white/5 overflow-hidden">
-            <div class="h-full rounded-full neon-progress-fill" style="width: ${item.progress}%"></div>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function getStatusBadgeClass(status) {
-      switch (status) {
-        case 'pending': return 'bg-slate-800 text-slate-400 border border-white/5';
-        case 'uploading': return 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 animate-pulse';
-        case 'completed': return 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
-        case 'error': return 'bg-rose-500/20 text-rose-300 border border-rose-500/30';
-        default: return 'bg-slate-800 text-slate-400';
+      if (queueSummary) {
+        queueSummary.textContent = `${AppState.queue.length} archivos (${formatBytes(totalBytes)})`;
       }
+
+      listContainer.innerHTML = '';
+      AppState.queue.forEach(item => {
+        const itemEl = document.createElement('div');
+        itemEl.className = 'p-2.5 rounded-2xl glass-card flex items-center justify-between space-x-3 text-xs queue-item-anim';
+
+        const isVid = item.esVideo;
+        const iconSvg = isVid
+          ? `<svg class="w-4 h-4 text-rose-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>`
+          : `<svg class="w-4 h-4 text-cyan-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>`;
+
+        let thumbHtml = '';
+        if (item.previewUrl) {
+          thumbHtml = `<img src="${item.previewUrl}" alt="Preview" class="w-8 h-8 rounded-lg object-cover shrink-0 border border-white/10 shadow-sm">`;
+        } else {
+          thumbHtml = `<div class="w-8 h-8 rounded-lg glass-card flex items-center justify-center shrink-0 border border-white/5">${iconSvg}</div>`;
+        }
+
+        let badgeStatus = '';
+        if (item.status === 'completed') {
+          badgeStatus = `<span class="px-2 py-0.5 rounded-full text-[9px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Listo</span>`;
+        } else if (item.status === 'uploading') {
+          badgeStatus = `<span class="px-2 py-0.5 rounded-full text-[9px] font-mono font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 animate-pulse">${item.progress}%</span>`;
+        } else if (item.status === 'error') {
+          badgeStatus = `<span class="px-2 py-0.5 rounded-full text-[9px] font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30">Error</span>`;
+        } else {
+          badgeStatus = `<span class="px-2 py-0.5 rounded-full text-[9px] font-mono text-slate-400 bg-white/5">Espera</span>`;
+        }
+
+        itemEl.innerHTML = `
+          <div class="flex items-center space-x-2.5 min-w-0 flex-1">
+            ${thumbHtml}
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center justify-between mb-0.5">
+                <span class="font-medium text-slate-200 truncate pr-2 text-[11px]">${escapeHtml(item.name)}</span>
+                <span class="text-[10px] font-mono text-slate-400 shrink-0">${formatBytes(item.size)}</span>
+              </div>
+              <div class="w-full h-1.5 rounded-full bg-slate-900/80 overflow-hidden border border-white/5">
+                <div class="h-full rounded-full neon-progress-fill transition-all duration-200" style="width: ${item.progress}%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-2 shrink-0">
+            ${badgeStatus}
+            ${item.status !== 'uploading' ? `
+              <button type="button" onclick="window.removeQueueItem('${item.id}', event)" class="p-1 rounded-lg text-slate-500 hover:text-rose-400 glass-btn cursor-pointer" title="Quitar">
+                <svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              </button>
+            ` : ''}
+          </div>
+        `;
+        listContainer.appendChild(itemEl);
+      });
+
+      recalculateGlobalProgress();
+    }
+
+    function recalculateGlobalProgress() {
+      if (AppState.queue.length === 0) {
+        updateGlobalProgress(0);
+        return;
+      }
+      const totalBytes = AppState.queue.reduce((acc, i) => acc + i.size, 0);
+      const uploadedBytes = AppState.queue.reduce((acc, i) => acc + (i.uploadedBytes || 0), 0);
+      const percent = totalBytes > 0 ? Math.min(100, Math.round((uploadedBytes / totalBytes) * 100)) : 0;
+      updateGlobalProgress(percent);
+    }
+
+    function updateGlobalProgress(percent) {
+      const bar = document.getElementById('global-progress-bar');
+      const text = document.getElementById('global-progress-text');
+      if (bar) bar.style.width = `${percent}%`;
+      if (text) text.textContent = `Progreso Total: ${percent}%`;
     }
 
     /**
-     * 10. MOTOR DE SUBIDA CONCURRENTE CON SPEEDOMETER EN TIEMPO REAL
+     * MOTOR DE SUBIDA CONCURRENTE HASTA 6X (RESUMABLE A GOOGLE DRIVE V3)
      */
-    window.startUploadProcess = async function(e) {
+    window.startSequentialUpload = async function(e) {
       if (e) { e.preventDefault(); e.stopPropagation(); }
       if (AppState.isUploading || AppState.config.suspendido) return;
 
@@ -1621,7 +1693,7 @@
         <span>Subiendo (${concurrency} en simult&aacute;neo)...</span>
       `;
 
-      // Worker pool concurrente
+      // Worker pool concurrente (1 a 6 workers)
       let currentIndex = 0;
       async function uploadWorker() {
         while (currentIndex < AppState.queue.length && AppState.isUploading) {
@@ -1642,6 +1714,7 @@
       AppState.isUploading = false;
       btn.disabled = false;
       document.getElementById('global-speed-text').textContent = 'Finalizado';
+      SoundEngine.complete();
 
       const listos = AppState.queue.filter(i => i.status === 'completed').length;
       btn.innerHTML = `<span>${listos} Archivos Subidos con &Eacute;xito</span>`;
@@ -1649,7 +1722,7 @@
       setTimeout(() => {
         btn.innerHTML = `
           <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
-          <span id="btn-upload-label">${AppState.config.tituloBoton || 'Comenzar Subida a Drive'}</span>
+          <span id="btn-upload-label">${AppState.config.btnUploadText || AppState.config.tituloBoton || 'Comenzar Subida a Drive'}</span>
         `;
         updateQueueUI();
         actualizarBotonesConcurrencia();
@@ -1663,7 +1736,7 @@
       updateQueueUI();
 
       try {
-        // PASO A: Solicitar credenciales
+        // PASO A: Solicitar credenciales OAuth al Backend de Apps Script
         const prepRes = await llamarBackend({
           accion: "prepararSubida",
           esVideo: item.esVideo
@@ -1708,7 +1781,7 @@
           throw new Error("No se recibio Location de subida de Google Drive.");
         }
 
-        // PASO C: Subir archivo con PUT y calculo de velocidad
+        // PASO C: Subir archivo directo mediante PUT
         item.statusText = 'Transfiriendo...';
         const fileId = await transferirArchivoPUT(item, uploadUrl);
 
@@ -1781,7 +1854,7 @@
             item.progress = Math.min(99, Math.round((e.loaded / item.size) * 100));
             item.statusText = `${item.progress}% (${formatBytes(e.loaded)})`;
 
-            // Calculo de velocidad
+            // Calculo de velocimetro
             const now = Date.now();
             const timeDiff = (now - lastTime) / 1000;
             if (timeDiff > 0.5) {
@@ -1821,7 +1894,7 @@
     }
 
     /**
-     * 11. MINI EXPLORADOR DE GOOGLE DRIVE INTERACTIVO (DESTINO)
+     * MINI EXPLORADOR DE GOOGLE DRIVE INTERACTIVO (DESTINO)
      */
     async function loadDriveFolders(folderId) {
       const listEl = document.getElementById('drive-folder-list');
@@ -1838,10 +1911,10 @@
 
         if (data && data.exito) {
           AppState.explorerActualId = data.actualId;
-          AppState.explorerActualNombre = data.actualNombre;
           AppState.explorerParentId = data.parentId;
 
           document.getElementById('folder-breadcrumb').textContent = data.actualNombre;
+          document.getElementById('btn-select-folder-text').textContent = `Usar "${data.actualNombre}" como destino`;
 
           const btnUp = document.getElementById('btn-folder-up');
           if (btnUp) {
@@ -1849,279 +1922,536 @@
             btnUp.style.opacity = data.parentId ? '1' : '0.35';
           }
 
+          listEl.innerHTML = '';
           if (!data.carpetas || data.carpetas.length === 0) {
-            listEl.innerHTML = `<div class="p-3 text-center text-xs text-slate-500 font-mono">No hay subcarpetas aqu&iacute;.</div>`;
+            listEl.innerHTML = '<div class="p-3 text-center text-xs text-slate-500 font-mono">No hay subcarpetas aqu&iacute;.</div>';
             return;
           }
 
-          listEl.innerHTML = data.carpetas.map(f => `
-            <div onclick="loadDriveFolders('${f.id}')" class="flex items-center space-x-2.5 p-2 rounded-xl glass-card hover:bg-white/10 cursor-pointer text-xs text-slate-200 transition-all border border-white/5">
-              <svg class="w-4 h-4 text-cyan-400 pointer-events-none shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" /></svg>
-              <span class="truncate font-medium pointer-events-none">${f.nombre}</span>
-            </div>
-          `).join('');
-        } else {
-          listEl.innerHTML = `<div class="p-3 text-center text-xs text-rose-400 font-mono">Error al cargar carpetas.</div>`;
+          data.carpetas.forEach(f => {
+            const item = document.createElement('div');
+            item.className = 'flex items-center justify-between p-2 rounded-xl glass-card hover:border-cyan-400/40 cursor-pointer transition-all group';
+            item.onclick = () => loadDriveFolders(f.id);
+
+            item.innerHTML = `
+              <div class="flex items-center space-x-2 min-w-0">
+                <svg class="w-4 h-4 text-amber-400 shrink-0 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+                <span class="text-xs text-slate-200 truncate group-hover:text-cyan-300 font-medium">${escapeHtml(f.nombre)}</span>
+              </div>
+              <svg class="w-3.5 h-3.5 text-slate-500 group-hover:text-cyan-300 shrink-0 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 5l7 7-7 7"/></svg>
+            `;
+            listEl.appendChild(item);
+          });
         }
       } catch (err) {
         if (loading) loading.classList.add('hidden');
-        listEl.innerHTML = `<div class="p-3 text-center text-xs text-rose-400 font-mono">${err.message}</div>`;
+        listEl.innerHTML = `<div class="p-3 text-center text-xs text-rose-400">Error explorando Drive: ${escapeHtml(err.message)}</div>`;
       }
     }
 
     window.navigateFolderUp = function(e) {
       if (e) { e.preventDefault(); e.stopPropagation(); }
+      SoundEngine.click();
       if (AppState.explorerParentId) {
         loadDriveFolders(AppState.explorerParentId);
-      } else {
-        loadDriveFolders('root');
       }
+    };
+
+    window.selectCurrentExplorerFolder = function(e) {
+      if (e) { e.preventDefault(); e.stopPropagation(); }
+      SoundEngine.click();
+      const currentName = document.getElementById('folder-breadcrumb').textContent;
+      AppState.config.folderId = AppState.explorerActualId;
+      AppState.config.folderName = currentName;
+
+      const btn = document.getElementById('btn-select-current-folder');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = `<span class="text-emerald-400 font-bold">Destino Seleccionado: ${escapeHtml(currentName)}</span>`;
+      setTimeout(() => { btn.innerHTML = originalText; }, 2000);
     };
 
     window.showCreateFolderForm = function(e) {
       if (e) { e.preventDefault(); e.stopPropagation(); }
+      SoundEngine.click();
       document.getElementById('create-folder-form').classList.remove('hidden');
       document.getElementById('new-folder-name').focus();
     };
 
     window.cancelCreateFolderForm = function(e) {
       if (e) { e.preventDefault(); e.stopPropagation(); }
+      SoundEngine.click();
       document.getElementById('create-folder-form').classList.add('hidden');
       document.getElementById('new-folder-name').value = '';
     };
 
     window.handleCreateNewFolder = async function(e) {
       if (e) { e.preventDefault(); e.stopPropagation(); }
-      const name = document.getElementById('new-folder-name').value.trim();
-      if (!name) return;
+      SoundEngine.click();
+      const input = document.getElementById('new-folder-name');
+      const nombre = (input.value || '').trim();
+      if (!nombre) return;
 
       const btn = document.getElementById('btn-confirm-create-folder');
       btn.disabled = true;
-      btn.textContent = '...';
+      btn.textContent = 'Creando...';
 
       try {
         const res = await llamarBackend({
           accion: "crearCarpeta",
           parentId: AppState.explorerActualId,
-          nuevoNombre: name
+          nuevoNombre: nombre
         });
 
         btn.disabled = false;
         btn.textContent = 'Crear';
-        window.cancelCreateFolderForm();
 
         if (res && res.exito) {
+          window.cancelCreateFolderForm();
           loadDriveFolders(AppState.explorerActualId);
         } else {
-          alert("Error: " + ((res && res.error) || "No se pudo crear la carpeta."));
+          alert('Error creando carpeta: ' + ((res && res.error) || 'Desconocido'));
         }
       } catch (err) {
         btn.disabled = false;
         btn.textContent = 'Crear';
-        alert("Error al crear carpeta: " + err.message);
+        alert('Fallo de red: ' + err.message);
       }
     };
 
-    window.selectCurrentExplorerFolder = function(e) {
-      if (e) { e.preventDefault(); e.stopPropagation(); }
-      AppState.config.folderId = AppState.explorerActualId;
-      AppState.config.folderName = AppState.explorerActualNombre;
-
-      const btn = document.getElementById('btn-select-current-folder');
-      const textSpan = document.getElementById('btn-select-folder-text');
-      textSpan.textContent = 'Carpeta Seleccionada como Destino';
-      btn.className = "w-full py-2.5 rounded-xl glass-btn-primary text-xs font-bold text-slate-900 flex items-center justify-center space-x-2 cursor-pointer";
-      setTimeout(() => {
-        textSpan.textContent = 'Usar esta carpeta como destino';
-        btn.className = "w-full py-2.5 rounded-xl glass-btn text-xs font-bold text-white flex items-center justify-center space-x-2 cursor-pointer";
-      }, 2000);
+    /**
+     * GESTOR DE LOGOS Y COLABORADORES
+     */
+    window.handleAvatarSelected = function(input) {
+      if (input.files && input.files[0]) {
+        SoundEngine.click();
+        const file = input.files[0];
+        document.getElementById('avatar-file-name').textContent = file.name;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          AppState.tempAvatarBase64 = e.target.result;
+          const preview = document.getElementById('admin-avatar-preview');
+          const placeholder = document.getElementById('admin-avatar-svg-placeholder');
+          if (preview) {
+            preview.src = e.target.result;
+            preview.classList.remove('hidden');
+          }
+          if (placeholder) placeholder.classList.add('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
     };
 
+    window.showAddCollaboratorForm = function() {
+      SoundEngine.click();
+      document.getElementById('add-collaborator-form').classList.remove('hidden');
+    };
+
+    window.hideAddCollaboratorForm = function() {
+      SoundEngine.click();
+      document.getElementById('add-collaborator-form').classList.add('hidden');
+      document.getElementById('new-collab-name').value = '';
+      document.getElementById('new-collab-role').value = '';
+      document.getElementById('new-collab-file-label').textContent = 'Seleccionar Imagen';
+      AppState.tempCollabBase64 = null;
+    };
+
+    window.handleCollabFileSelected = function(input) {
+      if (input.files && input.files[0]) {
+        SoundEngine.click();
+        const file = input.files[0];
+        document.getElementById('new-collab-file-label').textContent = file.name;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          AppState.tempCollabBase64 = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+
+    window.confirmAddCollaborator = function() {
+      const name = (document.getElementById('new-collab-name').value || '').trim();
+      const role = (document.getElementById('new-collab-role').value || '').trim();
+      if (!name) {
+        alert('Por favor ingresa un nombre para el colaborador.');
+        return;
+      }
+      SoundEngine.click();
+
+      if (!AppState.config.colaboradores) AppState.config.colaboradores = [];
+      AppState.config.colaboradores.push({
+        id: 'collab_' + Date.now(),
+        nombre: name,
+        rol: role || 'Colaborador',
+        logoUrl: AppState.tempCollabBase64 || ''
+      });
+
+      window.hideAddCollaboratorForm();
+      renderCollaboratorsAdminList();
+      renderCollaboratorsMainUI();
+    };
+
+    window.deleteCollaborator = function(id) {
+      SoundEngine.click();
+      if (!AppState.config.colaboradores) return;
+      AppState.config.colaboradores = AppState.config.colaboradores.filter(c => c.id !== id);
+      renderCollaboratorsAdminList();
+      renderCollaboratorsMainUI();
+    };
+
+    window.toggleCollaboratorMode = function() {
+      SoundEngine.click();
+      const current = AppState.config.modoColaboradores || 'solo_logos';
+      let next = 'solo_logos';
+      if (current === 'solo_logos') next = 'logos_y_nombres';
+      else if (current === 'logos_y_nombres') next = 'oculto';
+      else next = 'solo_logos';
+
+      AppState.config.modoColaboradores = next;
+      updateCollabModeLabels();
+      renderCollaboratorsMainUI();
+    };
+
+    function updateCollabModeLabels() {
+      const mode = AppState.config.modoColaboradores || 'solo_logos';
+      const label = document.getElementById('collab-mode-label');
+      const btn = document.getElementById('btn-toggle-collab-mode');
+      if (mode === 'solo_logos') {
+        if (label) label.textContent = 'Solo Logos (Sin nombres)';
+        if (btn) btn.textContent = 'Solo Logos';
+      } else if (mode === 'logos_y_nombres') {
+        if (label) label.textContent = 'Tarjetas con Nombre y Rol';
+        if (btn) btn.textContent = 'Tarjetas';
+      } else {
+        if (label) label.textContent = 'Ocultar en p\u00e1gina principal';
+        if (btn) btn.textContent = 'Oculto';
+      }
+    }
+
+    function renderCollaboratorsAdminList() {
+      const listEl = document.getElementById('collaborators-admin-list');
+      if (!listEl) return;
+      listEl.innerHTML = '';
+
+      const colabs = AppState.config.colaboradores || [];
+      if (colabs.length === 0) {
+        listEl.innerHTML = '<div class="p-2 text-center text-[10px] text-slate-500 font-mono">No has a\u00f1adido colaboradores todav\u00eda.</div>';
+        return;
+      }
+
+      colabs.forEach(c => {
+        const item = document.createElement('div');
+        item.className = 'flex items-center justify-between p-2 rounded-xl glass-card border border-white/5';
+        const logoHtml = c.logoUrl
+          ? `<img src="${c.logoUrl}" alt="${escapeHtml(c.nombre)}" class="w-7 h-7 rounded-lg object-cover shrink-0 border border-white/10">`
+          : `<div class="w-7 h-7 rounded-lg glass-card flex items-center justify-center text-slate-400 shrink-0"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg></div>`;
+
+        item.innerHTML = `
+          <div class="flex items-center space-x-2.5 min-w-0">
+            ${logoHtml}
+            <div class="min-w-0">
+              <span class="text-xs text-white font-medium truncate block">${escapeHtml(c.nombre)}</span>
+              <span class="text-[9px] text-slate-400 font-mono truncate block">${escapeHtml(c.rol || 'Colaborador')}</span>
+            </div>
+          </div>
+          <button type="button" onclick="window.deleteCollaborator('${c.id}')" class="p-1 rounded-lg text-slate-400 hover:text-rose-400 glass-btn cursor-pointer" title="Eliminar">
+            <svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        `;
+        listEl.appendChild(item);
+      });
+    }
+
+    function renderCollaboratorsMainUI() {
+      const section = document.getElementById('collaborators-main-section');
+      const container = document.getElementById('collaborators-display-container');
+      if (!section || !container) return;
+
+      const colabs = AppState.config.colaboradores || [];
+      const mode = AppState.config.modoColaboradores || 'solo_logos';
+
+      if (colabs.length === 0 || mode === 'oculto') {
+        section.classList.add('hidden');
+        return;
+      }
+
+      section.classList.remove('hidden');
+      container.innerHTML = '';
+
+      colabs.forEach(c => {
+        const item = document.createElement('div');
+        if (mode === 'solo_logos') {
+          item.className = 'w-10 h-10 rounded-2xl glass-card p-1 border border-white/10 flex items-center justify-center overflow-hidden hover:scale-110 transition-transform shadow-md cursor-default';
+          item.title = c.nombre + (c.rol ? ` (${c.rol})` : '');
+          if (c.logoUrl) {
+            item.innerHTML = `<img src="${c.logoUrl}" alt="${escapeHtml(c.nombre)}" class="w-full h-full object-cover rounded-xl">`;
+          } else {
+            item.innerHTML = `<span class="text-xs font-bold text-cyan-300 font-mono">${escapeHtml(c.nombre.substring(0, 2).toUpperCase())}</span>`;
+          }
+        } else {
+          // Modo tarjetas con nombre y rol
+          item.className = 'flex items-center space-x-2.5 px-3 py-2 rounded-2xl glass-card border border-white/10 shadow-md hover:border-cyan-400/30 transition-all';
+          const logoHtml = c.logoUrl
+            ? `<img src="${c.logoUrl}" alt="${escapeHtml(c.nombre)}" class="w-7 h-7 rounded-xl object-cover shrink-0 border border-white/10">`
+            : `<div class="w-7 h-7 rounded-xl glass-card flex items-center justify-center text-cyan-300 font-mono font-bold text-xs shrink-0">${escapeHtml(c.nombre.substring(0, 2).toUpperCase())}</div>`;
+
+          item.innerHTML = `
+            ${logoHtml}
+            <div class="min-w-0 pr-1">
+              <span class="text-xs text-white font-bold block truncate">${escapeHtml(c.nombre)}</span>
+              <span class="text-[9px] text-slate-400 font-mono block truncate">${escapeHtml(c.rol || 'Colaborador')}</span>
+            </div>
+          `;
+        }
+        container.appendChild(item);
+      });
+    }
+
     /**
-     * 12. HISTORIAL DE SUBIDAS DESDE GOOGLE SHEETS
+     * HISTORIAL EN VIVO DE GOOGLE SHEETS
      */
     window.cargarHistorialRegistros = async function() {
-      const container = document.getElementById('historial-registros-list');
-      container.innerHTML = `<div class="p-3 text-center text-xs text-slate-400 font-mono">Cargando registros desde Google Sheets...</div>`;
+      SoundEngine.click();
+      const listEl = document.getElementById('historial-registros-list');
+      if (!listEl) return;
+      listEl.innerHTML = '<div class="p-3 text-center text-[10px] text-slate-400 font-mono">Consultando Google Sheets...</div>';
 
       try {
         const res = await llamarBackend({ accion: "obtenerRegistros" });
         if (res && res.exito && res.registros && res.registros.length > 0) {
-          container.innerHTML = res.registros.map(r => `
-            <div class="p-2 rounded-xl bg-black/40 border border-white/5 flex items-center justify-between text-[11px] font-mono">
-              <div class="truncate pr-2">
-                <span class="text-white font-semibold block truncate">${r.nombre}</span>
-                <span class="text-slate-500 text-[10px] block">${r.fechaHora} &bull; ${r.tamanoMB} &bull; ${r.tipo}</span>
+          listEl.innerHTML = '';
+          res.registros.forEach(r => {
+            const row = document.createElement('div');
+            row.className = 'p-2 rounded-xl glass-card border border-white/5 flex items-center justify-between text-[11px]';
+            row.innerHTML = `
+              <div class="min-w-0 flex-1 pr-2">
+                <span class="font-medium text-slate-200 block truncate">${escapeHtml(r.nombre)}</span>
+                <span class="text-[9px] font-mono text-slate-400">${escapeHtml(r.fechaHora)} &bull; ${escapeHtml(r.tamanoMB)}</span>
               </div>
-              ${r.enlaceDrive ? `
-                <a href="${r.enlaceDrive}" target="_blank" rel="noopener noreferrer" class="px-2 py-1 rounded-lg glass-btn text-cyan-300 hover:text-white shrink-0 text-[10px]">
-                  Ver en Drive
-                </a>
-              ` : ''}
-            </div>
-          `).join('');
+              ${r.enlaceDrive ? `<a href="${r.enlaceDrive}" target="_blank" rel="noopener" class="px-2 py-1 rounded-lg glass-btn text-[10px] font-mono text-cyan-300 hover:text-white shrink-0">Ver</a>` : ''}
+            `;
+            listEl.appendChild(row);
+          });
         } else {
-          container.innerHTML = `<div class="p-3 text-center text-xs text-slate-500 font-mono">No hay archivos registrados a&uacute;n.</div>`;
+          listEl.innerHTML = '<div class="p-3 text-center text-[10px] text-slate-500 font-mono">No hay archivos registrados a\u00fan.</div>';
         }
-      } catch (e) {
-        container.innerHTML = `<div class="p-3 text-center text-xs text-rose-400 font-mono">Error al consultar: ${e.message}</div>`;
+      } catch (err) {
+        listEl.innerHTML = `<div class="p-3 text-center text-[10px] text-rose-400 font-mono">Error: ${escapeHtml(err.message)}</div>`;
       }
     };
 
     /**
-     * 13. GUARDAR CONFIGURACION COMPLETA
+     * GUARDAR CONFIGURACION EN GOOGLE SHEETS Y EN LOCAL
      */
     window.saveSettings = async function(e) {
       if (e) { e.preventDefault(); e.stopPropagation(); }
-      const statusEl = document.getElementById('save-status-msg');
+      SoundEngine.click();
       const btn = document.getElementById('btn-save-settings');
-
+      const statusEl = document.getElementById('save-status-msg');
       btn.disabled = true;
-      btn.textContent = 'Guardando...';
-      if (statusEl) statusEl.textContent = 'Guardando en Sheet...';
+      btn.innerHTML = `
+        <svg class="w-4 h-4 animate-spin shrink-0" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+        <span>Guardando...</span>
+      `;
+      if (statusEl) statusEl.textContent = 'Sincronizando con Google Sheets...';
 
-      let avatarFinalUrl = AppState.config.avatarUrl || '';
-      if (AppState.pendingAvatarFile) {
-        try {
-          if (statusEl) statusEl.textContent = 'Subiendo logo a Drive...';
-          const file = AppState.pendingAvatarFile;
-          const prepRes = await llamarBackend({
-            accion: "prepararSubida",
-            esVideo: false,
-            carpetaDestinoDirecta: AppState.config.carpetaAvataresId || "root"
-          });
+      // Recopilar valores de los campos
+      const nuevoTitulo = (document.getElementById('input-btn-title').value || '').trim();
+      const nuevoSubtitulo = (document.getElementById('input-subtitle').value || '').trim();
+      const nuevoBtnUpload = (document.getElementById('input-btn-upload-text').value || '').trim();
+      const mismaCarpetaVal = document.getElementById('toggle-single-folder').checked;
+      const nuevoPin = (document.getElementById('input-admin-pin').value || '').trim();
+      const suspVal = document.getElementById('toggle-suspension').checked;
+      const suspMsg = (document.getElementById('input-suspension-msg').value || '').trim();
+      const glassBlurVal = Number(document.getElementById('glass-blur-slider').value) || 28;
+      const glassOpacityVal = Number(document.getElementById('glass-opacity-slider').value) || 60;
 
-          if (prepRes && prepRes.token) {
-            const locUrl = await obtenerLocationPorXHR(file, prepRes.token, prepRes.targetFolderId);
-            if (locUrl) {
-              const fileId = await transferirArchivoPUT({ file: file, size: file.size, uploadedBytes: 0, progress: 0 }, locUrl);
-              if (fileId) {
-                avatarFinalUrl = `https://drive.google.com/thumbnail?id=${fileId}&sz=w500`;
-                AppState.config.avatarUrl = avatarFinalUrl;
-                setAvatarVisuals(avatarFinalUrl);
-              }
-            }
-          }
-        } catch (eAvatar) {
-          console.warn("Aviso en logo:", eAvatar.message);
-        }
+      if (nuevoTitulo) AppState.config.tituloBoton = nuevoTitulo;
+      if (nuevoSubtitulo) AppState.config.subtitulo = nuevoSubtitulo;
+      if (nuevoBtnUpload) AppState.config.btnUploadText = nuevoBtnUpload;
+      AppState.config.mismaCarpeta = mismaCarpetaVal;
+      if (nuevoPin.length === 4) {
+        AppState.config.adminPin = nuevoPin;
+        AppState.cachedPin = nuevoPin;
       }
-
-      const newTitle = document.getElementById('input-btn-title').value.trim() || 'Comenzar Subida a Drive';
-      const isSingleFolder = document.getElementById('toggle-single-folder').checked;
-      const isSuspended = document.getElementById('toggle-suspension').checked;
-      const suspMsg = document.getElementById('input-suspension-msg').value.trim() || 'Servicio suspendido temporalmente por mantenimiento';
-      const newPin = document.getElementById('input-admin-pin').value.trim() || AppState.cachedPin || '0412';
-      const glassBlurVal = parseInt(document.getElementById('glass-blur-slider').value, 10) || 28;
-
-      const payload = {
-        accion: "guardarConfigCompleta",
-        folderId: AppState.config.folderId,
-        folderName: AppState.config.folderName,
-        tituloBoton: newTitle,
-        mismaCarpeta: isSingleFolder,
-        adminPin: newPin,
-        themeColor: AppState.config.themeColor || '#00f2fe',
-        avatarUrl: avatarFinalUrl,
-        suspendido: isSuspended,
-        mensajeSuspension: suspMsg,
-        carpetaAvataresId: AppState.config.carpetaAvataresId || 'root',
-        carpetaAvataresNombre: AppState.config.carpetaAvataresNombre || 'Mi Unidad',
-        concurrenciaMax: AppState.activeConcurrency || 3,
-        colaboradores: AppState.config.colaboradores || [],
-        modoColaboradores: AppState.config.modoColaboradores || 'solo_logos',
-        glassBlur: glassBlurVal
-      };
+      AppState.config.suspendido = suspVal;
+      if (suspMsg) AppState.config.mensajeSuspension = suspMsg;
+      if (AppState.tempAvatarBase64) AppState.config.avatarUrl = AppState.tempAvatarBase64;
+      AppState.config.glassBlur = glassBlurVal;
+      AppState.config.glassOpacity = glassOpacityVal;
 
       try {
+        const payload = {
+          accion: "guardarConfigCompleta",
+          folderId: AppState.config.folderId,
+          folderName: AppState.config.folderName,
+          tituloBoton: AppState.config.tituloBoton,
+          subtitulo: AppState.config.subtitulo,
+          mismaCarpeta: AppState.config.mismaCarpeta,
+          adminPin: AppState.config.adminPin,
+          themeColor: AppState.config.themeColor,
+          themeColor2: AppState.config.themeColor2,
+          avatarUrl: AppState.config.avatarUrl,
+          tamanoLogo: AppState.config.tamanoLogo,
+          suspendido: AppState.config.suspendido,
+          mensajeSuspension: AppState.config.mensajeSuspension,
+          carpetaAvataresId: AppState.config.carpetaAvataresId || 'root',
+          carpetaAvataresNombre: AppState.config.carpetaAvataresNombre || 'Mi Unidad',
+          concurrenciaMax: AppState.config.concurrenciaMax || 6,
+          colaboradores: AppState.config.colaboradores || [],
+          modoColaboradores: AppState.config.modoColaboradores || 'solo_logos',
+          glassBlur: glassBlurVal,
+          glassOpacity: glassOpacityVal,
+          efecto3D: AppState.config.efecto3D,
+          sonidoActivo: AppState.config.sonidoActivo
+        };
+
         const res = await llamarBackend(payload);
         btn.disabled = false;
-        btn.textContent = 'Guardar Todo';
+        btn.innerHTML = `<span>Listo</span>`;
 
         if (res && res.exito) {
-          if (statusEl) {
-            statusEl.textContent = 'Guardado con exito';
-            setTimeout(() => { statusEl.textContent = ''; }, 2500);
-          }
-          AppState.config = Object.assign(AppState.config, payload);
-          AppState.cachedPin = newPin;
-          AppState.pendingAvatarFile = null;
+          SoundEngine.success();
           saveLocalConfig();
           applyConfigToUI();
+          if (statusEl) statusEl.textContent = 'Configuraci\u00f3n guardada con \u00e9xito.';
+          setTimeout(() => {
+            window.closeAdminModal();
+            btn.innerHTML = `
+              <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+              <span>Guardar Todo</span>
+            `;
+            if (statusEl) statusEl.textContent = '';
+          }, 1200);
         } else {
-          if (statusEl) statusEl.textContent = 'Error al guardar';
-          alert("Error: " + ((res && res.error) || "Fallo al guardar configuracion."));
+          alert('Error al guardar: ' + ((res && res.error) || 'Desconocido'));
         }
       } catch (err) {
         btn.disabled = false;
-        btn.textContent = 'Guardar Todo';
-        if (statusEl) statusEl.textContent = 'Guardado en cache local';
-        AppState.config = Object.assign(AppState.config, payload);
-        saveLocalConfig();
-        applyConfigToUI();
+        btn.innerHTML = `<span>Guardar Todo</span>`;
+        alert('Fallo de comunicaci\u00f3n con Google Sheets: ' + err.message);
       }
     };
 
+    window.previewSuspensionToggle = function(isSuspended) {
+      AppState.config.suspendido = isSuspended;
+      updateSuspensionBadge();
+      updateSuspensionOverlay();
+    };
+
+    function updateSuspensionBadge() {
+      const badge = document.getElementById('badge-suspension-status');
+      if (!badge) return;
+      if (AppState.config.suspendido) {
+        badge.className = "inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30";
+        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span><span>Recepci\u00f3n Pausada &bull; Mantenimiento</span>`;
+      } else {
+        badge.className = "inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30";
+        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span><span>Servicio Activo &bull; Recepci\u00f3n Normal</span>`;
+      }
+    }
+
+    function updateSuspensionOverlay() {
+      const overlay = document.getElementById('suspension-overlay');
+      const msg = document.getElementById('suspension-display-msg');
+      if (!overlay) return;
+      if (AppState.config.suspendido) {
+        overlay.classList.remove('hidden');
+        if (msg) msg.textContent = AppState.config.mensajeSuspension || 'Servicio suspendido temporalmente por mantenimiento';
+      } else {
+        overlay.classList.add('hidden');
+      }
+    }
+
+    /**
+     * PERSISTENCIA LOCAL Y POBLADO DE FORMULARIOS
+     */
     function saveLocalConfig() {
       try {
-        localStorage.setItem('solicitador_pro_v3_config', JSON.stringify(AppState.config));
+        localStorage.setItem('solicitador_pro_config_v3', JSON.stringify(AppState.config));
       } catch (e) {}
     }
 
     function loadLocalConfig() {
       try {
-        const saved = localStorage.getItem('solicitador_pro_v3_config');
+        const saved = localStorage.getItem('solicitador_pro_config_v3');
         if (saved) {
           const parsed = JSON.parse(saved);
           AppState.config = Object.assign(AppState.config, parsed);
           if (parsed.adminPin) AppState.cachedPin = parsed.adminPin;
-          if (parsed.concurrenciaMax) AppState.activeConcurrency = Number(parsed.concurrenciaMax);
+          if (parsed.concurrenciaMax) {
+            AppState.adminConcurrencyLimit = Number(parsed.concurrenciaMax);
+            AppState.activeConcurrency = Math.min(AppState.activeConcurrency, Number(parsed.concurrenciaMax));
+          }
         }
       } catch (e) {}
     }
 
+    function populateAdminFields() {
+      const cfg = AppState.config;
+      document.getElementById('input-btn-title').value = cfg.tituloBoton || '';
+      document.getElementById('input-subtitle').value = cfg.subtitulo || '';
+      document.getElementById('input-btn-upload-text').value = cfg.btnUploadText || cfg.tituloBoton || '';
+      document.getElementById('toggle-single-folder').checked = Boolean(cfg.mismaCarpeta);
+      document.getElementById('input-admin-pin').value = cfg.adminPin || '0412';
+      document.getElementById('toggle-suspension').checked = Boolean(cfg.suspendido);
+      document.getElementById('input-suspension-msg').value = cfg.mensajeSuspension || '';
+
+      document.getElementById('theme-color-picker').value = cfg.themeColor || '#00f2fe';
+      document.getElementById('theme-color-hex').value = cfg.themeColor || '#00f2fe';
+      document.getElementById('theme-color-picker-2').value = cfg.themeColor2 || '#4facfe';
+      document.getElementById('theme-color-hex-2').value = cfg.themeColor2 || '#4facfe';
+
+      document.getElementById('glass-blur-slider').value = cfg.glassBlur || 28;
+      document.getElementById('glass-blur-value').textContent = `${cfg.glassBlur || 28}px`;
+
+      document.getElementById('glass-opacity-slider').value = cfg.glassOpacity || 60;
+      document.getElementById('glass-opacity-value').textContent = `${cfg.glassOpacity || 60}%`;
+
+      document.getElementById('toggle-3d-tilt').checked = cfg.efecto3D !== false;
+      document.getElementById('toggle-sound-fx').checked = Boolean(cfg.sonidoActivo);
+
+      window.setLogoSize(cfg.tamanoLogo || 'destacado');
+      window.setAdminConcurrencyLimit(cfg.concurrenciaMax || 6);
+
+      updateSuspensionBadge();
+      updateCollabModeLabels();
+      renderCollaboratorsAdminList();
+
+      const prev = document.getElementById('admin-avatar-preview');
+      const holder = document.getElementById('admin-avatar-svg-placeholder');
+      if (cfg.avatarUrl) {
+        if (prev) { prev.src = cfg.avatarUrl; prev.classList.remove('hidden'); }
+        if (holder) holder.classList.add('hidden');
+      }
+    }
+
     function applyConfigToUI() {
       const cfg = AppState.config;
-      document.getElementById('input-btn-title').value = cfg.tituloBoton || 'Comenzar Subida a Drive';
-      document.getElementById('btn-upload-label').textContent = cfg.tituloBoton || 'Comenzar Subida a Drive';
       document.getElementById('header-title').textContent = cfg.tituloBoton || 'Portal de Carga de Archivos';
-      document.getElementById('toggle-single-folder').checked = !!cfg.mismaCarpeta;
+      document.getElementById('header-subtitle').innerHTML = cfg.subtitulo || 'Directo a Google Drive &bull; Fotos y Videos sin l&iacute;mite de tama&ntilde;o';
 
-      document.getElementById('toggle-suspension').checked = !!cfg.suspendido;
-      document.getElementById('input-suspension-msg').value = cfg.mensajeSuspension || 'Servicio suspendido temporalmente por mantenimiento';
-      document.getElementById('input-admin-pin').value = cfg.adminPin || '0412';
-
-      updateSuspensionBadge(!!cfg.suspendido);
-      applySuspensionToUI();
-
-      if (cfg.themeColor) {
-        applyDynamicColor(cfg.themeColor);
-        document.getElementById('theme-color-picker').value = cfg.themeColor;
-        document.getElementById('theme-color-hex').value = cfg.themeColor;
+      const uploadLabel = document.getElementById('btn-upload-label');
+      if (uploadLabel) {
+        uploadLabel.textContent = cfg.btnUploadText || cfg.tituloBoton || 'Comenzar Subida a Drive';
       }
 
-      if (cfg.glassBlur) {
-        document.getElementById('glass-blur-slider').value = cfg.glassBlur;
-        document.getElementById('glass-blur-value').textContent = cfg.glassBlur + 'px';
-        document.documentElement.style.setProperty('--glass-blur', cfg.glassBlur + 'px');
-      }
+      applyThemeColors();
+      document.documentElement.style.setProperty('--glass-blur', `${cfg.glassBlur || 28}px`);
+      document.documentElement.style.setProperty('--glass-bg-opacity', (Number(cfg.glassOpacity || 60) / 100).toFixed(2));
 
+      applyLogoSizeToUI();
+
+      const headImg = document.getElementById('header-avatar-img');
+      const headSvg = document.getElementById('header-avatar-svg');
       if (cfg.avatarUrl) {
-        setAvatarVisuals(cfg.avatarUrl);
+        if (headImg) { headImg.src = cfg.avatarUrl; headImg.classList.remove('hidden'); }
+        if (headSvg) headSvg.classList.add('hidden');
+      } else {
+        if (headImg) headImg.classList.add('hidden');
+        if (headSvg) headSvg.classList.remove('hidden');
       }
 
-      const collabLabel = document.getElementById('collab-mode-label');
-      const collabBtn = document.getElementById('btn-toggle-collab-mode');
-      if (collabLabel && collabBtn) {
-        if (cfg.modoColaboradores === 'solo_logos') {
-          collabLabel.textContent = 'Solo Logos (Sin nombres)';
-          collabBtn.textContent = 'Solo Logos';
-        } else {
-          collabLabel.textContent = 'Logos con Nombre';
-          collabBtn.textContent = 'Con Nombres';
-        }
-      }
-
+      updateSuspensionOverlay();
       document.getElementById('folder-breadcrumb').textContent = cfg.folderName || 'Mi Unidad';
       
       renderCollaboratorsMainUI();
@@ -2129,54 +2459,68 @@
     }
 
     /**
-     * 14. INICIALIZACION
+     * COMUNICACION CON BACKEND GOOGLE APPS SCRIPT
      */
-    async function init() {
-      loadLocalConfig();
-      applyConfigToUI();
+    async function llamarBackend(payload) {
+      const resp = await fetch(APPS_SCRIPT_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify(payload)
+      });
+      return await resp.json();
+    }
 
-      // Drag and drop fluido
-      const dropzone = document.getElementById('dropzone');
-      ['dragenter', 'dragover'].forEach(n => {
-        dropzone.addEventListener(n, (e) => {
-          e.preventDefault(); e.stopPropagation();
-          if (!AppState.config.suspendido) dropzone.classList.add('dragover-active');
-        }, false);
-      });
-      ['dragleave', 'drop'].forEach(n => {
-        dropzone.addEventListener(n, (e) => {
-          e.preventDefault(); e.stopPropagation();
-          dropzone.classList.remove('dragover-active');
-        }, false);
-      });
-      dropzone.addEventListener('drop', (e) => {
-        if (AppState.config.suspendido) return;
-        const dt = e.dataTransfer;
-        if (dt && dt.files && dt.files.length > 0) {
-          handleFilesAdded(dt.files);
-        }
-      });
-
-      // Sincronizacion con Google Apps Script
+    async function syncConfigFromBackend() {
       try {
         const res = await llamarBackend({ accion: "obtenerConfig" });
         if (res && res.exito) {
           AppState.config = Object.assign(AppState.config, res);
           AppState.cachedPin = res.adminPin || '0412';
-          if (res.concurrenciaMax) AppState.activeConcurrency = Number(res.concurrenciaMax);
+          if (res.concurrenciaMax) {
+            AppState.adminConcurrencyLimit = Number(res.concurrenciaMax);
+            AppState.activeConcurrency = Math.min(AppState.activeConcurrency, Number(res.concurrenciaMax));
+          }
           saveLocalConfig();
           applyConfigToUI();
         }
-      } catch (err) {
-        console.warn("Aviso de sincronizacion:", err.message);
+      } catch (e) {
+        console.warn("Usando configuracion local en cache:", e);
       }
     }
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', init);
-    } else {
-      init();
+    /**
+     * UTILIDADES
+     */
+    function formatBytes(bytes) {
+      if (!bytes || bytes <= 0) return '0 B';
+      const k = 1024;
+      const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    /**
+     * INICIALIZACION AL CARGAR LA PAGINA
+     */
+    window.addEventListener('DOMContentLoaded', () => {
+      loadLocalConfig();
+      applyConfigToUI();
+      initDragAndDrop();
+      initParallaxTilt();
+      syncConfigFromBackend();
+    });
   </script>
 </body>
 </html>

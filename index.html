@@ -177,15 +177,15 @@
   <!-- ============================================================== -->
   <div class="relative z-10 w-full max-w-5xl mx-auto p-3 sm:p-5 md:p-6 flex flex-col min-h-screen justify-between space-y-4">
 
-    <!-- HEADER: AVATAR / LOGO + TITULOS + TUERCA UNICA SVG -->
+    <!-- HEADER: LOGO PRINCIPAL + TITULOS + TUERCA UNICA SVG -->
     <header class="glass-panel rounded-3xl p-4 sm:p-5 flex items-center justify-between shadow-2xl relative overflow-hidden">
       
-      <!-- Lado Izquierdo: Avatar / Logo Dinámico + Títulos -->
+      <!-- Lado Izquierdo: Logo Principal Personalizado + Titulos -->
       <div class="flex items-center space-x-3 sm:space-x-4 min-w-0">
         
-        <!-- Badge Avatar / Logo Central -->
+        <!-- Badge Logo Principal (Tu Marca) -->
         <div id="header-avatar-container" class="relative shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-2xl glass-card p-1 border border-white/10 flex items-center justify-center overflow-hidden shadow-lg" style="box-shadow: 0 0 20px var(--accent-glow);">
-          <img id="header-avatar-img" src="" alt="Logo" class="hidden w-full h-full object-cover rounded-xl">
+          <img id="header-avatar-img" src="" alt="Logo Principal" class="hidden w-full h-full object-cover rounded-xl">
           <div id="header-avatar-svg" class="w-full h-full flex items-center justify-center text-slate-300">
             <svg class="w-7 h-7 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: var(--theme-accent);">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
@@ -218,7 +218,7 @@
     </header>
 
     <!-- ============================================================== -->
-    <!-- CUERPO PRINCIPAL: DROPZONE Y COLA SECUENCIAL                   -->
+    <!-- CUERPO PRINCIPAL: DROPZONE Y COLA SECUENCIAL / PARALELA        -->
     <!-- ============================================================== -->
     <main class="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1 relative">
 
@@ -293,20 +293,54 @@
         </div>
       </div>
 
-      <!-- COLUMNA DERECHA: COLA SECUENCIAL RESUMIBLE (7 cols) -->
+      <!-- COLUMNA DERECHA: COLA DE SUBIDA Y SELECTOR DE CONCURRENCIA (7 cols) -->
       <div class="lg:col-span-7 flex flex-col space-y-3">
         <div class="glass-panel rounded-3xl p-4 sm:p-5 flex-1 flex flex-col justify-between shadow-2xl relative overflow-hidden min-h-[380px]">
           
-          <div class="flex items-center justify-between pb-3 border-b border-white/5">
-            <div class="flex items-center space-x-2">
-              <span class="w-2.5 h-2.5 rounded-full animate-pulse" style="background-color: var(--theme-accent);"></span>
-              <h2 class="font-display font-bold text-sm sm:text-base text-white">Cola de Subida</h2>
-              <span id="queue-summary" class="text-xs text-slate-400 font-mono">0 archivos</span>
+          <!-- Encabezado de la cola y selector de concurrencia -->
+          <div class="pb-3 border-b border-white/5 space-y-2">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full animate-pulse" style="background-color: var(--theme-accent);"></span>
+                <h2 class="font-display font-bold text-sm sm:text-base text-white">Cola de Subida</h2>
+                <span id="queue-summary" class="text-xs text-slate-400 font-mono">0 archivos</span>
+              </div>
+              <button type="button" id="btn-clear-queue" onclick="window.clearCompletedFiles(event)" class="text-[11px] text-slate-400 hover:text-rose-400 transition-colors flex items-center space-x-1 cursor-pointer">
+                <svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                <span>Limpiar listos</span>
+              </button>
             </div>
-            <button type="button" id="btn-clear-queue" onclick="window.clearCompletedFiles(event)" class="text-[11px] text-slate-400 hover:text-rose-400 transition-colors flex items-center space-x-1 cursor-pointer">
-              <svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-              <span>Limpiar listos</span>
-            </button>
+
+            <!-- SELECTOR DINAMICO DE SUBIDA SIMULTANEA (1, 2 o 3 archivos) -->
+            <div class="flex items-center justify-between p-2 rounded-2xl bg-black/40 border border-white/5 text-xs">
+              <div class="flex items-center space-x-1.5 text-slate-300">
+                <svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                <span class="font-medium text-[11px]">Subida simult&aacute;nea:</span>
+              </div>
+
+              <!-- Botones de Concurrencia Inteligentes -->
+              <div class="flex items-center space-x-1" id="concurrency-selector-group">
+                <!-- Boton 1: Siempre disponible -->
+                <button type="button" id="btn-concurrency-1" onclick="window.setConcurrency(1)" class="px-2.5 py-1 rounded-lg text-[11px] font-mono font-bold transition-all cursor-pointer glass-btn text-white" title="Subir de 1 en 1">
+                  1
+                </button>
+                
+                <!-- Boton 2: Disponible si el lote no satura red -->
+                <button type="button" id="btn-concurrency-2" onclick="window.setConcurrency(2)" class="px-2.5 py-1 rounded-lg text-[11px] font-mono font-bold transition-all cursor-pointer glass-btn text-white" title="Subir 2 simultaneos">
+                  2
+                </button>
+
+                <!-- Boton 3: Disponible para fotos o lotes ligeros (< 45 MB juntos) -->
+                <button type="button" id="btn-concurrency-3" onclick="window.setConcurrency(3)" class="px-2.5 py-1 rounded-lg text-[11px] font-mono font-bold transition-all cursor-pointer glass-btn text-white" title="Subir 3 simultaneos (Turbo)">
+                  3
+                </button>
+
+                <!-- Estado del selector -->
+                <span id="concurrency-status-hint" class="text-[10px] text-slate-400 font-mono ml-1.5 hidden sm:inline">
+                  (Optimo)
+                </span>
+              </div>
+            </div>
           </div>
 
           <!-- Estado Vacio -->
@@ -319,7 +353,7 @@
           </div>
 
           <!-- Lista de Archivos en Cola -->
-          <div id="file-list-container" class="hidden flex-1 overflow-y-auto space-y-2 my-3 max-h-[300px]"></div>
+          <div id="file-list-container" class="hidden flex-1 overflow-y-auto space-y-2 my-3 max-h-[290px]"></div>
 
           <!-- Barra de Progreso y Acciones Inferiores -->
           <div class="pt-3 border-t border-white/5 space-y-3">
@@ -362,6 +396,19 @@
         </div>
       </div>
     </main>
+
+    <!-- ============================================================== -->
+    <!-- SECCION DE COLABORADORES / ALIADOS (EN LA PAGINA PRINCIPAL)    -->
+    <!-- ============================================================== -->
+    <div id="collaborators-main-section" class="hidden glass-panel rounded-3xl p-3.5 sm:p-4 border border-white/5 shadow-lg">
+      <div class="flex items-center space-x-2 pb-2 mb-2 border-b border-white/5">
+        <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+        <span class="text-xs font-bold text-slate-300 font-display">Colaboradores &bull; Aliados</span>
+      </div>
+      <div id="collaborators-display-container" class="flex flex-wrap items-center gap-2.5">
+        <!-- Generado dinamicamente segun modo (solo logos o logos con nombres) -->
+      </div>
+    </div>
 
     <!-- FOOTER -->
     <footer class="pt-3 pb-2 text-center text-[10px] text-slate-500 border-t border-white/5 font-mono">
@@ -426,7 +473,7 @@
         
         <div class="pb-1 border-b border-white/5">
           <h3 class="text-base font-bold text-white font-display">Panel Maestro de Control</h3>
-          <p class="text-[11px] text-slate-400">Administra el destino, la est&eacute;tica y la seguridad del sistema</p>
+          <p class="text-[11px] text-slate-400">Administra el destino, logos, colaboradores y seguridad</p>
         </div>
 
         <!-- BARRA DE NAVEGACION DE LAS 3 PESTAÑAS -->
@@ -438,10 +485,10 @@
             <span class="truncate">Destino</span>
           </button>
 
-          <!-- Pestaña 2: Personalizacion -->
+          <!-- Pestaña 2: Personalizacion y Logos -->
           <button type="button" id="tab-btn-2" onclick="window.switchTab(2)" class="py-2 px-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white transition-all flex items-center justify-center space-x-1.5 cursor-pointer">
             <svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4 8.014 8.014 0 014.288-7.143C7.545 9.774 8 9.5 8 9.5s.455.274.712.357A8.014 8.014 0 0113 17a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
-            <span class="truncate">Dise&ntilde;o</span>
+            <span class="truncate">Logos & Dise&ntilde;o</span>
           </button>
 
           <!-- Pestaña 3: Seguridad & Suspension -->
@@ -522,11 +569,94 @@
           </div>
 
           <!-- ======================================================== -->
-          <!-- PESTAÑA 2: PERSONALIZACION (COLOR & AVATAR)              -->
+          <!-- PESTAÑA 2: PERSONALIZACION, LOGO PRINCIPAL Y COLABORADORES-->
           <!-- ======================================================== -->
-          <div id="tab-content-2" class="hidden space-y-3">
+          <div id="tab-content-2" class="space-y-3">
             
-            <!-- Selector de Color / Rueda Cromatica -->
+            <!-- 1. LOGO PRINCIPAL (TU MARCA) -->
+            <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-2.5">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="text-xs font-bold text-white uppercase tracking-wider">Logo Principal (Tu Marca)</span>
+                  <p class="text-[10px] text-slate-400">Es el logo destacado que aparece en la cabecera superior</p>
+                </div>
+                <span class="px-2 py-0.5 rounded-full text-[9px] font-mono bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">Principal</span>
+              </div>
+
+              <div class="flex items-center space-x-3.5 p-2 rounded-xl bg-black/30 border border-white/5">
+                <div class="w-12 h-12 rounded-xl glass-card overflow-hidden border border-white/10 shrink-0 flex items-center justify-center">
+                  <img id="admin-avatar-preview" src="" alt="Preview Logo" class="hidden w-full h-full object-cover">
+                  <div id="admin-avatar-svg-placeholder" class="text-slate-400">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                  </div>
+                </div>
+
+                <div class="flex-1 flex flex-col space-y-1">
+                  <label for="input-avatar-file" class="py-2 px-3 rounded-xl glass-btn text-xs font-semibold text-white flex items-center justify-center space-x-1.5 cursor-pointer active:scale-98 text-center">
+                    <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                    <span>Subir Mi Logo Principal</span>
+                  </label>
+                  <input type="file" id="input-avatar-file" accept="image/*" class="hidden" onchange="window.handleAvatarSelected(this)">
+                  <span id="avatar-file-name" class="text-[10px] text-slate-500 font-mono truncate">Logo actual o predeterminado</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. GESTION DE LOGOS DE COLABORADORES / ALIADOS -->
+            <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-3">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="text-xs font-bold text-white uppercase tracking-wider">Logos de Colaboradores</span>
+                  <p class="text-[10px] text-slate-400">A&ntilde;ade patrocinadores, aliados o fot&oacute;grafos colaboradores</p>
+                </div>
+                <button type="button" onclick="window.showAddCollaboratorForm()" class="px-2.5 py-1 rounded-lg glass-btn-primary text-[11px] font-bold cursor-pointer flex items-center space-x-1">
+                  <svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                  <span>+ Colaborador</span>
+                </button>
+              </div>
+
+              <!-- Switch Modo de Visualizacion de Colaboradores -->
+              <div class="flex items-center justify-between p-2.5 rounded-xl bg-black/40 border border-white/5">
+                <div>
+                  <span class="text-xs font-semibold text-white block">Modo de visualizaci&oacute;n</span>
+                  <span class="text-[10px] text-slate-400 block" id="collab-mode-label">Solo Logos (Sin nombres)</span>
+                </div>
+                <button type="button" id="btn-toggle-collab-mode" onclick="window.toggleCollaboratorMode()" class="px-3 py-1.5 rounded-xl glass-btn text-xs font-mono font-bold text-cyan-300 cursor-pointer">
+                  Solo Logos
+                </button>
+              </div>
+
+              <!-- Formulario para agregar colaborador nuevo -->
+              <div id="add-collaborator-form" class="hidden p-3 rounded-2xl bg-white/5 border border-white/10 space-y-2">
+                <span class="text-xs font-bold text-slate-200 block">Nuevo Colaborador</span>
+                
+                <div class="space-y-1.5">
+                  <label class="block text-[10px] font-mono text-slate-400">Nombre del Colaborador</label>
+                  <input type="text" id="new-collab-name" placeholder="Ej: Estudio Fotogr&aacute;fico Aliado" class="w-full px-3 py-1.5 rounded-xl glass-input text-xs text-white">
+                </div>
+
+                <div class="space-y-1.5">
+                  <label class="block text-[10px] font-mono text-slate-400">Logo o Icono</label>
+                  <label for="new-collab-file" class="w-full py-2 px-3 rounded-xl glass-btn text-xs font-semibold text-slate-300 hover:text-white flex items-center justify-center space-x-1.5 cursor-pointer">
+                    <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    <span id="new-collab-file-label">Seleccionar Imagen</span>
+                  </label>
+                  <input type="file" id="new-collab-file" accept="image/*" class="hidden" onchange="window.handleCollabFileSelected(this)">
+                </div>
+
+                <div class="flex items-center justify-end space-x-2 pt-1">
+                  <button type="button" onclick="window.hideAddCollaboratorForm()" class="px-3 py-1 rounded-lg glass-btn text-xs text-slate-400 cursor-pointer">Cancelar</button>
+                  <button type="button" onclick="window.confirmAddCollaborator()" class="px-3 py-1 rounded-lg glass-btn-primary text-xs font-bold cursor-pointer">A&ntilde;adir</button>
+                </div>
+              </div>
+
+              <!-- Lista de Colaboradores Actuales -->
+              <div id="collaborators-admin-list" class="space-y-2 max-h-48 overflow-y-auto">
+                <!-- Items inyectados dinamicamente -->
+              </div>
+            </div>
+
+            <!-- 3. COLOR Y PALETAS NEON -->
             <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-2.5">
               <div>
                 <span class="text-xs font-bold text-white uppercase tracking-wider">Acento Crom&aacute;tico y Ne&oacute;n</span>
@@ -542,7 +672,6 @@
                 </div>
               </div>
 
-              <!-- Paleta Rapida de Neones -->
               <div class="flex items-center space-x-2 pt-1">
                 <span class="text-[10px] text-slate-500 font-mono">Paletas:</span>
                 <button type="button" onclick="window.handleColorChange('#00f2fe')" class="w-6 h-6 rounded-full bg-[#00f2fe] border border-white/30 cursor-pointer hover:scale-110 transition-transform shadow-[0_0_10px_#00f2fe]"></button>
@@ -550,55 +679,6 @@
                 <button type="button" onclick="window.handleColorChange('#ec4899')" class="w-6 h-6 rounded-full bg-[#ec4899] border border-white/30 cursor-pointer hover:scale-110 transition-transform shadow-[0_0_10px_#ec4899]"></button>
                 <button type="button" onclick="window.handleColorChange('#10b981')" class="w-6 h-6 rounded-full bg-[#10b981] border border-white/30 cursor-pointer hover:scale-110 transition-transform shadow-[0_0_10px_#10b981]"></button>
                 <button type="button" onclick="window.handleColorChange('#f59e0b')" class="w-6 h-6 rounded-full bg-[#f59e0b] border border-white/30 cursor-pointer hover:scale-110 transition-transform shadow-[0_0_10px_#f59e0b]"></button>
-              </div>
-            </div>
-
-            <!-- Subida de Avatar / Logo de Perfil -->
-            <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-2.5">
-              <div>
-                <span class="text-xs font-bold text-white uppercase tracking-wider">Icono / Imagen de Perfil</span>
-                <p class="text-[10px] text-slate-400">Sube una imagen desde tu dispositivo para personalizar el avatar central</p>
-              </div>
-
-              <div class="flex items-center space-x-3.5 p-2 rounded-xl bg-black/30 border border-white/5">
-                <div class="w-12 h-12 rounded-xl glass-card overflow-hidden border border-white/10 shrink-0 flex items-center justify-center">
-                  <img id="admin-avatar-preview" src="" alt="Preview" class="hidden w-full h-full object-cover">
-                  <div id="admin-avatar-svg-placeholder" class="text-slate-400">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                  </div>
-                </div>
-
-                <div class="flex-1 flex flex-col space-y-1">
-                  <label for="input-avatar-file" class="py-2 px-3 rounded-xl glass-btn text-xs font-semibold text-white flex items-center justify-center space-x-1.5 cursor-pointer active:scale-98 text-center">
-                    <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-                    <span>Seleccionar Nueva Imagen</span>
-                  </label>
-                  <input type="file" id="input-avatar-file" accept="image/*" class="hidden" onchange="window.handleAvatarSelected(this)">
-                  <span id="avatar-file-name" class="text-[10px] text-slate-500 font-mono truncate">Ning&uacute;n archivo seleccionado</span>
-                </div>
-              </div>
-
-              <!-- Carpeta para Avatares en Drive -->
-              <div class="pt-2 border-t border-white/5 space-y-1.5">
-                <div class="flex items-center justify-between">
-                  <span class="text-[11px] font-semibold text-slate-300">Carpeta en Drive para Guardar Avatares</span>
-                  <button type="button" onclick="window.toggleAvatarFolderExplorer()" class="text-[10px] text-cyan-400 hover:underline cursor-pointer">
-                    <span id="btn-toggle-avatar-exp-text">Cambiar Carpeta</span>
-                  </button>
-                </div>
-                <div class="flex items-center space-x-1.5 text-xs text-slate-400 font-mono py-1.5 px-2.5 rounded-lg bg-black/40 truncate border border-white/5">
-                  <span class="text-purple-400 font-bold shrink-0">Carpeta avatar:</span>
-                  <span id="avatar-folder-breadcrumb" class="truncate text-slate-200">Mi Unidad</span>
-                </div>
-
-                <!-- Sub-explorador colapsable para avatares -->
-                <div id="avatar-folder-explorer-box" class="hidden space-y-1 pt-1">
-                  <div class="flex items-center justify-between">
-                    <button type="button" onclick="window.navigateAvatarFolderUp()" class="p-1 rounded-lg glass-btn text-xs text-slate-300 cursor-pointer">Atr&aacute;s</button>
-                    <button type="button" onclick="window.selectCurrentFolderForAvatar()" class="p-1 px-2.5 rounded-lg glass-btn-primary text-xs font-bold cursor-pointer">Fijar para Avatares</button>
-                  </div>
-                  <div id="avatar-drive-list" class="max-h-32 overflow-y-auto space-y-1 pt-1"></div>
-                </div>
               </div>
             </div>
           </div>
@@ -659,7 +739,7 @@
   </div>
 
   <!-- ============================================================== -->
-  <!-- JAVASCRIPT: ARQUITECTURA TECNICA SIN FALLOS DE CORS           -->
+  <!-- JAVASCRIPT: MOTOR CONCURRENTE INTELIGENTE Y GESTION DE LOGOS  -->
   <!-- ============================================================== -->
   <script>
     /**
@@ -683,23 +763,25 @@
         mensajeSuspension: 'Servicio suspendido temporalmente por mantenimiento',
         carpetaAvataresId: 'root',
         carpetaAvataresNombre: 'Mi Unidad',
+        concurrenciaMax: 3,
+        colaboradores: [],
+        modoColaboradores: 'solo_logos',
         sheetUrl: '#'
       },
       queue: [],
       isUploading: false,
+      activeConcurrency: 3,
       pinEntered: '',
       cachedPin: '0412',
       explorerActualId: 'root',
       explorerActualNombre: 'Mi Unidad',
       explorerParentId: null,
-      avatarExplorerActualId: 'root',
-      avatarExplorerActualNombre: 'Mi Unidad',
-      avatarExplorerParentId: null,
-      pendingAvatarFile: null
+      pendingAvatarFile: null,
+      pendingCollabFile: null
     };
 
     /**
-     * 2. COMUNICACION CON BACKEND APPS SCRIPT (CERO PREFLIGHT OPTIONS CORS)
+     * 2. COMUNICACION CON BACKEND APPS SCRIPT
      */
     async function llamarBackend(payload) {
       if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === "PEGA_AQUI_TU_URL_DE_APPS_SCRIPT") {
@@ -722,63 +804,101 @@
     }
 
     /**
-     * 3. CONTROL DE COLOR Y NEON EN TIEMPO REAL
+     * 3. SELECTOR INTELIGENTE DE CONCURRENCIA ADAPTATIVA
+     * - Si los archivos en cola juntos pesan > 45MB, inhabilita el 3 y baja a 2 o 1.
+     * - Permite elegir entre 1, 2 o 3 si la red y el peso lo permiten.
      */
-    window.handleColorChange = function(hex) {
-      if (!hex || !hex.startsWith('#') || hex.length < 7) return;
-      document.getElementById('theme-color-picker').value = hex;
-      document.getElementById('theme-color-hex').value = hex;
-      applyDynamicColor(hex);
-      AppState.config.themeColor = hex;
-      saveLocalConfig();
-    };
-
-    window.handleHexInput = function(val) {
-      val = val.trim();
-      if (!val.startsWith('#')) val = '#' + val;
-      if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
-        window.handleColorChange(val);
+    window.setConcurrency = function(num) {
+      const allowed = evaluarConcurrenciaPermitida();
+      if (num > allowed.maxPermitido) {
+        num = allowed.maxPermitido;
       }
+      AppState.activeConcurrency = num;
+      actualizarBotonesConcurrencia();
     };
 
-    function applyDynamicColor(hex) {
-      const root = document.documentElement;
-      root.style.setProperty('--theme-accent', hex);
-      root.style.setProperty('--theme-color-1', hex);
+    function evaluarConcurrenciaPermitida() {
+      const pendingFiles = AppState.queue.filter(i => i.status === 'pending');
+      if (pendingFiles.length === 0) {
+        return { maxPermitido: 3, motivo: 'Optimo' };
+      }
 
-      // Calculo de matices armonicos
-      const rgb = hexToRgb(hex);
-      if (rgb) {
-        root.style.setProperty('--accent-glow', `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.45)`);
-        
-        // Desplazamiento de tono para el segundo y tercer orbe
-        const shiftedColor2 = rgbToHex(
-          Math.min(255, Math.max(0, Math.round(rgb.r * 0.6 + 60))),
-          Math.min(255, Math.max(0, Math.round(rgb.g * 0.4 + 40))),
-          Math.min(255, Math.max(0, Math.round(rgb.b * 0.9 + 70)))
-        );
-        root.style.setProperty('--theme-color-2', shiftedColor2);
+      // Calculamos pesos individuales y sumatorias
+      const MB = 1024 * 1024;
+      const tieneArchivoMuyPesado = pendingFiles.some(f => f.size > 45 * MB);
 
-        const shiftedColor3 = rgbToHex(
-          Math.min(255, Math.max(0, Math.round(rgb.r * 0.9 + 50))),
-          Math.min(255, Math.max(0, Math.round(rgb.g * 0.3 + 20))),
-          Math.min(255, Math.max(0, Math.round(rgb.b * 0.6 + 80)))
-        );
-        root.style.setProperty('--theme-color-3', shiftedColor3);
+      // Suma de los primeros 3 archivos en cola
+      const primeros3 = pendingFiles.slice(0, 3);
+      const peso3JuntosMB = primeros3.reduce((acc, f) => acc + f.size, 0) / MB;
+
+      // Suma de los primeros 2 archivos en cola
+      const primeros2 = pendingFiles.slice(0, 2);
+      const peso2JuntosMB = primeros2.reduce((acc, f) => acc + f.size, 0) / MB;
+
+      if (tieneArchivoMuyPesado || peso2JuntosMB > 45) {
+        return {
+          maxPermitido: 1,
+          motivo: 'Archivos > 45 MB: Subida segura de 1 en 1'
+        };
+      }
+
+      if (peso3JuntosMB > 45) {
+        return {
+          maxPermitido: 2,
+          motivo: 'Lote > 45 MB: Limitado a 2 simultaneos'
+        };
+      }
+
+      return {
+        maxPermitido: 3,
+        motivo: 'Turbo (3 simultaneos)'
+      };
+    }
+
+    function actualizarBotonesConcurrencia() {
+      const evalInfo = evaluarConcurrenciaPermitida();
+      const maxPermitido = evalInfo.maxPermitido;
+
+      // Si la concurrencia actual supera la permitida, la reducimos automaticamente
+      if (AppState.activeConcurrency > maxPermitido) {
+        AppState.activeConcurrency = maxPermitido;
+      }
+
+      const btn1 = document.getElementById('btn-concurrency-1');
+      const btn2 = document.getElementById('btn-concurrency-2');
+      const btn3 = document.getElementById('btn-concurrency-3');
+      const hint = document.getElementById('concurrency-status-hint');
+
+      // Boton 1
+      aplicarEstiloBotonConcurrencia(btn1, AppState.activeConcurrency === 1, true);
+
+      // Boton 2
+      const puede2 = maxPermitido >= 2;
+      btn2.style.display = puede2 ? 'inline-block' : 'none';
+      aplicarEstiloBotonConcurrencia(btn2, AppState.activeConcurrency === 2, puede2);
+
+      // Boton 3
+      const puede3 = maxPermitido >= 3;
+      btn3.style.display = puede3 ? 'inline-block' : 'none';
+      aplicarEstiloBotonConcurrencia(btn3, AppState.activeConcurrency === 3, puede3);
+
+      if (hint) {
+        hint.textContent = `(${evalInfo.motivo})`;
       }
     }
 
-    function hexToRgb(hex) {
-      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-      return result ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16)
-      } : null;
-    }
-
-    function rgbToHex(r, g, b) {
-      return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    function aplicarEstiloBotonConcurrencia(btn, isActive, isAvailable) {
+      if (!isAvailable) {
+        btn.disabled = true;
+        btn.className = "px-2.5 py-1 rounded-lg text-[11px] font-mono font-bold opacity-30 cursor-not-allowed glass-btn text-slate-500";
+        return;
+      }
+      btn.disabled = false;
+      if (isActive) {
+        btn.className = "px-2.5 py-1 rounded-lg text-[11px] font-mono font-bold transition-all cursor-pointer glass-btn-primary shadow-sm";
+      } else {
+        btn.className = "px-2.5 py-1 rounded-lg text-[11px] font-mono font-bold transition-all cursor-pointer glass-btn text-slate-300 hover:text-white";
+      }
     }
 
     /**
@@ -866,6 +986,7 @@
       document.getElementById('view-config').classList.remove('hidden');
       window.switchTab(1);
       loadDriveFolders(AppState.config.folderId || 'root');
+      renderCollaboratorsAdminList();
     }
 
     function showPinError() {
@@ -920,8 +1041,9 @@
     }
 
     /**
-     * 7. GESTION DE AVATAR / IMAGEN DE PERFIL
+     * 7. GESTION DE LOGO PRINCIPAL Y COLABORADORES
      */
+    // Logo Principal
     window.handleAvatarSelected = function(input) {
       if (!input || !input.files || input.files.length === 0) return;
       const file = input.files[0];
@@ -929,11 +1051,9 @@
 
       document.getElementById('avatar-file-name').textContent = file.name;
 
-      // Vista previa local inmediata en el avatar
       const reader = new FileReader();
       reader.onload = function(e) {
-        const base64Url = e.target.result;
-        setAvatarVisuals(base64Url);
+        setAvatarVisuals(e.target.result);
       };
       reader.readAsDataURL(file);
     };
@@ -961,70 +1081,196 @@
       }
     }
 
-    window.toggleAvatarFolderExplorer = function() {
-      const box = document.getElementById('avatar-folder-explorer-box');
-      const isHidden = box.classList.contains('hidden');
-      if (isHidden) {
-        box.classList.remove('hidden');
-        document.getElementById('btn-toggle-avatar-exp-text').textContent = 'Ocultar Explorador';
-        loadAvatarDriveFolders(AppState.config.carpetaAvataresId || 'root');
-      } else {
-        box.classList.add('hidden');
-        document.getElementById('btn-toggle-avatar-exp-text').textContent = 'Cambiar Carpeta';
+    // Gestion de Colaboradores
+    window.showAddCollaboratorForm = function() {
+      document.getElementById('add-collaborator-form').classList.remove('hidden');
+      document.getElementById('new-collab-name').focus();
+    };
+
+    window.hideAddCollaboratorForm = function() {
+      document.getElementById('add-collaborator-form').classList.add('hidden');
+      document.getElementById('new-collab-name').value = '';
+      document.getElementById('new-collab-file-label').textContent = 'Seleccionar Imagen';
+      AppState.pendingCollabFile = null;
+    };
+
+    window.handleCollabFileSelected = function(input) {
+      if (!input || !input.files || input.files.length === 0) return;
+      AppState.pendingCollabFile = input.files[0];
+      document.getElementById('new-collab-file-label').textContent = input.files[0].name;
+    };
+
+    window.confirmAddCollaborator = async function() {
+      const name = document.getElementById('new-collab-name').value.trim() || 'Colaborador';
+      if (!AppState.pendingCollabFile) {
+        alert("Por favor selecciona una imagen para el logo del colaborador.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const base64Data = e.target.result;
+        AppState.config.colaboradores.push({
+          id: 'colab_' + Date.now(),
+          nombre: name,
+          logoUrl: base64Data
+        });
+
+        window.hideAddCollaboratorForm();
+        renderCollaboratorsAdminList();
+        renderCollaboratorsMainUI();
+        saveLocalConfig();
+      };
+      reader.readAsDataURL(AppState.pendingCollabFile);
+    };
+
+    window.deleteCollaborator = function(id) {
+      AppState.config.colaboradores = AppState.config.colaboradores.filter(c => c.id !== id);
+      renderCollaboratorsAdminList();
+      renderCollaboratorsMainUI();
+      saveLocalConfig();
+    };
+
+    window.updateCollaboratorName = function(id, newName) {
+      const colab = AppState.config.colaboradores.find(c => c.id === id);
+      if (colab) {
+        colab.nombre = newName.trim();
+        renderCollaboratorsMainUI();
+        saveLocalConfig();
       }
     };
 
-    async function loadAvatarDriveFolders(folderId) {
-      const listEl = document.getElementById('avatar-drive-list');
-      listEl.innerHTML = `<div class="p-2 text-center text-[10px] text-slate-500">Cargando carpetas...</div>`;
+    window.toggleCollaboratorMode = function() {
+      const current = AppState.config.modoColaboradores;
+      const next = (current === 'solo_logos') ? 'logos_y_nombres' : 'solo_logos';
+      AppState.config.modoColaboradores = next;
 
-      try {
-        const data = await llamarBackend({
-          accion: "explorarDrive",
-          folderId: folderId || "root"
-        });
+      const label = document.getElementById('collab-mode-label');
+      const btn = document.getElementById('btn-toggle-collab-mode');
+      if (next === 'solo_logos') {
+        label.textContent = 'Solo Logos (Sin nombres)';
+        btn.textContent = 'Solo Logos';
+      } else {
+        label.textContent = 'Logos con Nombre';
+        btn.textContent = 'Con Nombres';
+      }
 
-        if (data && data.exito) {
-          AppState.avatarExplorerActualId = data.actualId;
-          AppState.avatarExplorerActualNombre = data.actualNombre;
-          AppState.avatarExplorerParentId = data.parentId;
+      renderCollaboratorsMainUI();
+      saveLocalConfig();
+    };
 
-          document.getElementById('avatar-folder-breadcrumb').textContent = data.actualNombre;
+    function renderCollaboratorsAdminList() {
+      const listEl = document.getElementById('collaborators-admin-list');
+      if (!listEl) return;
 
-          if (!data.carpetas || data.carpetas.length === 0) {
-            listEl.innerHTML = `<div class="p-2 text-center text-[10px] text-slate-500">No hay subcarpetas aqu&iacute;.</div>`;
-            return;
-          }
+      const list = AppState.config.colaboradores || [];
+      if (list.length === 0) {
+        listEl.innerHTML = `<div class="p-2 text-center text-[10px] text-slate-500 font-mono">No hay colaboradores agregados a&uacute;n.</div>`;
+        return;
+      }
 
-          listEl.innerHTML = data.carpetas.map(f => `
-            <div onclick="loadAvatarDriveFolders('${f.id}')" class="flex items-center space-x-2 p-1.5 rounded-lg glass-card hover:bg-white/10 cursor-pointer text-[11px] text-slate-200 transition-all border border-white/5">
-              <svg class="w-3.5 h-3.5 text-purple-400 pointer-events-none shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" /></svg>
-              <span class="truncate font-medium pointer-events-none">${f.nombre}</span>
+      listEl.innerHTML = list.map(c => `
+        <div class="flex items-center space-x-2.5 p-2 rounded-xl bg-black/30 border border-white/5">
+          <img src="${c.logoUrl}" alt="${c.nombre}" class="w-8 h-8 rounded-lg object-cover shrink-0 border border-white/10">
+          <input type="text" value="${c.nombre}" onchange="window.updateCollaboratorName('${c.id}', this.value)" class="flex-1 px-2.5 py-1 rounded-lg glass-input text-xs text-white">
+          <button type="button" onclick="window.deleteCollaborator('${c.id}')" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 cursor-pointer" title="Eliminar colaborador">
+            <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function renderCollaboratorsMainUI() {
+      const section = document.getElementById('collaborators-main-section');
+      const container = document.getElementById('collaborators-display-container');
+      const list = AppState.config.colaboradores || [];
+
+      if (list.length === 0) {
+        section.classList.add('hidden');
+        return;
+      }
+
+      section.classList.remove('hidden');
+      const soloLogos = (AppState.config.modoColaboradores === 'solo_logos');
+
+      container.innerHTML = list.map(c => {
+        if (soloLogos) {
+          return `
+            <div class="relative group p-1 rounded-xl glass-card border border-white/10 hover:border-white/30 transition-all cursor-pointer shadow-sm" title="${c.nombre}">
+              <img src="${c.logoUrl}" alt="${c.nombre}" class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg object-cover">
             </div>
-          `).join('');
+          `;
+        } else {
+          return `
+            <div class="flex items-center space-x-2 py-1 px-2.5 rounded-xl glass-card border border-white/10 hover:border-white/30 transition-all cursor-pointer shadow-sm">
+              <img src="${c.logoUrl}" alt="${c.nombre}" class="w-7 h-7 rounded-lg object-cover shrink-0">
+              <span class="text-xs font-semibold text-slate-200 truncate max-w-[120px]">${c.nombre}</span>
+            </div>
+          `;
         }
-      } catch (e) {
-        listEl.innerHTML = `<div class="p-2 text-center text-[10px] text-rose-400">Error: ${e.message}</div>`;
+      }).join('');
+    }
+
+    /**
+     * 8. CONTROL DE COLOR Y NEON EN TIEMPO REAL
+     */
+    window.handleColorChange = function(hex) {
+      if (!hex || !hex.startsWith('#') || hex.length < 7) return;
+      document.getElementById('theme-color-picker').value = hex;
+      document.getElementById('theme-color-hex').value = hex;
+      applyDynamicColor(hex);
+      AppState.config.themeColor = hex;
+      saveLocalConfig();
+    };
+
+    window.handleHexInput = function(val) {
+      val = val.trim();
+      if (!val.startsWith('#')) val = '#' + val;
+      if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
+        window.handleColorChange(val);
+      }
+    };
+
+    function applyDynamicColor(hex) {
+      const root = document.documentElement;
+      root.style.setProperty('--theme-accent', hex);
+      root.style.setProperty('--theme-color-1', hex);
+
+      const rgb = hexToRgb(hex);
+      if (rgb) {
+        root.style.setProperty('--accent-glow', `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.45)`);
+        
+        const shiftedColor2 = rgbToHex(
+          Math.min(255, Math.max(0, Math.round(rgb.r * 0.6 + 60))),
+          Math.min(255, Math.max(0, Math.round(rgb.g * 0.4 + 40))),
+          Math.min(255, Math.max(0, Math.round(rgb.b * 0.9 + 70)))
+        );
+        root.style.setProperty('--theme-color-2', shiftedColor2);
+
+        const shiftedColor3 = rgbToHex(
+          Math.min(255, Math.max(0, Math.round(rgb.r * 0.9 + 50))),
+          Math.min(255, Math.max(0, Math.round(rgb.g * 0.3 + 20))),
+          Math.min(255, Math.max(0, Math.round(rgb.b * 0.6 + 80)))
+        );
+        root.style.setProperty('--theme-color-3', shiftedColor3);
       }
     }
 
-    window.navigateAvatarFolderUp = function() {
-      if (AppState.avatarExplorerParentId) {
-        loadAvatarDriveFolders(AppState.avatarExplorerParentId);
-      } else {
-        loadAvatarDriveFolders('root');
-      }
-    };
+    function hexToRgb(hex) {
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+      } : null;
+    }
 
-    window.selectCurrentFolderForAvatar = function() {
-      AppState.config.carpetaAvataresId = AppState.avatarExplorerActualId;
-      AppState.config.carpetaAvataresNombre = AppState.avatarExplorerActualNombre;
-      document.getElementById('avatar-folder-breadcrumb').textContent = AppState.avatarExplorerActualNombre;
-      window.toggleAvatarFolderExplorer();
-    };
+    function rgbToHex(r, g, b) {
+      return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    }
 
     /**
-     * 8. SELECTOR Y GESTION DE ARCHIVOS (COLA SECUENCIAL)
+     * 9. SELECTOR Y GESTION DE ARCHIVOS (COLA Y PROGRESO)
      */
     window.handleFilesFromInput = function(input) {
       if (AppState.config.suspendido) {
@@ -1056,6 +1302,7 @@
         }
       });
       updateQueueUI();
+      actualizarBotonesConcurrencia();
     }
 
     function isVideoFile(file) {
@@ -1077,6 +1324,7 @@
       if (idx !== -1) {
         AppState.queue.splice(idx, 1);
         updateQueueUI();
+        actualizarBotonesConcurrencia();
       }
     };
 
@@ -1084,6 +1332,7 @@
       if (e) { e.preventDefault(); e.stopPropagation(); }
       AppState.queue = AppState.queue.filter(i => i.status !== 'completed');
       updateQueueUI();
+      actualizarBotonesConcurrencia();
     };
 
     function updateQueueUI() {
@@ -1166,7 +1415,7 @@
     }
 
     /**
-     * 9. MOTOR DE SUBIDA RESUMIBLE SECUENCIAL A GOOGLE DRIVE API v3
+     * 10. MOTOR DE SUBIDA CONCURRENTE INTELIGENTE (1, 2 o 3 simultaneos)
      */
     window.startUploadProcess = async function(e) {
       if (e) { e.preventDefault(); e.stopPropagation(); }
@@ -1178,98 +1427,37 @@
       AppState.isUploading = true;
       const btn = document.getElementById('btn-start-upload');
       btn.disabled = true;
+
+      // Determinamos concurrencia efectiva segun peso
+      const evalInfo = evaluarConcurrenciaPermitida();
+      const concurrency = Math.min(AppState.activeConcurrency, evalInfo.maxPermitido);
+
       btn.innerHTML = `
         <svg class="w-5 h-5 animate-spin shrink-0" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
-        <span>Subiendo Archivos a Google Drive...</span>
+        <span>Subiendo (${concurrency} en simult&aacute;neo)...</span>
       `;
 
-      // Subida de 1 en 1 sin romper limites ni memoria
-      for (let i = 0; i < AppState.queue.length; i++) {
-        const item = AppState.queue[i];
-        if (item.status === 'completed') continue;
+      // Worker Pool paralelo
+      let currentIndex = 0;
+      async function uploadWorker() {
+        while (currentIndex < AppState.queue.length && AppState.isUploading) {
+          const item = AppState.queue[currentIndex++];
+          if (!item || item.status === 'completed') continue;
 
-        item.status = 'uploading';
-        item.statusText = 'Iniciando sesion...';
-        item.progress = 5;
-        updateQueueUI();
-
-        try {
-          // PASO A: Solicitar credenciales y carpeta al backend
-          const prepRes = await llamarBackend({
-            accion: "prepararSubida",
-            esVideo: item.esVideo
-          });
-
-          if (!prepRes || !prepRes.exito || !prepRes.token) {
-            throw new Error((prepRes && prepRes.error) || "No se pudo obtener credenciales del servidor.");
-          }
-
-          item.progress = 15;
-          item.statusText = 'Creando sesion Drive...';
-          updateQueueUI();
-
-          // PASO B: Iniciar la sesion resumible haciendo POST directamente a Drive API v3
-          let uploadUrl = null;
-          try {
-            const sessionRes = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable", {
-              method: "POST",
-              headers: {
-                "Authorization": "Bearer " + prepRes.token,
-                "Content-Type": "application/json; charset=UTF-8",
-                "X-Upload-Content-Type": item.file.type || "application/octet-stream",
-                "X-Upload-Content-Length": item.file.size.toString()
-              },
-              body: JSON.stringify({
-                name: item.name,
-                mimeType: item.file.type || "application/octet-stream",
-                parents: (prepRes.targetFolderId && prepRes.targetFolderId !== "root") ? [prepRes.targetFolderId] : []
-              })
-            });
-
-            uploadUrl = sessionRes.headers.get("Location");
-          } catch (eFetch) {
-            uploadUrl = null;
-          }
-
-          // Respaldo XHR para lectura del Location si fetch es restringido por el navegador
-          if (!uploadUrl) {
-            uploadUrl = await obtenerLocationPorXHR(item.file, prepRes.token, prepRes.targetFolderId);
-          }
-
-          if (!uploadUrl) {
-            throw new Error("No se recibio la direccion de subida 'Location' de Google Drive.");
-          }
-
-          // PASO C: Subir el archivo mediante XMLHttpRequest (PUT) con barra de progreso en vivo
-          item.statusText = 'Transfiriendo datos...';
-          const fileId = await transferirArchivoPUT(item, uploadUrl);
-
-          // PASO D: Registrar archivo subido en Google Sheets
-          item.statusText = 'Registrando en Sheet...';
-          await llamarBackend({
-            accion: "registrarArchivo",
-            nombre: item.name,
-            tipo: item.esVideo ? "Video" : "Foto",
-            tamanoBytes: item.size,
-            fileId: fileId,
-            carpetaDestino: prepRes.targetFolderName
-          });
-
-          item.status = 'completed';
-          item.statusText = 'Listo';
-          item.progress = 100;
-          item.uploadedBytes = item.size;
-        } catch (err) {
-          console.error("Error en subida:", err);
-          item.status = 'error';
-          item.statusText = err.message || 'Error de transferencia';
+          await procesarSubidaArchivo(item);
         }
-
-        updateQueueUI();
       }
+
+      // Lanzamos workers paralelos segun concurrencia
+      const workers = [];
+      for (let w = 0; w < concurrency; w++) {
+        workers.push(uploadWorker());
+      }
+
+      await Promise.all(workers);
 
       AppState.isUploading = false;
       btn.disabled = false;
@@ -1282,8 +1470,89 @@
           <span id="btn-upload-label">${AppState.config.tituloBoton || 'Comenzar Subida a Drive'}</span>
         `;
         updateQueueUI();
+        actualizarBotonesConcurrencia();
       }, 3000);
     };
+
+    async function procesarSubidaArchivo(item) {
+      item.status = 'uploading';
+      item.statusText = 'Iniciando sesion...';
+      item.progress = 5;
+      updateQueueUI();
+
+      try {
+        // PASO A: Solicitar credenciales y carpeta al backend
+        const prepRes = await llamarBackend({
+          accion: "prepararSubida",
+          esVideo: item.esVideo
+        });
+
+        if (!prepRes || !prepRes.exito || !prepRes.token) {
+          throw new Error((prepRes && prepRes.error) || "No se pudo obtener credenciales del servidor.");
+        }
+
+        item.progress = 15;
+        item.statusText = 'Creando sesion Drive...';
+        updateQueueUI();
+
+        // PASO B: Iniciar sesion resumible en Drive API v3
+        let uploadUrl = null;
+        try {
+          const sessionRes = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable", {
+            method: "POST",
+            headers: {
+              "Authorization": "Bearer " + prepRes.token,
+              "Content-Type": "application/json; charset=UTF-8",
+              "X-Upload-Content-Type": item.file.type || "application/octet-stream",
+              "X-Upload-Content-Length": item.file.size.toString()
+            },
+            body: JSON.stringify({
+              name: item.name,
+              mimeType: item.file.type || "application/octet-stream",
+              parents: (prepRes.targetFolderId && prepRes.targetFolderId !== "root") ? [prepRes.targetFolderId] : []
+            })
+          });
+
+          uploadUrl = sessionRes.headers.get("Location");
+        } catch (eFetch) {
+          uploadUrl = null;
+        }
+
+        if (!uploadUrl) {
+          uploadUrl = await obtenerLocationPorXHR(item.file, prepRes.token, prepRes.targetFolderId);
+        }
+
+        if (!uploadUrl) {
+          throw new Error("No se recibio Location de subida de Google Drive.");
+        }
+
+        // PASO C: Subir archivo con PUT y progreso fluido
+        item.statusText = 'Transfiriendo...';
+        const fileId = await transferirArchivoPUT(item, uploadUrl);
+
+        // PASO D: Registrar archivo subido en Google Sheets
+        item.statusText = 'Registrando...';
+        await llamarBackend({
+          accion: "registrarArchivo",
+          nombre: item.name,
+          tipo: item.esVideo ? "Video" : "Foto",
+          tamanoBytes: item.size,
+          fileId: fileId,
+          carpetaDestino: prepRes.targetFolderName
+        });
+
+        item.status = 'completed';
+        item.statusText = 'Listo';
+        item.progress = 100;
+        item.uploadedBytes = item.size;
+      } catch (err) {
+        console.error("Error en subida:", err);
+        item.status = 'error';
+        item.statusText = err.message || 'Error de transferencia';
+      }
+
+      updateQueueUI();
+    }
 
     function obtenerLocationPorXHR(file, token, targetFolderId) {
       return new Promise((resolve, reject) => {
@@ -1296,8 +1565,7 @@
 
         xhr.onload = function() {
           if (xhr.status === 200 || xhr.status === 201) {
-            const loc = xhr.getResponseHeader("Location");
-            resolve(loc);
+            resolve(xhr.getResponseHeader("Location"));
           } else {
             reject(new Error("Drive respondio HTTP " + xhr.status + ": " + xhr.responseText));
           }
@@ -1345,7 +1613,7 @@
         };
 
         xhr.onerror = function() {
-          reject(new Error("Fallo de red durante la transferencia del archivo."));
+          reject(new Error("Fallo de red durante la transferencia."));
         };
 
         xhr.send(item.file);
@@ -1353,7 +1621,7 @@
     }
 
     /**
-     * 10. MINI EXPLORADOR DE GOOGLE DRIVE INTERACTIVO (DESTINO)
+     * 11. MINI EXPLORADOR DE GOOGLE DRIVE INTERACTIVO (DESTINO)
      */
     async function loadDriveFolders(folderId) {
       const listEl = document.getElementById('drive-folder-list');
@@ -1470,7 +1738,7 @@
     };
 
     /**
-     * 11. GUARDAR CONFIGURACION COMPLETA (BACKEND + LOCALSTORAGE)
+     * 12. GUARDAR CONFIGURACION COMPLETA
      */
     window.saveSettings = async function(e) {
       if (e) { e.preventDefault(); e.stopPropagation(); }
@@ -1481,11 +1749,10 @@
       btn.textContent = 'Guardando...';
       if (statusEl) statusEl.textContent = 'Guardando en Sheet...';
 
-      // 1. Si hay un avatar nuevo pendiente, subirlo a Google Drive primero
       let avatarFinalUrl = AppState.config.avatarUrl || '';
       if (AppState.pendingAvatarFile) {
         try {
-          if (statusEl) statusEl.textContent = 'Subiendo avatar a Drive...';
+          if (statusEl) statusEl.textContent = 'Subiendo logo principal a Drive...';
           const file = AppState.pendingAvatarFile;
           const prepRes = await llamarBackend({
             accion: "prepararSubida",
@@ -1505,7 +1772,7 @@
             }
           }
         } catch (eAvatar) {
-          console.warn("Aviso en subida de avatar:", eAvatar.message);
+          console.warn("Aviso en subida de logo principal:", eAvatar.message);
         }
       }
 
@@ -1527,7 +1794,10 @@
         suspendido: isSuspended,
         mensajeSuspension: suspMsg,
         carpetaAvataresId: AppState.config.carpetaAvataresId || 'root',
-        carpetaAvataresNombre: AppState.config.carpetaAvataresNombre || 'Mi Unidad'
+        carpetaAvataresNombre: AppState.config.carpetaAvataresNombre || 'Mi Unidad',
+        concurrenciaMax: AppState.activeConcurrency || 3,
+        colaboradores: AppState.config.colaboradores || [],
+        modoColaboradores: AppState.config.modoColaboradores || 'solo_logos'
       };
 
       try {
@@ -1561,17 +1831,18 @@
 
     function saveLocalConfig() {
       try {
-        localStorage.setItem('solicitador_pro_config', JSON.stringify(AppState.config));
+        localStorage.setItem('solicitador_pro_config_v2', JSON.stringify(AppState.config));
       } catch (e) {}
     }
 
     function loadLocalConfig() {
       try {
-        const saved = localStorage.getItem('solicitador_pro_config');
+        const saved = localStorage.getItem('solicitador_pro_config_v2');
         if (saved) {
           const parsed = JSON.parse(saved);
           AppState.config = Object.assign(AppState.config, parsed);
           if (parsed.adminPin) AppState.cachedPin = parsed.adminPin;
+          if (parsed.concurrenciaMax) AppState.activeConcurrency = Number(parsed.concurrenciaMax);
         }
       } catch (e) {}
     }
@@ -1600,15 +1871,29 @@
         setAvatarVisuals(cfg.avatarUrl);
       }
 
+      // Modo colaboradores
+      const collabLabel = document.getElementById('collab-mode-label');
+      const collabBtn = document.getElementById('btn-toggle-collab-mode');
+      if (collabLabel && collabBtn) {
+        if (cfg.modoColaboradores === 'solo_logos') {
+          collabLabel.textContent = 'Solo Logos (Sin nombres)';
+          collabBtn.textContent = 'Solo Logos';
+        } else {
+          collabLabel.textContent = 'Logos con Nombre';
+          collabBtn.textContent = 'Con Nombres';
+        }
+      }
+
       document.getElementById('folder-breadcrumb').textContent = cfg.folderName || 'Mi Unidad';
-      document.getElementById('avatar-folder-breadcrumb').textContent = cfg.carpetaAvataresNombre || 'Mi Unidad';
+      
+      renderCollaboratorsMainUI();
+      actualizarBotonesConcurrencia();
     }
 
     /**
-     * 12. INICIALIZACION
+     * 13. INICIALIZACION
      */
     async function init() {
-      // 1. Cargar cache local inmediatamente para 0 parpadeos
       loadLocalConfig();
       applyConfigToUI();
 
@@ -1634,12 +1919,13 @@
         }
       });
 
-      // Cargar configuracion fresca desde Google Apps Script
+      // Sincronizacion con Google Apps Script
       try {
         const res = await llamarBackend({ accion: "obtenerConfig" });
         if (res && res.exito) {
           AppState.config = Object.assign(AppState.config, res);
           AppState.cachedPin = res.adminPin || '0412';
+          if (res.concurrenciaMax) AppState.activeConcurrency = Number(res.concurrenciaMax);
           saveLocalConfig();
           applyConfigToUI();
         }

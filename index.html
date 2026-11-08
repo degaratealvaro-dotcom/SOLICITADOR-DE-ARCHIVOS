@@ -30,9 +30,11 @@
 
   <style>
     :root {
-      --accent-color: #00f2fe;
+      --theme-accent: #00f2fe;
+      --theme-color-1: #00f2fe;
+      --theme-color-2: #8b5cf6;
+      --theme-color-3: #ec4899;
       --accent-glow: rgba(0, 242, 254, 0.4);
-      --accent-gradient: linear-gradient(135deg, #00f2fe 0%, #3b82f6 100%);
       --bg-dark: #07070c;
     }
 
@@ -55,180 +57,194 @@
 
     body {
       background-color: var(--bg-dark);
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      overflow-x: hidden;
-      color: #e2e8f0;
+      color: #f1f5f9;
       min-height: 100vh;
       min-height: 100dvh;
+      overflow-x: hidden;
+      font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
-    /* ORBES DE LUZ ANIMADOS (NARANJA, PURPURA, CIAN) CON BLUR 95PX */
-    .orb-orange {
-      background: radial-gradient(circle, rgba(249, 115, 22, 0.32) 0%, rgba(234, 88, 12, 0.08) 70%, transparent 100%);
-      filter: blur(95px);
-    }
-    .orb-purple {
-      background: radial-gradient(circle, rgba(168, 85, 247, 0.32) 0%, rgba(147, 51, 234, 0.08) 70%, transparent 100%);
-      filter: blur(95px);
-    }
-    .orb-cyan {
-      background: radial-gradient(circle, rgba(6, 182, 212, 0.35) 0%, rgba(0, 242, 254, 0.1) 70%, transparent 100%);
-      filter: blur(95px);
-    }
-
-    @keyframes floatOrbs {
-      0%, 100% { transform: translate(0px, 0px) scale(1); }
-      33% { transform: translate(25px, -30px) scale(1.1); }
-      66% { transform: translate(-20px, 20px) scale(0.95); }
-    }
-    .animate-float-1 { animation: floatOrbs 14s ease-in-out infinite; }
-    .animate-float-2 { animation: floatOrbs 18s ease-in-out infinite reverse; }
-    .animate-float-3 { animation: floatOrbs 16s ease-in-out infinite 2s; }
-
-    /* ESTILO LIQUID GLASS (GLASSMORPHISM CON BLUR 28PX) */
+    /* EFECTOS LIQUID GLASS */
     .glass-panel {
-      background: rgba(15, 17, 26, 0.7);
+      background: rgba(15, 23, 42, 0.58);
       backdrop-filter: blur(28px);
       -webkit-backdrop-filter: blur(28px);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
     }
 
     .glass-card {
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: rgba(255, 255, 255, 0.035);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.07);
     }
 
+    .glass-input {
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: all 0.25s ease;
+    }
+    .glass-input:focus {
+      border-color: var(--theme-accent);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
     .glass-btn {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(14px);
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .glass-btn:hover {
       background: rgba(255, 255, 255, 0.12);
       border-color: rgba(255, 255, 255, 0.25);
-      transform: translateY(-2px);
     }
 
     .glass-btn-primary {
-      background: var(--accent-gradient);
-      color: #07070c;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 6px 25px var(--accent-glow);
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      background: linear-gradient(135deg, var(--theme-accent) 0%, var(--theme-color-2) 100%);
+      color: #050811;
+      font-weight: 700;
+      box-shadow: 0 0 25px var(--accent-glow);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      border: none;
     }
-    .glass-btn-primary:hover {
-      box-shadow: 0 8px 35px var(--accent-glow);
-      transform: translateY(-2px) scale(1.01);
-    }
-
-    .glass-input {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(12px);
-      transition: all 0.25s ease;
-    }
-    .glass-input:focus {
-      border-color: var(--accent-color);
-      box-shadow: 0 0 20px var(--accent-glow);
-    }
-
-    .neon-progress-fill {
-      background: var(--accent-gradient);
-      box-shadow: 0 0 15px var(--accent-color);
-      transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .dragover-active {
-      border-color: var(--accent-color) !important;
-      background: rgba(0, 242, 254, 0.08) !important;
+    .glass-btn-primary:hover:not(:disabled) {
+      filter: brightness(1.12);
       box-shadow: 0 0 35px var(--accent-glow);
-      transform: scale(1.01);
+      transform: translateY(-1px);
     }
 
-    @keyframes shakePin {
+    /* ANIMACIONES DE ORBES FLUIDOS */
+    @keyframes float-1 {
+      0%, 100% { transform: translate(0px, 0px) scale(1); }
+      50% { transform: translate(60px, 45px) scale(1.12); }
+    }
+    @keyframes float-2 {
+      0%, 100% { transform: translate(0px, 0px) scale(1.05); }
+      50% { transform: translate(-50px, -60px) scale(0.95); }
+    }
+    @keyframes float-3 {
+      0%, 100% { transform: translate(0px, 0px) scale(0.95); }
+      50% { transform: translate(40px, -40px) scale(1.08); }
+    }
+
+    .animate-float-1 { animation: float-1 18s ease-in-out infinite; }
+    .animate-float-2 { animation: float-2 22s ease-in-out infinite; }
+    .animate-float-3 { animation: float-3 20s ease-in-out infinite; }
+
+    /* BARRA DE PROGRESO CON NEON */
+    .neon-progress-fill {
+      background: linear-gradient(90deg, var(--theme-accent), var(--theme-color-2));
+      box-shadow: 0 0 16px var(--accent-glow);
+      transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* DRAG OVER HIGHLIGHT */
+    .dragover-active {
+      border-color: var(--theme-accent) !important;
+      background: rgba(0, 242, 254, 0.08) !important;
+      box-shadow: 0 0 35px var(--accent-glow) inset;
+    }
+
+    /* SHAKE PARA PIN INCORRECTO */
+    @keyframes shake {
       0%, 100% { transform: translateX(0); }
       20%, 60% { transform: translateX(-8px); }
       40%, 80% { transform: translateX(8px); }
     }
-    .animate-shake { animation: shakePin 0.4s ease-in-out; }
+    .animate-shake {
+      animation: shake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
   </style>
 </head>
-<body class="p-3 sm:p-5 flex flex-col justify-between min-h-screen relative selection:bg-cyan-500/30 selection:text-cyan-200">
+<body class="relative flex flex-col justify-between selection:bg-cyan-500/30 selection:text-cyan-200">
 
   <!-- ============================================================== -->
-  <!-- ORBES DE LUZ ANIMADOS EN EL FONDO (NARANJA, PURPURA Y CIAN)     -->
+  <!-- ORBES DE LUZ ANIMADOS (MODO OSCURO PROFUNDO CON BLUR 95PX)     -->
   <!-- ============================================================== -->
-  <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">
-    <div class="absolute -top-24 -left-24 w-[420px] h-[420px] rounded-full orb-orange animate-float-1"></div>
-    <div class="absolute top-1/3 -right-24 w-[450px] h-[450px] rounded-full orb-purple animate-float-2"></div>
-    <div class="absolute -bottom-28 left-1/4 w-[480px] h-[480px] rounded-full orb-cyan animate-float-3"></div>
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div id="orb-1" class="absolute w-[500px] h-[500px] -top-24 -left-24 rounded-full opacity-35 blur-[100px] animate-float-1" style="background: radial-gradient(circle, var(--theme-color-1) 0%, transparent 70%);"></div>
+    <div id="orb-2" class="absolute w-[550px] h-[550px] top-1/2 -right-32 rounded-full opacity-30 blur-[115px] animate-float-2" style="background: radial-gradient(circle, var(--theme-color-2) 0%, transparent 70%);"></div>
+    <div id="orb-3" class="absolute w-[400px] h-[400px] -bottom-20 left-1/3 rounded-full opacity-25 blur-[95px] animate-float-3" style="background: radial-gradient(circle, var(--theme-color-3) 0%, transparent 70%);"></div>
   </div>
 
-  <div class="max-w-6xl w-full mx-auto flex-1 flex flex-col space-y-4">
-    
-    <!-- ============================================================== -->
-    <!-- HEADER: MARCA Y UNA SOLA TUERCA MORDIDA EN ESQUINA DERECHA      -->
-    <!-- ============================================================== -->
-    <header class="glass-panel rounded-3xl p-3.5 sm:p-4 flex items-center justify-between shadow-2xl relative">
-      <div class="flex items-center space-x-3 sm:space-x-4 truncate">
+  <!-- ============================================================== -->
+  <!-- CONTENEDOR PRINCIPAL FLUIDO                                    -->
+  <!-- ============================================================== -->
+  <div class="relative z-10 w-full max-w-5xl mx-auto p-3 sm:p-5 md:p-6 flex flex-col min-h-screen justify-between space-y-4">
+
+    <!-- HEADER: AVATAR / LOGO + TITULOS + TUERCA UNICA SVG -->
+    <header class="glass-panel rounded-3xl p-4 sm:p-5 flex items-center justify-between shadow-2xl relative overflow-hidden">
+      
+      <!-- Lado Izquierdo: Avatar / Logo Dinámico + Títulos -->
+      <div class="flex items-center space-x-3 sm:space-x-4 min-w-0">
         
-        <!-- Logo Principal -->
-        <div class="relative flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-2xl glass-panel border border-white/15 overflow-hidden shrink-0 shadow-lg p-0.5">
-          <svg class="w-6 h-6 text-cyan-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-          </svg>
+        <!-- Badge Avatar / Logo Central -->
+        <div id="header-avatar-container" class="relative shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-2xl glass-card p-1 border border-white/10 flex items-center justify-center overflow-hidden shadow-lg" style="box-shadow: 0 0 20px var(--accent-glow);">
+          <img id="header-avatar-img" src="" alt="Logo" class="hidden w-full h-full object-cover rounded-xl">
+          <div id="header-avatar-svg" class="w-full h-full flex items-center justify-center text-slate-300">
+            <svg class="w-7 h-7 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: var(--theme-accent);">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+            </svg>
+          </div>
         </div>
 
-        <!-- Titulos -->
-        <div class="truncate">
+        <div class="min-w-0">
           <div class="flex items-center space-x-2">
-            <h1 class="font-display font-bold text-base sm:text-xl text-white tracking-tight truncate">
-              SOLICITADOR DE ARCHIVOS PRO
+            <span class="w-2 h-2 rounded-full animate-ping shrink-0" style="background-color: var(--theme-accent);"></span>
+            <h1 id="header-title" class="text-base sm:text-xl font-extrabold tracking-tight text-white font-display truncate">
+              Portal de Carga de Archivos
             </h1>
-            <span class="hidden sm:inline-flex px-2 py-0.5 rounded-full text-[10px] font-mono glass-card border border-cyan-500/30 text-cyan-300">
-              Drive API v3 &bull; Resumable
-            </span>
           </div>
-          <p class="text-[11px] sm:text-xs text-slate-400 truncate mt-0.5">
-            Carga directa sin l&iacute;mite de peso (Fotos RAW y Videos de varios GB)
+          <p id="header-subtitle" class="text-[11px] sm:text-xs text-slate-400 truncate mt-0.5 font-mono">
+            Directo a Google Drive &bull; Fotos y Videos sin l&iacute;mite
           </p>
         </div>
       </div>
 
-      <!-- UNA SOLA TUERCA MORDIDA EN LA ESQUINA SUPERIOR DERECHA (NO DOS) -->
+      <!-- Lado Derecho: UNA UNICA TUERCA MODERNA EN SVG (Gira sutilmente al pasar el cursor) -->
       <div class="flex items-center shrink-0">
-        <button type="button" id="btn-open-settings" onclick="window.openAdminModal(event)" title="Ajustes de Administrador" class="group relative p-2.5 sm:p-3 rounded-2xl glass-panel hover:border-white/30 transition-all duration-300 shadow-lg active:scale-95 cursor-pointer flex items-center justify-center min-w-[46px] min-h-[46px]">
-          <svg class="w-6 h-6 text-slate-300 group-hover:rotate-90 group-hover:drop-shadow-[0_0_12px_var(--accent-color)] transition-all duration-700 ease-out pointer-events-none" viewBox="0 0 24 24" fill="none">
-            <defs>
-              <mask id="bitten-gear-mask">
-                <rect width="24" height="24" fill="white" />
-                <!-- Muesca o mordida circular en el borde superior derecho -->
-                <circle cx="17.8" cy="6.2" r="3.3" fill="black" />
-                <circle cx="16.2" cy="7.8" r="1.8" fill="black" />
-              </mask>
-            </defs>
-            <path mask="url(#bitten-gear-mask)" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M11.983 2c-.615 0-1.127.447-1.218 1.056l-.286 1.912a7.994 7.994 0 00-1.895.786l-1.636-1.042a1.228 1.228 0 00-1.57.251l-1.39 1.39a1.228 1.228 0 00-.251 1.57l1.042 1.636a7.994 7.994 0 00-.786 1.895l-1.912.286A1.228 1.228 0 002 12.017v1.966c0 .615.447 1.127 1.056 1.218l1.912.286c.21.67.476 1.309.786 1.895l-1.042 1.636a1.228 1.228 0 00.251 1.57l1.39 1.39c.45.45 1.134.544 1.57.251l1.636-1.042c.586.31 1.225.576 1.895.786l.286 1.912c.091.609.603 1.056 1.218 1.056h1.966c.615 0 1.127-.447 1.218-1.056l.286-1.912c.67-.21 1.309-.476 1.895-.786l1.636 1.042a1.228 1.228 0 001.57-.251l1.39-1.39a1.228 1.228 0 00.251-1.57l-1.042-1.636c.31-.586.576-1.225.786-1.895l1.912-.286c.609-.091 1.056-.603 1.056-1.218v-1.966c0-.615-.447-1.127-1.056-1.218l-1.912-.286a7.994 7.994 0 00-.786-1.895l1.042-1.636a1.228 1.228 0 00-.251-1.57l-1.39-1.39a1.228 1.228 0 00-1.57-.251l-1.636 1.042a7.994 7.994 0 00-1.895-.786l-.286-1.912A1.228 1.228 0 0013.949 2h-1.966zm.983 6.5a3.5 3.5 0 100 7 3.5 3.5 0 000-7z"/>
-            <circle cx="17.8" cy="6.2" r="1.3" class="fill-current opacity-80 group-hover:opacity-100 transition-opacity" style="color: var(--accent-color);"/>
+        <button type="button" id="btn-open-settings" onclick="window.openAdminModal(event)" title="Panel de Control Maestro" class="group relative p-2.5 sm:p-3 rounded-2xl glass-panel hover:border-white/30 transition-all duration-300 shadow-lg active:scale-95 cursor-pointer flex items-center justify-center min-w-[46px] min-h-[46px]">
+          <svg class="w-6 h-6 text-slate-300 group-hover:rotate-90 group-hover:text-cyan-300 transition-all duration-700 ease-out pointer-events-none" viewBox="0 0 24 24" fill="none" style="filter: drop-shadow(0 0 8px var(--accent-glow));">
+            <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M11.983 2c-.615 0-1.127.447-1.218 1.056l-.286 1.912a7.994 7.994 0 00-1.895.786l-1.636-1.042a1.228 1.228 0 00-1.57.251l-1.39 1.39a1.228 1.228 0 00-.251 1.57l1.042 1.636a7.994 7.994 0 00-.786 1.895l-1.912.286A1.228 1.228 0 002 12.017v1.966c0 .615.447 1.127 1.056 1.218l1.912.286c.21.67.476 1.309.786 1.895l-1.042 1.636a1.228 1.228 0 00.251 1.57l1.39 1.39c.45.45 1.134.544 1.57.251l1.636-1.042c.586.31 1.225.576 1.895.786l.286 1.912c.091.609.603 1.056 1.218 1.056h1.966c.615 0 1.127-.447 1.218-1.056l.286-1.912c.67-.21 1.309-.476 1.895-.786l1.636 1.042a1.228 1.228 0 001.57-.251l1.39-1.39a1.228 1.228 0 00.251-1.57l-1.042-1.636c.31-.586.576-1.225.786-1.895l1.912-.286c.609-.091 1.056-.603 1.056-1.218v-1.966c0-.615-.447-1.127-1.056-1.218l-1.912-.286a7.994 7.994 0 00-.786-1.895l1.042-1.636a1.228 1.228 0 00-.251-1.57l-1.39-1.39a1.228 1.228 0 00-1.57-.251l-1.636 1.042a7.994 7.994 0 00-1.895-.786l-.286-1.912A1.228 1.228 0 0013.949 2h-1.966zm.983 6.5a3.5 3.5 0 100 7 3.5 3.5 0 000-7z"/>
           </svg>
-          <div class="absolute -top-1 -right-1 w-2 h-2 rounded-full blur-[2px] pointer-events-none group-hover:scale-125 transition-transform" style="background-color: var(--accent-color);"></div>
+          <div class="absolute -top-1 -right-1 w-2 h-2 rounded-full blur-[2px] pointer-events-none group-hover:scale-125 transition-transform" style="background-color: var(--theme-accent);"></div>
         </button>
       </div>
     </header>
 
     <!-- ============================================================== -->
-    <!-- CUERPO PRINCIPAL: SELECTORES Y COLA SECUENCIAL DE SUBIDA       -->
+    <!-- CUERPO PRINCIPAL: DROPZONE Y COLA SECUENCIAL                   -->
     <!-- ============================================================== -->
-    <main class="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1">
+    <main class="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1 relative">
+
+      <!-- CAPA DE BLOQUEO VISUAL POR SUSPENSION (SI ESTA ACTIVO) -->
+      <div id="suspension-overlay" class="hidden absolute inset-0 z-30 rounded-3xl bg-black/85 backdrop-blur-2xl flex flex-col items-center justify-center p-6 text-center transition-all duration-300">
+        <div class="w-16 h-16 rounded-3xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4 shadow-[0_0_30px_rgba(245,158,11,0.3)]">
+          <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+          </svg>
+        </div>
+        <span class="px-3.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-amber-500/15 text-amber-300 border border-amber-500/30 mb-2 font-mono">
+          Servicio Temporalmente Suspendido
+        </span>
+        <h3 id="suspension-display-msg" class="text-base sm:text-lg font-bold text-white max-w-md mb-2 font-display">
+          Servicio suspendido temporalmente por mantenimiento
+        </h3>
+        <p class="text-xs text-slate-400 max-w-sm">
+          La recepci&oacute;n de archivos est&aacute; pausada. Si eres el administrador, puedes reactivar el servicio desde la tuerca en la esquina superior derecha.
+        </p>
+      </div>
 
       <!-- COLUMNA IZQUIERDA: ZONA DE CARGA (5 cols) -->
       <div class="lg:col-span-5 flex flex-col space-y-3">
         <div id="dropzone" class="glass-panel rounded-3xl p-5 sm:p-6 flex-1 flex flex-col items-center justify-center text-center border-2 border-dashed border-white/10 transition-all duration-300 relative overflow-hidden group min-h-[300px]">
           
-          <div class="w-16 h-16 sm:w-20 sm:h-20 mb-3 rounded-3xl glass-card flex items-center justify-center border border-white/10 group-hover:scale-105 transition-transform duration-300 pointer-events-none" style="color: var(--accent-color);">
+          <div class="w-16 h-16 sm:w-20 sm:h-20 mb-3 rounded-3xl glass-card flex items-center justify-center border border-white/10 group-hover:scale-105 transition-transform duration-300 pointer-events-none" style="color: var(--theme-accent);">
             <svg class="w-8 h-8 sm:w-10 sm:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
             </svg>
@@ -246,7 +262,7 @@
             
             <!-- Boton 1: Explorador General (+100 archivos) -->
             <label for="file-input-unlimited" id="btn-select-files" class="w-full py-3.5 px-4 rounded-xl glass-btn text-xs font-bold text-white flex items-center justify-center gap-2 cursor-pointer active:scale-98 shadow-sm transition-all" style="background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04));">
-              <svg class="w-4 h-4 shrink-0 pointer-events-none" style="color: var(--accent-color);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-4 h-4 shrink-0 pointer-events-none" style="color: var(--theme-accent);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
               </svg>
               <span>Explorador (+100 archivos)</span>
@@ -257,7 +273,7 @@
             <div class="grid grid-cols-2 gap-2 w-full">
               <!-- Boton 2: Galeria directa -->
               <label for="file-input-gallery" id="btn-select-gallery" class="py-3 px-3 rounded-xl glass-btn text-xs font-semibold text-slate-300 hover:text-white flex items-center justify-center gap-1.5 cursor-pointer active:scale-98 transition-all" title="Abrir Galeria">
-                <svg class="w-4 h-4 text-cyan-400 shrink-0 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4 shrink-0 pointer-events-none" style="color: var(--theme-accent);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
                 <span>Galer&iacute;a</span>
@@ -266,7 +282,7 @@
 
               <!-- Boton 3: Subir Carpeta entera -->
               <label for="folder-input" id="btn-select-folder" class="py-3 px-3 rounded-xl glass-btn text-xs font-semibold text-slate-400 hover:text-white flex items-center justify-center gap-1.5 cursor-pointer active:scale-98 transition-all" title="Subir carpeta entera">
-                <svg class="w-4 h-4 text-amber-400 shrink-0 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4 text-purple-400 shrink-0 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
                 </svg>
                 <span>Carpeta</span>
@@ -283,7 +299,7 @@
           
           <div class="flex items-center justify-between pb-3 border-b border-white/5">
             <div class="flex items-center space-x-2">
-              <span class="w-2.5 h-2.5 rounded-full animate-pulse" style="background-color: var(--accent-color);"></span>
+              <span class="w-2.5 h-2.5 rounded-full animate-pulse" style="background-color: var(--theme-accent);"></span>
               <h2 class="font-display font-bold text-sm sm:text-base text-white">Cola de Subida</h2>
               <span id="queue-summary" class="text-xs text-slate-400 font-mono">0 archivos</span>
             </div>
@@ -299,7 +315,7 @@
               <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
             </div>
             <p class="text-xs text-slate-400 font-medium">No hay archivos seleccionados</p>
-            <p class="text-[11px] text-slate-500 mt-0.5">Selecciona fotos o videos para comenzar la subida.</p>
+            <p class="text-[11px] text-slate-500 mt-0.5">Selecciona fotos o videos para comenzar la subida directa.</p>
           </div>
 
           <!-- Lista de Archivos en Cola -->
@@ -354,10 +370,10 @@
   </div>
 
   <!-- ============================================================== -->
-  <!-- MODAL DE ADMINISTRADOR (PIN 0412 AUTO-DESBLOQUEO)              -->
+  <!-- MODAL MAESTRO: ACCESO PIN (0412) Y PANEL DE 3 PESTAÑAS        -->
   <!-- ============================================================== -->
   <div id="modal-container" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md">
-    <div id="modal-content" class="relative w-full max-w-lg glass-panel rounded-3xl border border-white/10 shadow-2xl p-4 sm:p-6 flex flex-col max-h-[90vh] overflow-hidden">
+    <div id="modal-content" class="relative w-full max-w-xl glass-panel rounded-3xl border border-white/10 shadow-2xl p-4 sm:p-6 flex flex-col max-h-[92vh] overflow-hidden">
       
       <!-- Boton cerrar (X) -->
       <button type="button" id="btn-close-modal" onclick="window.closeAdminModal(event)" class="absolute top-4 right-4 p-2 rounded-xl text-slate-400 hover:text-white glass-btn cursor-pointer z-20">
@@ -365,12 +381,12 @@
       </button>
 
       <!-- VISTA 1: TECLADO NUMERICO PIN (0412 AUTO-DESBLOQUEO) -->
-      <div id="view-pin" class="flex flex-col items-center justify-center text-center p-2 space-y-4">
-        <div class="w-12 h-12 rounded-2xl glass-card flex items-center justify-center border border-white/10" style="color: var(--accent-color);">
+      <div id="view-pin" class="flex flex-col items-center justify-center text-center p-2 space-y-4 my-auto">
+        <div class="w-12 h-12 rounded-2xl glass-card flex items-center justify-center border border-white/10" style="color: var(--theme-accent);">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
         </div>
         <div>
-          <h3 class="text-base font-bold text-white font-display">Acceso de Administrador</h3>
+          <h3 class="text-base font-bold text-white font-display">Panel Maestro de Control</h3>
           <p class="text-xs text-slate-400 mt-0.5">Ingresa tu c&oacute;digo PIN de 4 d&iacute;gitos</p>
         </div>
 
@@ -405,77 +421,237 @@
         </div>
       </div>
 
-      <!-- VISTA 2: PANEL DE AJUSTES DEL SISTEMA -->
-      <div id="view-config" class="hidden flex-1 flex flex-col overflow-hidden space-y-3.5">
-        <div class="pb-2 border-b border-white/5">
-          <h3 class="text-base font-bold text-white font-display">Configuraci&oacute;n del Sistema</h3>
-          <p class="text-[11px] text-slate-400">Personaliza el bot&oacute;n y administra el destino en Google Drive</p>
+      <!-- VISTA 2: PANEL DE CONTROL MAESTRO CON 3 PESTAÑAS -->
+      <div id="view-config" class="hidden flex-1 flex flex-col overflow-hidden space-y-3">
+        
+        <div class="pb-1 border-b border-white/5">
+          <h3 class="text-base font-bold text-white font-display">Panel Maestro de Control</h3>
+          <p class="text-[11px] text-slate-400">Administra el destino, la est&eacute;tica y la seguridad del sistema</p>
         </div>
 
-        <div class="flex-1 overflow-y-auto space-y-3.5 pr-1">
+        <!-- BARRA DE NAVEGACION DE LAS 3 PESTAÑAS -->
+        <div class="grid grid-cols-3 gap-1.5 p-1 rounded-2xl bg-black/40 border border-white/5 shrink-0">
           
-          <!-- Titulo del Boton Principal -->
-          <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-1.5">
-            <label class="block text-xs font-semibold text-slate-300">T&iacute;tulo del Bot&oacute;n Principal</label>
-            <input type="text" id="input-btn-title" placeholder="Ej: Comenzar Subida a Drive" class="w-full px-3 py-2 rounded-xl glass-input text-xs text-white">
-          </div>
+          <!-- Pestaña 1: Destino y Titulo -->
+          <button type="button" id="tab-btn-1" onclick="window.switchTab(1)" class="py-2 px-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center space-x-1.5 cursor-pointer bg-white/10 text-white shadow-sm" style="border: 1px solid var(--theme-accent);">
+            <svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+            <span class="truncate">Destino</span>
+          </button>
 
-          <!-- Switch Misma Carpeta -->
-          <div class="glass-card rounded-2xl p-3.5 border border-white/5 flex items-center justify-between">
-            <div>
-              <span class="text-xs font-semibold text-white block">Guardar Fotos y Videos en la misma carpeta</span>
-              <span class="text-[10px] text-slate-400">Si est&aacute; inactivo, crear&aacute; subcarpetas separadas de Fotos y Videos</span>
+          <!-- Pestaña 2: Personalizacion -->
+          <button type="button" id="tab-btn-2" onclick="window.switchTab(2)" class="py-2 px-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white transition-all flex items-center justify-center space-x-1.5 cursor-pointer">
+            <svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4 8.014 8.014 0 014.288-7.143C7.545 9.774 8 9.5 8 9.5s.455.274.712.357A8.014 8.014 0 0113 17a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
+            <span class="truncate">Dise&ntilde;o</span>
+          </button>
+
+          <!-- Pestaña 3: Seguridad & Suspension -->
+          <button type="button" id="tab-btn-3" onclick="window.switchTab(3)" class="py-2 px-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white transition-all flex items-center justify-center space-x-1.5 cursor-pointer">
+            <svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            <span class="truncate">Seguridad</span>
+          </button>
+        </div>
+
+        <!-- CONTENIDO DE LAS 3 PESTAÑAS (SCROLLABLE) -->
+        <div class="flex-1 overflow-y-auto space-y-3.5 pr-1">
+
+          <!-- ======================================================== -->
+          <!-- PESTAÑA 1: DESTINO Y TITULO                              -->
+          <!-- ======================================================== -->
+          <div id="tab-content-1" class="space-y-3">
+            
+            <!-- Campo Titulo Principal -->
+            <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-1.5">
+              <label class="block text-xs font-semibold text-slate-300">T&iacute;tulo Principal de la Tarjeta</label>
+              <input type="text" id="input-btn-title" placeholder="Ej: Comenzar Subida a Drive" class="w-full px-3 py-2 rounded-xl glass-input text-xs text-white">
+              <p class="text-[10px] text-slate-500">Este texto se muestra en el bot&oacute;n y en la cabecera principal.</p>
             </div>
-            <input type="checkbox" id="toggle-single-folder" class="w-4 h-4 accent-cyan-400 cursor-pointer">
+
+            <!-- Switch Misma Carpeta -->
+            <div class="glass-card rounded-2xl p-3.5 border border-white/5 flex items-center justify-between">
+              <div class="pr-3">
+                <span class="text-xs font-semibold text-white block">Guardar Fotos y Videos en la misma carpeta</span>
+                <span class="text-[10px] text-slate-400 block mt-0.5">Si est&aacute; inactivo, crear&aacute; autom&aacute;ticamente subcarpetas separadas de Fotos y Videos</span>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                <input type="checkbox" id="toggle-single-folder" class="sr-only peer">
+                <div class="w-11 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-cyan-500"></div>
+              </label>
+            </div>
+
+            <!-- Mini Explorador de Google Drive (Destino) -->
+            <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-2.5">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="text-xs font-bold text-white uppercase tracking-wider">Carpeta de Destino en Google Drive</span>
+                  <p class="text-[10px] text-slate-400">Navega o crea subcarpetas para asignar el destino</p>
+                </div>
+                <div class="flex items-center space-x-1.5">
+                  <button type="button" id="btn-folder-up" onclick="window.navigateFolderUp(event)" class="p-1.5 rounded-lg glass-btn text-slate-300 hover:text-white cursor-pointer" title="Subir nivel">
+                    <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
+                  </button>
+                  <button type="button" id="btn-show-create-folder" onclick="window.showCreateFolderForm(event)" class="p-1.5 rounded-lg glass-btn text-slate-300 hover:text-white cursor-pointer" title="Crear carpeta">
+                    <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Formulario Crear Carpeta -->
+              <div id="create-folder-form" class="hidden flex items-center space-x-2 p-2 rounded-xl bg-white/5 border border-white/10">
+                <input type="text" id="new-folder-name" placeholder="Nombre de la nueva carpeta..." class="flex-1 px-2.5 py-1 rounded-lg glass-input text-xs text-white">
+                <button type="button" id="btn-confirm-create-folder" onclick="window.handleCreateNewFolder(event)" class="px-3 py-1 rounded-lg glass-btn-primary text-xs font-bold cursor-pointer">Crear</button>
+                <button type="button" id="btn-cancel-create-folder" onclick="window.cancelCreateFolderForm(event)" class="px-2 py-1 rounded-lg glass-btn text-xs text-slate-400 cursor-pointer">Cancelar</button>
+              </div>
+
+              <!-- Breadcrumb Carpeta Actual -->
+              <div class="flex items-center space-x-1.5 text-xs text-slate-400 font-mono py-1.5 px-2.5 rounded-lg bg-black/40 truncate border border-white/5">
+                <span class="text-cyan-400 font-bold shrink-0">Carpeta destino:</span>
+                <span id="folder-breadcrumb" class="truncate text-slate-200">Mi Unidad</span>
+              </div>
+
+              <!-- Lista de Carpetas -->
+              <div id="drive-folder-list" class="max-h-40 overflow-y-auto space-y-1">
+                <div id="explorer-loading" class="p-4 text-center text-xs text-slate-500">Cargando carpetas de Drive...</div>
+              </div>
+
+              <!-- Boton Usar Esta Carpeta -->
+              <button type="button" id="btn-select-current-folder" onclick="window.selectCurrentExplorerFolder(event)" class="w-full py-2.5 rounded-xl glass-btn text-xs font-bold text-white flex items-center justify-center space-x-2 cursor-pointer active:scale-98">
+                <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span id="btn-select-folder-text">Usar esta carpeta como destino</span>
+              </button>
+            </div>
           </div>
 
-          <!-- Mini Navegador de Google Drive -->
-          <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-2.5">
-            <div class="flex items-center justify-between">
+          <!-- ======================================================== -->
+          <!-- PESTAÑA 2: PERSONALIZACION (COLOR & AVATAR)              -->
+          <!-- ======================================================== -->
+          <div id="tab-content-2" class="hidden space-y-3">
+            
+            <!-- Selector de Color / Rueda Cromatica -->
+            <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-2.5">
               <div>
-                <span class="text-xs font-bold text-white uppercase tracking-wider">Mini Explorador de Google Drive</span>
-                <p class="text-[10px] text-slate-400">Navega o crea carpetas para fijar el destino</p>
+                <span class="text-xs font-bold text-white uppercase tracking-wider">Acento Crom&aacute;tico y Ne&oacute;n</span>
+                <p class="text-[10px] text-slate-400">Modifica en tiempo real los orbes del fondo, botones y barras de progreso</p>
               </div>
-              <div class="flex items-center space-x-1.5">
-                <button type="button" id="btn-folder-up" onclick="window.navigateFolderUp(event)" class="p-1.5 rounded-lg glass-btn text-slate-300 hover:text-white cursor-pointer" title="Subir nivel">
-                  <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
-                </button>
-                <button type="button" id="btn-show-create-folder" onclick="window.showCreateFolderForm(event)" class="p-1.5 rounded-lg glass-btn text-slate-300 hover:text-white cursor-pointer" title="Crear carpeta">
-                  <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
-                </button>
+
+              <div class="flex items-center space-x-3">
+                <div class="relative w-10 h-10 rounded-xl overflow-hidden glass-card border border-white/20 shrink-0 cursor-pointer shadow-md">
+                  <input type="color" id="theme-color-picker" value="#00f2fe" class="absolute -inset-2 w-14 h-14 cursor-pointer border-none bg-transparent" onchange="window.handleColorChange(this.value)" oninput="window.handleColorChange(this.value)">
+                </div>
+                <div class="flex-1">
+                  <input type="text" id="theme-color-hex" value="#00f2fe" maxlength="7" class="w-full px-3 py-1.5 rounded-xl glass-input text-xs font-mono text-white" onchange="window.handleHexInput(this.value)">
+                </div>
+              </div>
+
+              <!-- Paleta Rapida de Neones -->
+              <div class="flex items-center space-x-2 pt-1">
+                <span class="text-[10px] text-slate-500 font-mono">Paletas:</span>
+                <button type="button" onclick="window.handleColorChange('#00f2fe')" class="w-6 h-6 rounded-full bg-[#00f2fe] border border-white/30 cursor-pointer hover:scale-110 transition-transform shadow-[0_0_10px_#00f2fe]"></button>
+                <button type="button" onclick="window.handleColorChange('#8b5cf6')" class="w-6 h-6 rounded-full bg-[#8b5cf6] border border-white/30 cursor-pointer hover:scale-110 transition-transform shadow-[0_0_10px_#8b5cf6]"></button>
+                <button type="button" onclick="window.handleColorChange('#ec4899')" class="w-6 h-6 rounded-full bg-[#ec4899] border border-white/30 cursor-pointer hover:scale-110 transition-transform shadow-[0_0_10px_#ec4899]"></button>
+                <button type="button" onclick="window.handleColorChange('#10b981')" class="w-6 h-6 rounded-full bg-[#10b981] border border-white/30 cursor-pointer hover:scale-110 transition-transform shadow-[0_0_10px_#10b981]"></button>
+                <button type="button" onclick="window.handleColorChange('#f59e0b')" class="w-6 h-6 rounded-full bg-[#f59e0b] border border-white/30 cursor-pointer hover:scale-110 transition-transform shadow-[0_0_10px_#f59e0b]"></button>
               </div>
             </div>
 
-            <!-- Formulario Crear Carpeta -->
-            <div id="create-folder-form" class="hidden flex items-center space-x-2 p-2 rounded-xl bg-white/5 border border-white/10">
-              <input type="text" id="new-folder-name" placeholder="Nombre de la carpeta nueva..." class="flex-1 px-2.5 py-1 rounded-lg glass-input text-xs text-white">
-              <button type="button" id="btn-confirm-create-folder" onclick="window.handleCreateNewFolder(event)" class="px-3 py-1 rounded-lg glass-btn-primary text-xs font-bold cursor-pointer">Crear</button>
-              <button type="button" id="btn-cancel-create-folder" onclick="window.cancelCreateFolderForm(event)" class="px-2 py-1 rounded-lg glass-btn text-xs text-slate-400 cursor-pointer">Cancelar</button>
+            <!-- Subida de Avatar / Logo de Perfil -->
+            <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-2.5">
+              <div>
+                <span class="text-xs font-bold text-white uppercase tracking-wider">Icono / Imagen de Perfil</span>
+                <p class="text-[10px] text-slate-400">Sube una imagen desde tu dispositivo para personalizar el avatar central</p>
+              </div>
+
+              <div class="flex items-center space-x-3.5 p-2 rounded-xl bg-black/30 border border-white/5">
+                <div class="w-12 h-12 rounded-xl glass-card overflow-hidden border border-white/10 shrink-0 flex items-center justify-center">
+                  <img id="admin-avatar-preview" src="" alt="Preview" class="hidden w-full h-full object-cover">
+                  <div id="admin-avatar-svg-placeholder" class="text-slate-400">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                  </div>
+                </div>
+
+                <div class="flex-1 flex flex-col space-y-1">
+                  <label for="input-avatar-file" class="py-2 px-3 rounded-xl glass-btn text-xs font-semibold text-white flex items-center justify-center space-x-1.5 cursor-pointer active:scale-98 text-center">
+                    <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                    <span>Seleccionar Nueva Imagen</span>
+                  </label>
+                  <input type="file" id="input-avatar-file" accept="image/*" class="hidden" onchange="window.handleAvatarSelected(this)">
+                  <span id="avatar-file-name" class="text-[10px] text-slate-500 font-mono truncate">Ning&uacute;n archivo seleccionado</span>
+                </div>
+              </div>
+
+              <!-- Carpeta para Avatares en Drive -->
+              <div class="pt-2 border-t border-white/5 space-y-1.5">
+                <div class="flex items-center justify-between">
+                  <span class="text-[11px] font-semibold text-slate-300">Carpeta en Drive para Guardar Avatares</span>
+                  <button type="button" onclick="window.toggleAvatarFolderExplorer()" class="text-[10px] text-cyan-400 hover:underline cursor-pointer">
+                    <span id="btn-toggle-avatar-exp-text">Cambiar Carpeta</span>
+                  </button>
+                </div>
+                <div class="flex items-center space-x-1.5 text-xs text-slate-400 font-mono py-1.5 px-2.5 rounded-lg bg-black/40 truncate border border-white/5">
+                  <span class="text-purple-400 font-bold shrink-0">Carpeta avatar:</span>
+                  <span id="avatar-folder-breadcrumb" class="truncate text-slate-200">Mi Unidad</span>
+                </div>
+
+                <!-- Sub-explorador colapsable para avatares -->
+                <div id="avatar-folder-explorer-box" class="hidden space-y-1 pt-1">
+                  <div class="flex items-center justify-between">
+                    <button type="button" onclick="window.navigateAvatarFolderUp()" class="p-1 rounded-lg glass-btn text-xs text-slate-300 cursor-pointer">Atr&aacute;s</button>
+                    <button type="button" onclick="window.selectCurrentFolderForAvatar()" class="p-1 px-2.5 rounded-lg glass-btn-primary text-xs font-bold cursor-pointer">Fijar para Avatares</button>
+                  </div>
+                  <div id="avatar-drive-list" class="max-h-32 overflow-y-auto space-y-1 pt-1"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ======================================================== -->
+          <!-- PESTAÑA 3: SEGURIDAD & SUSPENSION                        -->
+          <!-- ======================================================== -->
+          <div id="tab-content-3" class="hidden space-y-3">
+            
+            <!-- Switch Maestro de Suspension -->
+            <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-2">
+              <div class="flex items-center justify-between">
+                <div class="pr-3">
+                  <span class="text-xs font-bold text-white block">Suspender Recepci&oacute;n de Archivos</span>
+                  <span class="text-[10px] text-slate-400 block mt-0.5">Bloquea la interfaz de subida con un mensaje de alerta visual</span>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                  <input type="checkbox" id="toggle-suspension" class="sr-only peer" onchange="window.previewSuspensionToggle(this.checked)">
+                  <div class="w-11 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
+                </label>
+              </div>
+
+              <!-- Badge de estado actual -->
+              <div class="pt-1">
+                <span id="badge-suspension-status" class="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                  <span>Servicio Activo &bull; Recepci&oacute;n Normal</span>
+                </span>
+              </div>
             </div>
 
-            <!-- Breadcrumb Carpeta Actual -->
-            <div class="flex items-center space-x-1.5 text-xs text-slate-400 font-mono py-1.5 px-2.5 rounded-lg bg-black/40 truncate border border-white/5">
-              <span class="text-cyan-400 font-bold shrink-0">Carpeta actual:</span>
-              <span id="folder-breadcrumb" class="truncate text-slate-200">Mi Unidad</span>
+            <!-- Campo Mensaje de Suspension -->
+            <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-1.5">
+              <label class="block text-xs font-semibold text-slate-300">Mensaje Personalizado de Suspensi&oacute;n</label>
+              <textarea id="input-suspension-msg" rows="3" placeholder="Ej: Servicio suspendido temporalmente por mantenimiento" class="w-full px-3 py-2 rounded-xl glass-input text-xs text-white resize-none"></textarea>
+              <p class="text-[10px] text-slate-500">Este mensaje ser&aacute; visible para cualquier usuario que visite la p&aacute;gina mientras est&eacute; suspendida.</p>
             </div>
 
-            <!-- Lista de Carpetas -->
-            <div id="drive-folder-list" class="max-h-44 overflow-y-auto space-y-1">
-              <div id="explorer-loading" class="p-4 text-center text-xs text-slate-500">Cargando carpetas de Drive...</div>
+            <!-- Actualizar PIN de Seguridad -->
+            <div class="glass-card rounded-2xl p-3.5 border border-white/5 space-y-1.5">
+              <label class="block text-xs font-semibold text-slate-300">C&oacute;digo PIN Maestro (4 D&iacute;gitos)</label>
+              <input type="password" id="input-admin-pin" maxlength="4" placeholder="0412" class="w-full px-3 py-2 rounded-xl glass-input text-xs font-mono text-white tracking-widest">
+              <p class="text-[10px] text-slate-500">PIN requerido para desbloquear este panel de control.</p>
             </div>
-
-            <!-- Boton Usar Esta Carpeta -->
-            <button type="button" id="btn-select-current-folder" onclick="window.selectCurrentExplorerFolder(event)" class="w-full py-2.5 rounded-xl glass-btn text-xs font-bold text-white flex items-center justify-center space-x-2 cursor-pointer">
-              <span>Usar esta carpeta como destino</span>
-            </button>
           </div>
         </div>
 
-        <!-- Footer Modal -->
-        <div class="pt-3 border-t border-white/10 flex items-center justify-between">
+        <!-- FOOTER DEL MODAL: STATUS Y BOTON GUARDAR -->
+        <div class="pt-3 border-t border-white/10 flex items-center justify-between shrink-0">
           <span id="save-status-msg" class="text-xs text-slate-400 font-mono"></span>
-          <button type="button" id="btn-save-settings" onclick="window.saveSettings(event)" class="px-5 py-2 rounded-xl glass-btn-primary text-xs font-bold cursor-pointer active:scale-95">
-            Guardar Cambios
+          <button type="button" id="btn-save-settings" onclick="window.saveSettings(event)" class="px-5 py-2.5 rounded-xl glass-btn-primary text-xs font-bold cursor-pointer active:scale-95 flex items-center space-x-1.5">
+            <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+            <span>Guardar Configuraci&oacute;n Completa</span>
           </button>
         </div>
       </div>
@@ -483,18 +659,16 @@
   </div>
 
   <!-- ============================================================== -->
-  <!-- JAVASCRIPT DEL CLIENTE: AUTONOMO (DESACOPLADO DE APPS SCRIPT)  -->
+  <!-- JAVASCRIPT: ARQUITECTURA TECNICA SIN FALLOS DE CORS           -->
   <!-- ============================================================== -->
   <script>
     /**
-     * CONFIGURACION DE LA API DE GOOGLE APPS SCRIPT
-     * Pega aqui la URL de ejecucion de tu Web App de Apps Script:
-     * Ejemplo: "https://script.google.com/macros/s/AKfycb.../exec"
+     * URL DEL BACKEND GOOGLE APPS SCRIPT
      */
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxAQbba5tS-n2VffA28R30TrWjFCyE3IEirbB_hbyEVRjbce-oRwDzWIiV833zANiLS/exec";
 
     /**
-     * 1. ESTADO DE LA APLICACION
+     * 1. ESTADO GLOBAL DE LA APLICACION
      */
     const AppState = {
       config: {
@@ -503,6 +677,12 @@
         tituloBoton: 'Comenzar Subida a Drive',
         mismaCarpeta: false,
         adminPin: '0412',
+        themeColor: '#00f2fe',
+        avatarUrl: '',
+        suspendido: false,
+        mensajeSuspension: 'Servicio suspendido temporalmente por mantenimiento',
+        carpetaAvataresId: 'root',
+        carpetaAvataresNombre: 'Mi Unidad',
         sheetUrl: '#'
       },
       queue: [],
@@ -511,15 +691,18 @@
       cachedPin: '0412',
       explorerActualId: 'root',
       explorerActualNombre: 'Mi Unidad',
-      explorerParentId: null
+      explorerParentId: null,
+      avatarExplorerActualId: 'root',
+      avatarExplorerActualNombre: 'Mi Unidad',
+      avatarExplorerParentId: null,
+      pendingAvatarFile: null
     };
 
     /**
-     * HELPER UNIVERSAL DE COMUNICACION CON EL BACKEND APPS SCRIPT
-     * Utiliza text/plain;charset=utf-8 para evitar preflight OPTIONS de CORS.
+     * 2. COMUNICACION CON BACKEND APPS SCRIPT (CERO PREFLIGHT OPTIONS CORS)
      */
     async function llamarBackend(payload) {
-      if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === "https://script.google.com/macros/s/AKfycbxAQbba5tS-n2VffA28R30TrWjFCyE3IEirbB_hbyEVRjbce-oRwDzWIiV833zANiLS/exec") {
+      if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === "PEGA_AQUI_TU_URL_DE_APPS_SCRIPT") {
         throw new Error("Debes configurar la constante APPS_SCRIPT_URL con la URL de tu Web App de Apps Script.");
       }
 
@@ -535,12 +718,90 @@
         throw new Error("HTTP " + response.status + ": Error al conectar con Apps Script.");
       }
 
-      const resJson = await response.json();
-      return resJson;
+      return await response.json();
     }
 
     /**
-     * 2. MODAL Y TECLADO NUMERICO CON AUTO-DESBLOQUEO AL 4TO DIGITO
+     * 3. CONTROL DE COLOR Y NEON EN TIEMPO REAL
+     */
+    window.handleColorChange = function(hex) {
+      if (!hex || !hex.startsWith('#') || hex.length < 7) return;
+      document.getElementById('theme-color-picker').value = hex;
+      document.getElementById('theme-color-hex').value = hex;
+      applyDynamicColor(hex);
+      AppState.config.themeColor = hex;
+      saveLocalConfig();
+    };
+
+    window.handleHexInput = function(val) {
+      val = val.trim();
+      if (!val.startsWith('#')) val = '#' + val;
+      if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
+        window.handleColorChange(val);
+      }
+    };
+
+    function applyDynamicColor(hex) {
+      const root = document.documentElement;
+      root.style.setProperty('--theme-accent', hex);
+      root.style.setProperty('--theme-color-1', hex);
+
+      // Calculo de matices armonicos
+      const rgb = hexToRgb(hex);
+      if (rgb) {
+        root.style.setProperty('--accent-glow', `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.45)`);
+        
+        // Desplazamiento de tono para el segundo y tercer orbe
+        const shiftedColor2 = rgbToHex(
+          Math.min(255, Math.max(0, Math.round(rgb.r * 0.6 + 60))),
+          Math.min(255, Math.max(0, Math.round(rgb.g * 0.4 + 40))),
+          Math.min(255, Math.max(0, Math.round(rgb.b * 0.9 + 70)))
+        );
+        root.style.setProperty('--theme-color-2', shiftedColor2);
+
+        const shiftedColor3 = rgbToHex(
+          Math.min(255, Math.max(0, Math.round(rgb.r * 0.9 + 50))),
+          Math.min(255, Math.max(0, Math.round(rgb.g * 0.3 + 20))),
+          Math.min(255, Math.max(0, Math.round(rgb.b * 0.6 + 80)))
+        );
+        root.style.setProperty('--theme-color-3', shiftedColor3);
+      }
+    }
+
+    function hexToRgb(hex) {
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+      } : null;
+    }
+
+    function rgbToHex(r, g, b) {
+      return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    }
+
+    /**
+     * 4. CONTROL DE PESTAÑAS DEL PANEL MAESTRO
+     */
+    window.switchTab = function(tabNumber) {
+      for (let i = 1; i <= 3; i++) {
+        const btn = document.getElementById(`tab-btn-${i}`);
+        const content = document.getElementById(`tab-content-${i}`);
+        if (i === tabNumber) {
+          btn.className = "py-2 px-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center space-x-1.5 cursor-pointer bg-white/10 text-white shadow-sm";
+          btn.style.border = "1px solid var(--theme-accent)";
+          content.classList.remove('hidden');
+        } else {
+          btn.className = "py-2 px-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white transition-all flex items-center justify-center space-x-1.5 cursor-pointer";
+          btn.style.border = "1px solid transparent";
+          content.classList.add('hidden');
+        }
+      }
+    };
+
+    /**
+     * 5. MODAL Y TECLADO NUMERICO PIN (0412 AUTO-DESBLOQUEO)
      */
     window.openAdminModal = function(e) {
       if (e) { e.preventDefault(); e.stopPropagation(); }
@@ -564,9 +825,10 @@
       AppState.pinEntered += String(digit);
       updatePinDisplay();
 
-      // AUTO-DESBLOQUEO AL MARCAR EL CUARTO DIGITO
+      // AUTO-DESBLOQUEO INMEDIATO AL MARCAR EL CUARTO DIGITO
       if (AppState.pinEntered.length === 4) {
-        if (AppState.pinEntered === '0412' || AppState.pinEntered === AppState.cachedPin) {
+        const validPin = AppState.cachedPin || '0412';
+        if (AppState.pinEntered === '0412' || AppState.pinEntered === validPin) {
           unlockSettings();
         } else {
           showPinError();
@@ -602,6 +864,7 @@
     function unlockSettings() {
       document.getElementById('view-pin').classList.add('hidden');
       document.getElementById('view-config').classList.remove('hidden');
+      window.switchTab(1);
       loadDriveFolders(AppState.config.folderId || 'root');
     }
 
@@ -618,9 +881,156 @@
     }
 
     /**
-     * 3. SELECTOR Y GESTION DE ARCHIVOS (COLA SECUENCIAL)
+     * 6. SUSPENSION DE SERVICIO
+     */
+    window.previewSuspensionToggle = function(isSuspended) {
+      updateSuspensionBadge(isSuspended);
+    };
+
+    function updateSuspensionBadge(isSuspended) {
+      const badge = document.getElementById('badge-suspension-status');
+      if (isSuspended) {
+        badge.className = "inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30";
+        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span><span>Servicio Suspendido &bull; Acceso Pausado</span>`;
+      } else {
+        badge.className = "inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30";
+        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span><span>Servicio Activo &bull; Recepci&oacute;n Normal</span>`;
+      }
+    }
+
+    function applySuspensionToUI() {
+      const isSuspended = !!AppState.config.suspendido;
+      const overlay = document.getElementById('suspension-overlay');
+      const msgEl = document.getElementById('suspension-display-msg');
+      const dropzone = document.getElementById('dropzone');
+      const btnUpload = document.getElementById('btn-start-upload');
+
+      const customMsg = AppState.config.mensajeSuspension || 'Servicio suspendido temporalmente por mantenimiento';
+      if (msgEl) msgEl.textContent = customMsg;
+
+      if (isSuspended) {
+        overlay.classList.remove('hidden');
+        dropzone.classList.add('opacity-40', 'pointer-events-none');
+        btnUpload.disabled = true;
+      } else {
+        overlay.classList.add('hidden');
+        dropzone.classList.remove('opacity-40', 'pointer-events-none');
+        btnUpload.disabled = (AppState.isUploading || AppState.queue.length === 0);
+      }
+    }
+
+    /**
+     * 7. GESTION DE AVATAR / IMAGEN DE PERFIL
+     */
+    window.handleAvatarSelected = function(input) {
+      if (!input || !input.files || input.files.length === 0) return;
+      const file = input.files[0];
+      AppState.pendingAvatarFile = file;
+
+      document.getElementById('avatar-file-name').textContent = file.name;
+
+      // Vista previa local inmediata en el avatar
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const base64Url = e.target.result;
+        setAvatarVisuals(base64Url);
+      };
+      reader.readAsDataURL(file);
+    };
+
+    function setAvatarVisuals(imgUrl) {
+      const headerImg = document.getElementById('header-avatar-img');
+      const headerSvg = document.getElementById('header-avatar-svg');
+      const adminImg = document.getElementById('admin-avatar-preview');
+      const adminSvg = document.getElementById('admin-avatar-svg-placeholder');
+
+      if (imgUrl) {
+        headerImg.src = imgUrl;
+        headerImg.classList.remove('hidden');
+        headerSvg.classList.add('hidden');
+
+        adminImg.src = imgUrl;
+        adminImg.classList.remove('hidden');
+        adminSvg.classList.add('hidden');
+      } else {
+        headerImg.classList.add('hidden');
+        headerSvg.classList.remove('hidden');
+
+        adminImg.classList.add('hidden');
+        adminSvg.classList.remove('hidden');
+      }
+    }
+
+    window.toggleAvatarFolderExplorer = function() {
+      const box = document.getElementById('avatar-folder-explorer-box');
+      const isHidden = box.classList.contains('hidden');
+      if (isHidden) {
+        box.classList.remove('hidden');
+        document.getElementById('btn-toggle-avatar-exp-text').textContent = 'Ocultar Explorador';
+        loadAvatarDriveFolders(AppState.config.carpetaAvataresId || 'root');
+      } else {
+        box.classList.add('hidden');
+        document.getElementById('btn-toggle-avatar-exp-text').textContent = 'Cambiar Carpeta';
+      }
+    };
+
+    async function loadAvatarDriveFolders(folderId) {
+      const listEl = document.getElementById('avatar-drive-list');
+      listEl.innerHTML = `<div class="p-2 text-center text-[10px] text-slate-500">Cargando carpetas...</div>`;
+
+      try {
+        const data = await llamarBackend({
+          accion: "explorarDrive",
+          folderId: folderId || "root"
+        });
+
+        if (data && data.exito) {
+          AppState.avatarExplorerActualId = data.actualId;
+          AppState.avatarExplorerActualNombre = data.actualNombre;
+          AppState.avatarExplorerParentId = data.parentId;
+
+          document.getElementById('avatar-folder-breadcrumb').textContent = data.actualNombre;
+
+          if (!data.carpetas || data.carpetas.length === 0) {
+            listEl.innerHTML = `<div class="p-2 text-center text-[10px] text-slate-500">No hay subcarpetas aqu&iacute;.</div>`;
+            return;
+          }
+
+          listEl.innerHTML = data.carpetas.map(f => `
+            <div onclick="loadAvatarDriveFolders('${f.id}')" class="flex items-center space-x-2 p-1.5 rounded-lg glass-card hover:bg-white/10 cursor-pointer text-[11px] text-slate-200 transition-all border border-white/5">
+              <svg class="w-3.5 h-3.5 text-purple-400 pointer-events-none shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" /></svg>
+              <span class="truncate font-medium pointer-events-none">${f.nombre}</span>
+            </div>
+          `).join('');
+        }
+      } catch (e) {
+        listEl.innerHTML = `<div class="p-2 text-center text-[10px] text-rose-400">Error: ${e.message}</div>`;
+      }
+    }
+
+    window.navigateAvatarFolderUp = function() {
+      if (AppState.avatarExplorerParentId) {
+        loadAvatarDriveFolders(AppState.avatarExplorerParentId);
+      } else {
+        loadAvatarDriveFolders('root');
+      }
+    };
+
+    window.selectCurrentFolderForAvatar = function() {
+      AppState.config.carpetaAvataresId = AppState.avatarExplorerActualId;
+      AppState.config.carpetaAvataresNombre = AppState.avatarExplorerActualNombre;
+      document.getElementById('avatar-folder-breadcrumb').textContent = AppState.avatarExplorerActualNombre;
+      window.toggleAvatarFolderExplorer();
+    };
+
+    /**
+     * 8. SELECTOR Y GESTION DE ARCHIVOS (COLA SECUENCIAL)
      */
     window.handleFilesFromInput = function(input) {
+      if (AppState.config.suspendido) {
+        alert("El servicio se encuentra actualmente suspendido.");
+        return;
+      }
       if (!input || !input.files || input.files.length === 0) return;
       handleFilesAdded(input.files);
       input.value = '';
@@ -695,7 +1105,7 @@
       if (total > 0) {
         emptyEl.classList.add('hidden');
         listEl.classList.remove('hidden');
-        btnUpload.disabled = (AppState.isUploading || pending === 0);
+        btnUpload.disabled = (AppState.isUploading || pending === 0 || AppState.config.suspendido);
       } else {
         emptyEl.classList.remove('hidden');
         listEl.classList.add('hidden');
@@ -756,12 +1166,11 @@
     }
 
     /**
-     * 4. MOTOR DE SUBIDA RESUMIBLE SECUENCIAL A GOOGLE DRIVE API v3
-     * CERO BLOQUEOS DE CORS: Corre desde GitHub Pages como origen autorizado.
+     * 9. MOTOR DE SUBIDA RESUMIBLE SECUENCIAL A GOOGLE DRIVE API v3
      */
     window.startUploadProcess = async function(e) {
       if (e) { e.preventDefault(); e.stopPropagation(); }
-      if (AppState.isUploading) return;
+      if (AppState.isUploading || AppState.config.suspendido) return;
 
       const pending = AppState.queue.filter(i => i.status === 'pending');
       if (pending.length === 0) return;
@@ -777,7 +1186,7 @@
         <span>Subiendo Archivos a Google Drive...</span>
       `;
 
-      // Iteracion secuencial estricta (1 por 1)
+      // Subida de 1 en 1 sin romper limites ni memoria
       for (let i = 0; i < AppState.queue.length; i++) {
         const item = AppState.queue[i];
         if (item.status === 'completed') continue;
@@ -788,7 +1197,7 @@
         updateQueueUI();
 
         try {
-          // PASO A: Solicitar token y carpeta destino al backend de Apps Script
+          // PASO A: Solicitar credenciales y carpeta al backend
           const prepRes = await llamarBackend({
             accion: "prepararSubida",
             esVideo: item.esVideo
@@ -825,7 +1234,7 @@
             uploadUrl = null;
           }
 
-          // Respaldo XHR para lectura del Location en caso de restricciones de header del navegador
+          // Respaldo XHR para lectura del Location si fetch es restringido por el navegador
           if (!uploadUrl) {
             uploadUrl = await obtenerLocationPorXHR(item.file, prepRes.token, prepRes.targetFolderId);
           }
@@ -865,7 +1274,7 @@
       AppState.isUploading = false;
       btn.disabled = false;
       const listos = AppState.queue.filter(i => i.status === 'completed').length;
-      btn.innerHTML = `<span>\u00A1${listos} Archivos Subidos con \u00C9xito!</span>`;
+      btn.innerHTML = `<span>${listos} Archivos Subidos con &Eacute;xito</span>`;
 
       setTimeout(() => {
         btn.innerHTML = `
@@ -876,9 +1285,6 @@
       }, 3000);
     };
 
-    /**
-     * Respaldo XHR para obtener la cabecera Location
-     */
     function obtenerLocationPorXHR(file, token, targetFolderId) {
       return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
@@ -909,9 +1315,6 @@
       });
     }
 
-    /**
-     * Envio PUT del archivo con actualizacion fluida a 60fps de la barra de progreso
-     */
     function transferirArchivoPUT(item, uploadUrl) {
       return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
@@ -950,7 +1353,7 @@
     }
 
     /**
-     * 5. MINI EXPLORADOR DE GOOGLE DRIVE INTERACTIVO
+     * 10. MINI EXPLORADOR DE GOOGLE DRIVE INTERACTIVO (DESTINO)
      */
     async function loadDriveFolders(folderId) {
       const listEl = document.getElementById('drive-folder-list');
@@ -979,7 +1382,7 @@
           }
 
           if (!data.carpetas || data.carpetas.length === 0) {
-            listEl.innerHTML = `<div class="p-3 text-center text-xs text-slate-500">No hay subcarpetas aqu\u00ED.</div>`;
+            listEl.innerHTML = `<div class="p-3 text-center text-xs text-slate-500">No hay subcarpetas aqu&iacute;.</div>`;
             return;
           }
 
@@ -1009,8 +1412,7 @@
 
     window.showCreateFolderForm = function(e) {
       if (e) { e.preventDefault(); e.stopPropagation(); }
-      const f = document.getElementById('create-folder-form');
-      f.classList.remove('hidden');
+      document.getElementById('create-folder-form').classList.remove('hidden');
       document.getElementById('new-folder-name').focus();
     };
 
@@ -1058,16 +1460,17 @@
       AppState.config.folderName = AppState.explorerActualNombre;
 
       const btn = document.getElementById('btn-select-current-folder');
-      btn.textContent = '\u00A1Carpeta Seleccionada como Destino!';
+      const textSpan = document.getElementById('btn-select-folder-text');
+      textSpan.textContent = 'Carpeta Seleccionada como Destino';
       btn.className = "w-full py-2.5 rounded-xl glass-btn-primary text-xs font-bold text-slate-900 flex items-center justify-center space-x-2 cursor-pointer";
       setTimeout(() => {
-        btn.textContent = 'Usar esta carpeta como destino';
+        textSpan.textContent = 'Usar esta carpeta como destino';
         btn.className = "w-full py-2.5 rounded-xl glass-btn text-xs font-bold text-white flex items-center justify-center space-x-2 cursor-pointer";
       }, 2000);
     };
 
     /**
-     * 6. GUARDAR CONFIGURACION EN GOOGLE SHEETS
+     * 11. GUARDAR CONFIGURACION COMPLETA (BACKEND + LOCALSTORAGE)
      */
     window.saveSettings = async function(e) {
       if (e) { e.preventDefault(); e.stopPropagation(); }
@@ -1078,25 +1481,69 @@
       btn.textContent = 'Guardando...';
       if (statusEl) statusEl.textContent = 'Guardando en Sheet...';
 
+      // 1. Si hay un avatar nuevo pendiente, subirlo a Google Drive primero
+      let avatarFinalUrl = AppState.config.avatarUrl || '';
+      if (AppState.pendingAvatarFile) {
+        try {
+          if (statusEl) statusEl.textContent = 'Subiendo avatar a Drive...';
+          const file = AppState.pendingAvatarFile;
+          const prepRes = await llamarBackend({
+            accion: "prepararSubida",
+            esVideo: false,
+            carpetaDestinoDirecta: AppState.config.carpetaAvataresId || "root"
+          });
+
+          if (prepRes && prepRes.token) {
+            const locUrl = await obtenerLocationPorXHR(file, prepRes.token, prepRes.targetFolderId);
+            if (locUrl) {
+              const fileId = await transferirArchivoPUT({ file: file, size: file.size, uploadedBytes: 0, progress: 0 }, locUrl);
+              if (fileId) {
+                avatarFinalUrl = `https://drive.google.com/thumbnail?id=${fileId}&sz=w500`;
+                AppState.config.avatarUrl = avatarFinalUrl;
+                setAvatarVisuals(avatarFinalUrl);
+              }
+            }
+          }
+        } catch (eAvatar) {
+          console.warn("Aviso en subida de avatar:", eAvatar.message);
+        }
+      }
+
+      const newTitle = document.getElementById('input-btn-title').value.trim() || 'Comenzar Subida a Drive';
+      const isSingleFolder = document.getElementById('toggle-single-folder').checked;
+      const isSuspended = document.getElementById('toggle-suspension').checked;
+      const suspMsg = document.getElementById('input-suspension-msg').value.trim() || 'Servicio suspendido temporalmente por mantenimiento';
+      const newPin = document.getElementById('input-admin-pin').value.trim() || AppState.cachedPin || '0412';
+
       const payload = {
-        accion: "guardarConfig",
+        accion: "guardarConfigCompleta",
         folderId: AppState.config.folderId,
         folderName: AppState.config.folderName,
-        tituloBoton: document.getElementById('input-btn-title').value.trim() || 'Comenzar Subida a Drive',
-        mismaCarpeta: document.getElementById('toggle-single-folder').checked
+        tituloBoton: newTitle,
+        mismaCarpeta: isSingleFolder,
+        adminPin: newPin,
+        themeColor: AppState.config.themeColor || '#00f2fe',
+        avatarUrl: avatarFinalUrl,
+        suspendido: isSuspended,
+        mensajeSuspension: suspMsg,
+        carpetaAvataresId: AppState.config.carpetaAvataresId || 'root',
+        carpetaAvataresNombre: AppState.config.carpetaAvataresNombre || 'Mi Unidad'
       };
 
       try {
         const res = await llamarBackend(payload);
         btn.disabled = false;
-        btn.textContent = 'Guardar Cambios';
+        btn.textContent = 'Guardar Configuraci\u00F3n Completa';
 
         if (res && res.exito) {
           if (statusEl) {
-            statusEl.textContent = '\u00A1Guardado en Google Sheets!';
+            statusEl.textContent = 'Guardado con \u00E9xito';
             setTimeout(() => { statusEl.textContent = ''; }, 2500);
           }
           AppState.config = Object.assign(AppState.config, payload);
+          AppState.cachedPin = newPin;
+          AppState.pendingAvatarFile = null;
+          saveLocalConfig();
           applyConfigToUI();
         } else {
           if (statusEl) statusEl.textContent = 'Error al guardar';
@@ -1104,29 +1551,73 @@
         }
       } catch (err) {
         btn.disabled = false;
-        btn.textContent = 'Guardar Cambios';
-        if (statusEl) statusEl.textContent = 'Error de conexion';
-        alert("Error de comunicacion: " + err.message);
+        btn.textContent = 'Guardar Configuraci\u00F3n Completa';
+        if (statusEl) statusEl.textContent = 'Guardado localmente (Offline)';
+        AppState.config = Object.assign(AppState.config, payload);
+        saveLocalConfig();
+        applyConfigToUI();
       }
     };
 
+    function saveLocalConfig() {
+      try {
+        localStorage.setItem('solicitador_pro_config', JSON.stringify(AppState.config));
+      } catch (e) {}
+    }
+
+    function loadLocalConfig() {
+      try {
+        const saved = localStorage.getItem('solicitador_pro_config');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          AppState.config = Object.assign(AppState.config, parsed);
+          if (parsed.adminPin) AppState.cachedPin = parsed.adminPin;
+        }
+      } catch (e) {}
+    }
+
     function applyConfigToUI() {
       const cfg = AppState.config;
-      document.getElementById('input-btn-title').value = cfg.tituloBoton;
-      document.getElementById('btn-upload-label').textContent = cfg.tituloBoton;
+      document.getElementById('input-btn-title').value = cfg.tituloBoton || 'Comenzar Subida a Drive';
+      document.getElementById('btn-upload-label').textContent = cfg.tituloBoton || 'Comenzar Subida a Drive';
+      document.getElementById('header-title').textContent = cfg.tituloBoton || 'Portal de Carga de Archivos';
       document.getElementById('toggle-single-folder').checked = !!cfg.mismaCarpeta;
+
+      document.getElementById('toggle-suspension').checked = !!cfg.suspendido;
+      document.getElementById('input-suspension-msg').value = cfg.mensajeSuspension || 'Servicio suspendido temporalmente por mantenimiento';
+      document.getElementById('input-admin-pin').value = cfg.adminPin || '0412';
+
+      updateSuspensionBadge(!!cfg.suspendido);
+      applySuspensionToUI();
+
+      if (cfg.themeColor) {
+        applyDynamicColor(cfg.themeColor);
+        document.getElementById('theme-color-picker').value = cfg.themeColor;
+        document.getElementById('theme-color-hex').value = cfg.themeColor;
+      }
+
+      if (cfg.avatarUrl) {
+        setAvatarVisuals(cfg.avatarUrl);
+      }
+
+      document.getElementById('folder-breadcrumb').textContent = cfg.folderName || 'Mi Unidad';
+      document.getElementById('avatar-folder-breadcrumb').textContent = cfg.carpetaAvataresNombre || 'Mi Unidad';
     }
 
     /**
-     * 7. INICIALIZACION
+     * 12. INICIALIZACION
      */
     async function init() {
+      // 1. Cargar cache local inmediatamente para 0 parpadeos
+      loadLocalConfig();
+      applyConfigToUI();
+
       // Drag and Drop
       const dropzone = document.getElementById('dropzone');
       ['dragenter', 'dragover'].forEach(n => {
         dropzone.addEventListener(n, (e) => {
           e.preventDefault(); e.stopPropagation();
-          dropzone.classList.add('dragover-active');
+          if (!AppState.config.suspendido) dropzone.classList.add('dragover-active');
         }, false);
       });
       ['dragleave', 'drop'].forEach(n => {
@@ -1136,22 +1627,24 @@
         }, false);
       });
       dropzone.addEventListener('drop', (e) => {
+        if (AppState.config.suspendido) return;
         const dt = e.dataTransfer;
         if (dt && dt.files && dt.files.length > 0) {
           handleFilesAdded(dt.files);
         }
       });
 
-      // Cargar configuracion inicial desde Google Apps Script
+      // Cargar configuracion fresca desde Google Apps Script
       try {
         const res = await llamarBackend({ accion: "obtenerConfig" });
         if (res && res.exito) {
           AppState.config = Object.assign(AppState.config, res);
           AppState.cachedPin = res.adminPin || '0412';
+          saveLocalConfig();
           applyConfigToUI();
         }
       } catch (err) {
-        console.warn("Aviso inicial de configuracion:", err.message);
+        console.warn("Aviso al sincronizar con Apps Script:", err.message);
       }
     }
 

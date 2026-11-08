@@ -519,7 +519,7 @@
      * Utiliza text/plain;charset=utf-8 para evitar preflight OPTIONS de CORS.
      */
     async function llamarBackend(payload) {
-      if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === "PEGA_AQUI_TU_URL_DE_APPS_SCRIPT") {
+      if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === "https://script.google.com/macros/s/AKfycbxAQbba5tS-n2VffA28R30TrWjFCyE3IEirbB_hbyEVRjbce-oRwDzWIiV833zANiLS/exec") {
         throw new Error("Debes configurar la constante APPS_SCRIPT_URL con la URL de tu Web App de Apps Script.");
       }
 
